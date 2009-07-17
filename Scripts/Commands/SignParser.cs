@@ -166,4 +166,4 @@ namespace Server.Scripts.Commands
 			sign.MoveToWorld( location, map );
 		}
 	}
-}�
+} 

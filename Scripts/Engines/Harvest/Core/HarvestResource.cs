@@ -63,4 +63,4 @@ namespace Server.Engines.Harvest
 			m_SuccessMessage = message;
 		}
 	}
-}�
+} 

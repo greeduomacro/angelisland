@@ -108,4 +108,4 @@ namespace Server.Items
 			((Mobile)state).EndAction( typeof( BaseHealPotion ) );
 		}
 	}
-}�
+} 

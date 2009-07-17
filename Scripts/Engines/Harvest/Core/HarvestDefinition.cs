@@ -163,4 +163,4 @@ namespace Server.Engines.Harvest
 			}
 		}
 	}
-}�
+} 

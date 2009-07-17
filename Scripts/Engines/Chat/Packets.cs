@@ -59,4 +59,4 @@ namespace Server.Engines.Chat
 			m_Stream.WriteBigUniNull( param2 );
 		}
 	}
-}�
+} 

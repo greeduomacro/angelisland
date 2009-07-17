@@ -69,4 +69,4 @@ namespace Server.Multis
 				m_Boat.EndDryDock( m_From );
 		}
 	}
-}�
+} 

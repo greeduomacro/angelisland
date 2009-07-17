@@ -64,4 +64,4 @@ namespace Server.PathAlgorithms
 			return m_CalcDirections[v];
 		}
 	}
-}�
+}

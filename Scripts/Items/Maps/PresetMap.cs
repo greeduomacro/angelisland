@@ -180,4 +180,4 @@ namespace Server.Items
 		Yew,
 		YewToBritain
 	}
-}�
+} 

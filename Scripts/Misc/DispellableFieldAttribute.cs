@@ -39,4 +39,4 @@ namespace Server.Misc
 	public class DispellableFieldAttribute : Attribute
 	{
 	}
-}�
+} 

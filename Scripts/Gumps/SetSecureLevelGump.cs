@@ -111,4 +111,4 @@ namespace Server.Gumps
 			}
 		}
 	}
-}�
+} 

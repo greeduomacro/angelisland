@@ -87,4 +87,4 @@ namespace Server.Engines.Mahjong
 			m_Position = reader.ReadPoint2D();
 		}
 	}
-}�
+} 

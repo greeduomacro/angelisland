@@ -79,4 +79,4 @@ namespace Server.Mobiles
 				Title = "the stone crafter";
 		}
 	}
-}�
+} 

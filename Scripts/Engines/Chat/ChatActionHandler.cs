@@ -53,4 +53,4 @@ namespace Server.Engines.Chat
 			m_Callback = callback;
 		}
 	}
-}�
+} 

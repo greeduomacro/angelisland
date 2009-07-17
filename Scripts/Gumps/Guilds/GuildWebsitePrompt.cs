@@ -74,4 +74,4 @@ namespace Server.Gumps
 			m_Mobile.SendGump( new GuildmasterGump( m_Mobile, m_Guild ) );
 		}
 	}
-}�
+} 

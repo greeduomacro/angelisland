@@ -54,4 +54,4 @@ namespace Server.ContextMenus
 			m_Food.Eat( m_From );
 		}
 	}
-}�
+} 

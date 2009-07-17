@@ -78,4 +78,4 @@ namespace Server.Mobiles
 				Body = 0x2F6;
 		}
 	}
-}�
+} 

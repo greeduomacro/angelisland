@@ -115,4 +115,4 @@ namespace Server.Spells.Third
 			}
 		}
 	}
-}�
+} 

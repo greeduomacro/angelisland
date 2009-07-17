@@ -390,4 +390,4 @@ namespace Server.Engines.VeteranRewards
 	{
 		bool IsRewardItem{ get; set; }
 	}
-}�
+} 

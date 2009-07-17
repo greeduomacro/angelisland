@@ -81,4 +81,4 @@ namespace Server.Engines.Mahjong
 			m_Second = reader.ReadInt();
 		}
 	}
-}�
+} 

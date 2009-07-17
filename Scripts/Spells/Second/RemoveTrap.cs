@@ -111,4 +111,4 @@ namespace Server.Spells.Second
 			}
 		}
 	}
-}�
+} 

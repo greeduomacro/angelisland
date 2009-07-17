@@ -108,4 +108,4 @@ namespace Server.Items
 			from.Send( new MessageLocalized( Serial, ItemID, MessageType.Label, 0x3B2, 3, number, "", (Amount * 50).ToString() ) );
 		}
 	}
-}�
+} 

@@ -81,4 +81,4 @@ namespace Server.Items
 			Layer = Layer.Invalid;
 		}
 	}
-}�
+} 

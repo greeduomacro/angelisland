@@ -486,4 +486,4 @@ namespace Server.Items
 			return base.Dupe( new ValoriteIngot( amount ), amount );
 		}
 	}
-}�
+} 

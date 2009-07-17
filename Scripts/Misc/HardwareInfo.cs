@@ -211,4 +211,4 @@ namespace Server
 				acct.HardwareInfo = info;
 		}
 	}
-}�
+} 

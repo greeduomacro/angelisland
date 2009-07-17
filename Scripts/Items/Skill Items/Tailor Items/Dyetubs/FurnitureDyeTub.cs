@@ -97,4 +97,4 @@ namespace Server.Items
 				LootType = LootType.Blessed;
 		}
 	}
-}�
+} 

@@ -226,4 +226,4 @@ namespace Server.Items
 				Hue = 66;
 		}
 	}
-}�
+} 

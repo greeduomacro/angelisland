@@ -75,4 +75,4 @@ namespace Server.Mobiles
 			NoKillAwards = true;
 		}
 	}
-}�
+} 

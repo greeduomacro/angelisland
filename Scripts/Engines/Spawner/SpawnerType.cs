@@ -43,4 +43,4 @@ namespace Server.Mobiles
 			return ScriptCompiler.FindTypeByName( name );
 		}
 	}
-}�
+} 

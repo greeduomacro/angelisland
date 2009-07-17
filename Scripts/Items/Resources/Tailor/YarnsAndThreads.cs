@@ -284,4 +284,4 @@ namespace Server.Items
 			return base.Dupe( new SpoolOfThread(), amount );
 		}
 	}
-}�
+} 

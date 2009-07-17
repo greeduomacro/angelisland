@@ -117,4 +117,4 @@ namespace Server.Misc
 			}
 		}
 	}
-}�
+} 

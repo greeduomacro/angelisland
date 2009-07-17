@@ -318,4 +318,4 @@ namespace Server.Items
 			return base.Dupe( new BlueScales( amount ), amount );
 		}
 	}
-}�
+} 

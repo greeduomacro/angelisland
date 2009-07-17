@@ -39,4 +39,4 @@ namespace Server.Engines.BulkOrders
 		Smith,
 		Tailor
 	}
-}�
+} 

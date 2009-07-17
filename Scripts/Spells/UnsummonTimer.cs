@@ -53,4 +53,4 @@ namespace Server.Spells
 				m_Creature.Delete();
 		}
 	}
-}�
+} 

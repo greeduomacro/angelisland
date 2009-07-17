@@ -63,4 +63,4 @@ namespace Server.Items
 			AOS.Damage( defender, attacker, Utility.RandomMinMax( 10, 40 ), 100, 0, 0, 0, 0 );
 		}
 	}
-}�
+} 

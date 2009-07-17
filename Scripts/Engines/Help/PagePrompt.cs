@@ -59,4 +59,4 @@ namespace Server.Engines.Help
 			PageQueue.Enqueue( new PageEntry( from, text, m_Type ) );
 		}
 	}
-}�
+} 

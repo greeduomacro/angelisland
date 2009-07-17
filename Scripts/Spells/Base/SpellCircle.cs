@@ -45,4 +45,4 @@ namespace Server.Spells
 		Seventh,
 		Eighth
 	}
-}�
+} 

@@ -105,4 +105,4 @@ namespace Server.Accounting
 			xml.WriteEndElement();
 		}
 	}
-}�
+} 

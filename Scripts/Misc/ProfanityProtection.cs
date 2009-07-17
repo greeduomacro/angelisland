@@ -149,4 +149,4 @@ namespace Server.Misc
 				"fuck"
 			};
 	}
-}�
+} 

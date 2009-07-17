@@ -244,4 +244,4 @@ namespace Server.Engines.BulkOrders
 			AddButton( 505, 416, 4017, 4018, 0, GumpButtonType.Reply, 0 );
 		}
 	}
-}�
+} 

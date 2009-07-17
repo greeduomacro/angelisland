@@ -49,4 +49,4 @@ namespace Server.Engines.PartySystem
 			m_CanLoot = true;
 		}
 	}
-}�
+} 

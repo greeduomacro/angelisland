@@ -228,4 +228,4 @@ namespace Server.Items
 			}
 		}
 	}
-}�
+} 

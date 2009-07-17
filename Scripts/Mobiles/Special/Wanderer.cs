@@ -98,4 +98,4 @@ namespace Server.Mobiles
 			}
 		}
 	}
-}�
+} 

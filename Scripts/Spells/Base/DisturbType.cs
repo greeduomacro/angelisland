@@ -44,4 +44,4 @@ namespace Server.Spells
 		Kill,
 		NewCast
 	}
-}�
+} 

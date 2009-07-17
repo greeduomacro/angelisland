@@ -189,4 +189,4 @@ namespace Server.Engines.VeteranRewards
 			}
 		}
 	}
-}�
+} 

@@ -54,4 +54,4 @@ namespace Server.Engines.BulkOrders
 			m_Deed.EndCombine( from, targeted );
 		}
 	}
-}�
+} 

@@ -274,4 +274,4 @@ namespace Server.Engines.Mahjong
 			game.DealerIndicator.Move( new Point2D( x, y ), direction, wind );
 		}
 	}
-}�
+} 

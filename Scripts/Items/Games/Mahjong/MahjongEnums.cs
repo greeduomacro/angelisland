@@ -87,4 +87,4 @@ namespace Server.Engines.Mahjong
 		Red,
 		White
 	}
-}�
+} 

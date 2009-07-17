@@ -70,4 +70,4 @@ namespace Server.Mobiles
 		} 
 	} 
 } 
-�
+ 

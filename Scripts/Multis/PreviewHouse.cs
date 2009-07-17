@@ -178,4 +178,4 @@ namespace Server.Multis
 			}
 		}
 	}
-}�
+} 

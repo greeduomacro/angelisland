@@ -76,4 +76,4 @@ namespace Server.Engines.PartySystem
 			}
 		}
 	}
-}�
+} 

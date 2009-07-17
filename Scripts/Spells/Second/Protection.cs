@@ -93,8 +93,8 @@ namespace Server.Spells.Second
 			 * a decreased "resisting spells" skill value by -35,
 			 * and a slower casting speed modifier (technically, a negative "faster cast speed") of 2 points.
 			 * The protection spell has an indefinite duration, becoming active when cast, and deactivated when re-cast.
-			 * Reactive Armor, Protection, and Magic Reflection will stay on�even after logging out,
-			 * even after dying�until you �turn them off� by casting them again.
+			 * Reactive Armor, Protection, and Magic Reflection will stay on even after logging out,
+			 * even after dying until you  turn them off  by casting them again.
 			 */
 
 			object[] mods = (object[])m_Table[target];

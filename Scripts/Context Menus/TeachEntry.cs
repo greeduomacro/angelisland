@@ -59,4 +59,4 @@ namespace Server.ContextMenus
 			m_Mobile.Teach( m_Skill, m_From, 0, false );
 		}
 	}
-}�
+} 

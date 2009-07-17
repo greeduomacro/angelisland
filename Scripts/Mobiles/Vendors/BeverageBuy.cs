@@ -61,4 +61,4 @@ namespace Server.Mobiles
 			return Activator.CreateInstance( Type, new object[]{ m_Content } );
 		}
 	}
-}�
+} 

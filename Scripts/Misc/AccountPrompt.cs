@@ -67,4 +67,4 @@ namespace Server.Misc
 			}
 		}
 	}
-}�
+} 

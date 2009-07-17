@@ -55,4 +55,4 @@ namespace Server.Targeting
 			m_Item.DoWandTarget( from, targeted );
 		}
 	}
-}�
+} 

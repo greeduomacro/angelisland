@@ -308,4 +308,4 @@ namespace Server.Engines.BulkOrders
 				Delete();
 		}
 	}
-}�
+} 

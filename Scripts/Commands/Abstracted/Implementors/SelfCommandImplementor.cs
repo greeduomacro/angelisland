@@ -56,4 +56,4 @@ namespace Server.Scripts.Commands
 			obj = from;
 		}
 	}
-}�
+} 

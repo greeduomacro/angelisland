@@ -132,4 +132,4 @@ namespace Server.Multis
 			writer.Write( (int)0 );
 		}
 	}
-}�
+} 

@@ -585,4 +585,4 @@ namespace Server.Mobiles
 				Name = null;
 		}
 	}
-}�
+} 

@@ -605,4 +605,4 @@ namespace Server
 			}
 		}
 	}
-}�
+} 

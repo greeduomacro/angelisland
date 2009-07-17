@@ -190,4 +190,4 @@ namespace Server.Items
 			}
 		}
 	}
-}�
+} 

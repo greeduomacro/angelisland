@@ -37,7 +37,7 @@
  *		skin cream drops cut by 3/4
  *	11/12/08, Adam
  *		- Set the Detect Hidden of the chest Guardian to match the players hiding so that they have a fighting chance
- *		- Thwart �fast lifting� in CheckLift: �You thrust your hand into the chest but come up empty handed.�
+ *		- Thwart  fast lifting  in CheckLift:  You thrust your hand into the chest but come up empty handed. 
  *		- Remove IOB checks from the CheckThief() and CheckGuardian() functions
  *		  - CheckThief() now checks the IOB alignment in the calling logic
  *		  - CheckGuardian() does not care if you are aligned or not

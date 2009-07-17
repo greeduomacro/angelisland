@@ -50,4 +50,4 @@ namespace Server.Multis
 			m_Boat.EndRename( from, text );
 		}
 	}
-}�
+} 

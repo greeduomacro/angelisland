@@ -83,4 +83,4 @@ namespace Server.Engines.Craft
 			m_CraftItem.CompleteCraft( m_Quality, makersMark, m_From, m_CraftSystem, m_TypeRes, m_Tool );
 		}
 	}
-}�
+} 

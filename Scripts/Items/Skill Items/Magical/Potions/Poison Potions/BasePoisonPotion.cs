@@ -78,4 +78,4 @@ namespace Server.Items
 			this.Delete();
 		}
 	}
-}�
+} 

@@ -64,4 +64,4 @@ namespace Server.Items
 		SummerWind,
 		ElementalBan // Bane?
 	}
-}�
+} 

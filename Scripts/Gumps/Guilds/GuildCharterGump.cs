@@ -102,4 +102,4 @@ namespace Server.Gumps
 			m_Mobile.SendGump( new GuildGump( m_Mobile, m_Guild ) );
 		}
 	}
-}�
+} 

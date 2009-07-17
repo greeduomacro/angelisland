@@ -111,4 +111,4 @@ namespace Server.Engines.Harvest
 			m_Vein = m_DefaultVein;
 		}
 	}
-}�
+} 

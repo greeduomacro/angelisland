@@ -63,4 +63,4 @@ namespace Server.Items
 				Weight = 35.0;
 		}
 	}
-}�
+} 

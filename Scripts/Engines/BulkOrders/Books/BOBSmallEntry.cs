@@ -130,4 +130,4 @@ namespace Server.Engines.BulkOrders
 			writer.WriteEncodedInt( (int) m_Price );
 		}
 	}
-}�
+} 

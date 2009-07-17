@@ -78,4 +78,4 @@ namespace Server.Multis
 			int version = reader.ReadInt();
 		}
 	}
-}�
+} 

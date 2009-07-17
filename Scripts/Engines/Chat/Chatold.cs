@@ -49,4 +49,4 @@ namespace Server.Chat
 			e.Mobile.SendMessage( "Chat is not currently supported." );
 		}
 	}
-}�
+} 

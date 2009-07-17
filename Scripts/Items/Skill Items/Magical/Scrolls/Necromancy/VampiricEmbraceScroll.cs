@@ -71,4 +71,4 @@ namespace Server.Items
 			return base.Dupe( new VampiricEmbraceScroll( amount ), amount );
 		}
 	}
-}�
+} 

@@ -130,4 +130,4 @@ namespace Server.Items
 	}
 
 
-}�
+} 

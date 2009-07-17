@@ -102,4 +102,4 @@ namespace Server.Engines.Mahjong
 			m_Wind = (MahjongWind) reader.ReadInt();
 		}
 	}
-}�
+} 

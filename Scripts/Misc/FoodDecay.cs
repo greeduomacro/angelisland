@@ -74,4 +74,4 @@ namespace Server.Misc
 				m.Thirst -= 1;
 		}
 	}
-}�
+} 

@@ -128,4 +128,4 @@ namespace Server.Gumps
 			}
 		}
 	}
-}�
+} 

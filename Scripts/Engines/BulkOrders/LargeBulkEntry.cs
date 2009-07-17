@@ -193,4 +193,4 @@ namespace Server.Engines.BulkOrders
 			writer.Write( m_Details.Graphic );
 		}
 	}
-}�
+} 

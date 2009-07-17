@@ -126,4 +126,4 @@ namespace Server.Engines.Mahjong
 			m_Flipped = reader.ReadBool();
 		}
 	}
-}�
+} 

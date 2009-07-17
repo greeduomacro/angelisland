@@ -76,4 +76,4 @@ namespace Server.Mobiles
 			int version = reader.ReadInt();
 		}
 	}
-}�
+} 

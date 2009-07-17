@@ -37,7 +37,7 @@
  *  1/10/08, Adam
  *      Add switches and switch parsing logic
  *  1/9/08, Adam
- *      - Major cleanup � add external access to report writer
+ *      - Major cleanup   add external access to report writer
  *		- reverse x and y in IComparer.Compare() to get a descending sort (largest to smallest) 
  *		- Add a ScenarioFilter() to narrow the number of cases we are tracking.
  *  1/8/08, Adam

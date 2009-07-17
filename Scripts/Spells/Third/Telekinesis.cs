@@ -135,4 +135,4 @@ namespace Server
 	{
 		void OnTelekinesis( Mobile from );
 	}
-}�
+} 

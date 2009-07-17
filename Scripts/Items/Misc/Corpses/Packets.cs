@@ -101,4 +101,4 @@ namespace Server.Network
 			m_Stream.Write( (ushort) written );
 		}
 	}
-}�
+} 

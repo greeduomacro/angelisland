@@ -74,4 +74,4 @@ namespace Server.Items
 			defender.Stam -= Utility.Random( 2, 4 ); // 3-5 points of stamina loss
 		}
 	}
-}�
+} 

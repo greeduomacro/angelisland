@@ -90,4 +90,4 @@ namespace Server.Misc
 			return false;
 		}
 	}
-}�
+} 

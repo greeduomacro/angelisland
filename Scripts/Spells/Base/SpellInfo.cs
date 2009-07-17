@@ -98,4 +98,4 @@ namespace Server.Spells
 		public int LeftHandEffect{ get{ return m_LeftHandEffect; } set{ m_LeftHandEffect = value; } }
 		public int RightHandEffect{ get{ return m_RightHandEffect; } set{ m_RightHandEffect = value; } }
 	}
-}�
+} 

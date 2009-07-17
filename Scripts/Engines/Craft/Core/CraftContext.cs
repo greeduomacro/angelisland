@@ -87,4 +87,4 @@ namespace Server.Engines.Craft
 			m_Items.Insert( 0, item );
 		}
 	}
-}�
+} 

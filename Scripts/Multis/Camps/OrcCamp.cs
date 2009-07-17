@@ -134,4 +134,4 @@ namespace Server.Multis
 			}
 		}
 	}
-}�
+} 

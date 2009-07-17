@@ -109,4 +109,4 @@ namespace Server.Items
 			return true;
 		}
 	}
-}�
+} 

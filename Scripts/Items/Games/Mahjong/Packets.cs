@@ -237,4 +237,4 @@ namespace Server.Engines.Mahjong
 			m_Stream.Write( (byte) 0x1A );
 		}
 	}
-}�
+} 

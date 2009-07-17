@@ -115,4 +115,4 @@ namespace Server.Engines.Craft
 			get { return m_Amount; }
 		}
 	}
-}�
+} 

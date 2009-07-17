@@ -118,4 +118,4 @@ namespace Server.Spells.First
 			return item;
 		}
 	}
-}�
+} 

@@ -152,4 +152,4 @@ namespace Server.Engines.PartySystem
 				p.OnDecline( from, leader );
 		}
 	}
-}�
+} 

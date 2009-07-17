@@ -98,4 +98,4 @@ namespace Server.Engines.VeteranRewards
 				m_From.SendGump( new RewardNoticeGump( m_From ) );
 		}
 	}
-}�
+} 

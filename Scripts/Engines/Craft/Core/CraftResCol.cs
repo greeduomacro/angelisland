@@ -61,4 +61,4 @@ namespace Server.Engines.Craft
 			return ( CraftRes ) List[index];
 		}
 	}
-}�
+} 

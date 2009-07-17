@@ -45,4 +45,4 @@ namespace Server.Mobiles
 		public abstract IShopSellInfo SellInfo { get; }
 		public abstract ArrayList BuyInfo { get; }
 	}
-}�
+} 

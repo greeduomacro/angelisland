@@ -96,4 +96,4 @@ namespace Server.Gumps
 			return new ParentNode( xml, null );
 		}
 	}
-}�
+} 

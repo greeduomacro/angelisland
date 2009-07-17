@@ -49,4 +49,4 @@ namespace Server
 			m_Name = name;
 		}
 	}
-}�
+} 

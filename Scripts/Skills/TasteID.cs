@@ -95,4 +95,4 @@ namespace Server.SkillHandlers
 			}
 		}
 	}
-}�
+} 

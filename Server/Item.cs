@@ -44,7 +44,7 @@
  *	10/16/08, Adam
  *		Add a new DropRate variable that holds the percent chance that this item drops.
  *		This approach was taken to avoid an external database that mapped items to percentages. 
- *		This system is optimized by NOT serializing this value unless it is something other than 100% (1.0) which is the case for virtually all items in the world. The only time this value is not 1.0 is for the small collection of �template� items that exist on the internal map.
+ *		This system is optimized by NOT serializing this value unless it is something other than 100% (1.0) which is the case for virtually all items in the world. The only time this value is not 1.0 is for the small collection of  template  items that exist on the internal map.
  *	7/23/08, Adam
  *		Add new (non serialized) variable m_LastMap which is used post deletion as input to Map.FixColums()
  *	07/23/08, weaver

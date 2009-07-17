@@ -74,4 +74,4 @@ namespace Server.Targets
 			}
 		}
 	}
-}�
+} 

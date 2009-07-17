@@ -67,4 +67,4 @@ namespace Server.Items
 			attacker.SendLocalizedMessage( 1060216 ); // Your shot was successful
 		}
 	}
-}�
+} 

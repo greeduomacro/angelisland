@@ -108,4 +108,4 @@ namespace Server.Engines.PartySystem
 			m_Stream.Write( (int) leader.Serial );
 		}
 	}
-}�
+} 

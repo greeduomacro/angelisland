@@ -426,4 +426,4 @@ namespace Server.Mobiles
 			}
 		}
 	}
-}�
+} 

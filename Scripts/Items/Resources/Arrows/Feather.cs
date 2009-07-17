@@ -81,4 +81,4 @@ namespace Server.Items
 			return base.Dupe( new Feather( amount ), amount );
 		}
 	}
-}�
+} 

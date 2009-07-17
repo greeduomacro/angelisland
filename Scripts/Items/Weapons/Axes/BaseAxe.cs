@@ -152,4 +152,4 @@ namespace Server.Items
 			}
 		}
 */	}
-}�
+} 

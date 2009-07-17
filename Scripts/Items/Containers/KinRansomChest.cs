@@ -33,7 +33,7 @@
 /* Items/Containers/KinRansomChest.cs
  * ChangeLog:
  *	11/12/08, Adam
- *		- Thwart �fast lifting� in CheckLift: �You thrust your hand into the chest but come up empty handed.�
+ *		- Thwart  fast lifting  in CheckLift:  You thrust your hand into the chest but come up empty handed. 
  *	12/8/07, Pix
  *		Moved check up in PackMagicItem() so we don't create the item if we don't need it
  *			(and thus it's not left on the internal map)

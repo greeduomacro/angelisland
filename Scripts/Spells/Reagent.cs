@@ -137,4 +137,4 @@ namespace Server.Spells
 			set{ m_Types[12] = value; }
 		}
 	}
-}�
+} 

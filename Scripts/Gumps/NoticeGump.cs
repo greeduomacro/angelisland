@@ -77,4 +77,4 @@ namespace Server.Gumps
 				m_Callback( sender.Mobile, m_State );
 		}
 	}
-}�
+} 

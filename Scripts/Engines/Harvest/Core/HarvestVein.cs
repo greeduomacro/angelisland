@@ -54,4 +54,4 @@ namespace Server.Engines.Harvest
 			m_FallbackResource = fallbackResource;
 		}
 	}
-}�
+} 

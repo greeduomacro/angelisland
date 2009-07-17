@@ -69,4 +69,4 @@ namespace Server
 			m_Aliases = aliases;
 		}
 	}
-}�
+} 

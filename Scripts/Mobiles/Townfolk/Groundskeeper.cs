@@ -30,7 +30,7 @@
  *
  ***************************************************************************/
 
-/* EXPERIMENTAL �GREEN COMPUTING� DESIGN
+/* EXPERIMENTAL  GREEN COMPUTING  DESIGN
  * Special notes on the implementation of the Groundskeeper.
  * While there is lots of state information, the entire class was designed with no serilization data beyond the standard int version.
  * The design (you might call 'green') is intented to be completly restartable in a useful state without the need to save-to-disk
@@ -87,9 +87,9 @@ namespace Server.Mobiles
 		private DeleteTimer m_Timer;
 
 		/*
-		 * 1. m_scanRangeNear and m_reach should probably be the same, or at least reach should exceed scan range or you will get stuck finding things you can�t pickup.
-		 * 2. m_scanRangeNear and m_reach of 1 (from a players perspective) looks about right. A value of 2 seems a bit aggressive as the NPC picks things from 3 tiles away which looks a bit odd (but it�s much �faster� should we need the cleanup.
-		 * 3. We don�t currently serialize these values, but we expose them for tuning/testing and possibly so the spawn parent (guard) can crank up the aggressiveness.
+		 * 1. m_scanRangeNear and m_reach should probably be the same, or at least reach should exceed scan range or you will get stuck finding things you can t pickup.
+		 * 2. m_scanRangeNear and m_reach of 1 (from a players perspective) looks about right. A value of 2 seems a bit aggressive as the NPC picks things from 3 tiles away which looks a bit odd (but it s much  faster  should we need the cleanup.
+		 * 3. We don t currently serialize these values, but we expose them for tuning/testing and possibly so the spawn parent (guard) can crank up the aggressiveness.
 		 */
 		private int m_scanRangeNear = 1;		// how many tiles we look at when we search near
 		private int m_scanRangeFar = 12;		// how many tiles we look at when we search far

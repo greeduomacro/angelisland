@@ -79,4 +79,4 @@ namespace Server.Gumps
 			m_Leader.SendGump( new GuildmasterGump( m_Leader, m_Guild ) );
 		}
 	}
-}�
+} 

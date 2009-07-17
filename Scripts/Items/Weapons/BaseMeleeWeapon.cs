@@ -94,4 +94,4 @@ namespace Server.Items
 			base.Deserialize( reader );
 		}
 	}
-}�
+} 

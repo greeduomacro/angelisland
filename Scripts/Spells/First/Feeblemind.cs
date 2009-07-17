@@ -121,4 +121,4 @@ namespace Server.Spells.First
 			}
 		}
 	}
-}�
+} 

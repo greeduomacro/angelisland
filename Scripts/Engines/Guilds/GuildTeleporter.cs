@@ -127,4 +127,4 @@ namespace Server.Items
 			}
 		}
 	}
-}�
+} 

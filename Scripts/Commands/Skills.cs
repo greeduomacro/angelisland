@@ -181,4 +181,4 @@ namespace Server.Scripts.Commands
 			}
 		}
 	}
-}�
+} 

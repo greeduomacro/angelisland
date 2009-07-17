@@ -57,4 +57,4 @@ namespace Server.Engines.VeteranRewards
 			m_Entries = new ArrayList();
 		}
 	}
-}�
+} 

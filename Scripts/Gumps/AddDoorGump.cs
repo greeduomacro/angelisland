@@ -153,4 +153,4 @@ namespace Server.Gumps
 			m_BaseID = baseID;
 		}
 	}
-}�
+} 

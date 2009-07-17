@@ -108,4 +108,4 @@ namespace Server.Gumps
 			}
 		}
 	}
-}�
+} 

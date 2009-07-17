@@ -229,4 +229,4 @@ namespace Server.Items
 			int version = reader.ReadInt();
 		}
 	}
-}�
+} 

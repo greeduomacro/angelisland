@@ -143,4 +143,4 @@ namespace Server.Items
 			}
 		}
 	}
-}�
+} 

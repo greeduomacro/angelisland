@@ -79,4 +79,4 @@ namespace Server.Engines.Mahjong
 			return -1;
 		}
 	}
-}�
+} 

@@ -80,4 +80,4 @@ namespace Server.Items
 		}
 	}
 }
-#endif�
+#endif 

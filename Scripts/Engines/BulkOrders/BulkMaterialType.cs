@@ -74,4 +74,4 @@ namespace Server.Engines.BulkOrders
 			return BulkGenericType.Iron;
 		}
 	}
-}�
+}

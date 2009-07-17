@@ -135,4 +135,4 @@ namespace Server.Items
 			return -1;
 		}
 	}
-}�
+} 

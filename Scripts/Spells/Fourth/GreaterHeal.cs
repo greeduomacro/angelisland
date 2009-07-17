@@ -119,4 +119,4 @@ namespace Server.Spells.Fourth
 			}
 		}
 	}
-}�
+} 

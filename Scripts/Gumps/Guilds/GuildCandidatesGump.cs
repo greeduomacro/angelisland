@@ -63,4 +63,4 @@ namespace Server.Gumps
 			}
 		}
 	}
-}�
+} 

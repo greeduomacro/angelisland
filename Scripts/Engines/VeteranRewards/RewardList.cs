@@ -51,4 +51,4 @@ namespace Server.Engines.VeteranRewards
 				entries[i].List = this;
 		}
 	}
-}�
+} 

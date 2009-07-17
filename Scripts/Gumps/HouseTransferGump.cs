@@ -95,4 +95,4 @@ namespace Server.Gumps
 				m_House.EndConfirmTransfer( m_From, m_To );
 		}
 	}
-}�
+} 

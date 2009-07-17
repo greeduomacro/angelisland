@@ -204,4 +204,4 @@ namespace Server.SkillHandlers
 			}
 		}
 	}
-}�
+} 

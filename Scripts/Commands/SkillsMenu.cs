@@ -70,4 +70,4 @@ namespace Server.Scripts.Commands
 			e.Mobile.Target = new SkillsTarget();
 		}
 	}
-}�
+} 

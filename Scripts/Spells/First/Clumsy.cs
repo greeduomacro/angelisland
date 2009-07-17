@@ -120,4 +120,4 @@ namespace Server.Spells.First
 			}
 		}
 	}
-}�
+} 

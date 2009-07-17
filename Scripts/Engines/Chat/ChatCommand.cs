@@ -73,4 +73,4 @@ namespace Server.Engines.Chat
 		/// </summary>
 		JoinedChannel = 0x3F1
 	}
-}�
+} 

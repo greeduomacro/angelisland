@@ -577,4 +577,4 @@ namespace Server.Engines.Chat
 			AddChannel( name ).AlwaysAvailable = true;
 		}
 	}
-}�
+} 

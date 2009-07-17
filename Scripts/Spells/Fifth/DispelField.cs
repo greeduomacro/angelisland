@@ -116,4 +116,4 @@ namespace Server.Spells.Fifth
 			}
 		}
 	}
-}�
+} 

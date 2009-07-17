@@ -109,4 +109,4 @@ namespace Server.Items
 				ItemID = 0xF9D;
 		}
 	}
-}�
+} 

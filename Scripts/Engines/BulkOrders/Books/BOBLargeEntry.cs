@@ -139,4 +139,4 @@ namespace Server.Engines.BulkOrders
 				m_Entries[i].Serialize( writer );
 		}
 	}
-}�
+} 

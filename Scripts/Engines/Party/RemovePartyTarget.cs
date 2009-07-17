@@ -59,4 +59,4 @@ namespace Server.Engines.PartySystem
 			}
 		}
 	}
-}�
+} 

@@ -87,4 +87,4 @@ namespace Server.Engines.Craft
 			return -1;
 		}
 	}
-}�
+} 

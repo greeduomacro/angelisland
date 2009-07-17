@@ -477,4 +477,4 @@ namespace Server.Engines.BulkOrders
 			int version = reader.ReadInt();
 		}
 	}
-}�
+} 

@@ -350,4 +350,4 @@ namespace Server.Engines.Chat
 			}
 		}
 	}
-}�
+} 

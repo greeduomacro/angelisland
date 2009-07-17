@@ -95,4 +95,4 @@ namespace Server.Items
 		ShootXBow = 19,
 		Wrestle = 31
 	}
-}�
+} 

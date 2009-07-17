@@ -298,4 +298,4 @@ namespace Server.Items
 			m_Description = reader.ReadString();
 		}
 	}
-}�
+} 

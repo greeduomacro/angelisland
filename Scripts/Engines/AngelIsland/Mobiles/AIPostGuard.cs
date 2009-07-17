@@ -123,7 +123,7 @@ namespace Server.Mobiles
 						case 1: 
 						{
 							this.Say( "Thinking of escape eh?" );
-							this.Say( "We�ll just see about that!" );
+							this.Say( "We ll just see about that!" );
 							break;
 						}
 						case 2:
@@ -134,7 +134,7 @@ namespace Server.Mobiles
 						}
 						case 3:
 						{
-							this.Say( "I see you�ve lost your way." );
+							this.Say( "I see you ve lost your way." );
 							this.Say( "Shall I see you to the prison cemetery?" );
 							break;
 						}

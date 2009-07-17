@@ -135,4 +135,4 @@ namespace Server.Engines.BulkOrders
 			return 0;
 		}
 	}
-}�
+} 

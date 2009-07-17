@@ -72,4 +72,4 @@ namespace Server.Items
 			writer.Write( (int)0 ); // version
 		}
 	}
-}�
+} 

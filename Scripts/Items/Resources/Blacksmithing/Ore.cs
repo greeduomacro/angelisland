@@ -641,4 +641,4 @@ namespace Server.Items
 			return new ValoriteIngot();
 		}
 	}
-}�
+} 

@@ -67,4 +67,4 @@ namespace Server.Items
 			Cast( new ManaDrainSpell( from, this ) );
 		}
 	}
-}�
+} 

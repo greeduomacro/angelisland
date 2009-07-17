@@ -80,4 +80,4 @@ namespace Server.Gumps
 				m_Callback( sender.Mobile, false, m_State );
 		}
 	}
-}�
+} 

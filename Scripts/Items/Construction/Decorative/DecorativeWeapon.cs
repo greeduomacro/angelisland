@@ -575,4 +575,4 @@ namespace Server.Items
 			}
 		}
 	}
-}�
+} 

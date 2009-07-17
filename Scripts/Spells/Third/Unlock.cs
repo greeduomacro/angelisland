@@ -142,4 +142,4 @@ namespace Server.Spells.Third
 			}
 		}
 	}
-}�
+} 

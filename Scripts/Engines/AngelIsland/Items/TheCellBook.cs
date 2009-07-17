@@ -75,7 +75,7 @@ namespace Server.Items
 			lines = new string[]
 			{
 				"--day 1",
-				"So. They�ve put me away",
+				"So. They ve put me away",
 				"for my crimes. Heh, I",
 				"feel no remorse and I",
 				"shall return to my duties",
@@ -101,7 +101,7 @@ namespace Server.Items
 			lines = new string[]
 			{
 				"magical gates in the",
-				"parole officer�s office.",
+				"parole officer s office.",
 				"",
 				"",
 				"",
@@ -126,13 +126,13 @@ namespace Server.Items
 			lines = new string[]
 			{
 				"--day 10",
-				"I�m starving!",
-				"They don�t feed us",
+				"I m starving!",
+				"They don t feed us",
 				"enough here, and what",
 				"they do feed us is likely",
 				"waste from the guard",
 				"kitchen.",
-				"I�ll kill that Roderick",
+				"I ll kill that Roderick",
 			};
 			Pages[cnt++].Lines = lines;
 			lines = new string[]
@@ -153,9 +153,9 @@ namespace Server.Items
 				"I do not know what day",
 				"it is today. Went to ask",
 				"the parole officer about",
-				"how much �time� I have",
+				"how much  time  I have",
 				"left, and she told me",
-				"�time is money�. I",
+				" time is money . I",
 				"wonder what she meant",
 			};
 			Pages[cnt++].Lines = lines;
@@ -202,7 +202,7 @@ namespace Server.Items
 				"believe that the parole",
 				"officer will take bribes. I",
 				"do not know how much is",
-				"required, but I�ve found",
+				"required, but I ve found",
 				"that gold can be found in",
 				"the cemetery behind the",
 			};
@@ -222,8 +222,8 @@ namespace Server.Items
 			lines = new string[]
 			{
 				"--day 27",
-				"I�m getting out of here.",
-				"I simply can�t take the",
+				"I m getting out of here.",
+				"I simply can t take the",
 				"hunger any longer.",
 				"Mortimer and I will follow",
 				"the next group that tires",
@@ -251,7 +251,7 @@ namespace Server.Items
 				"then fought the post",
 				"guards in a bloody battle.",
 				"Roderick died as did",
-				"several of Yeager�s",
+				"several of Yeager s",
 				"buddies.",
 			};
 			Pages[cnt++].Lines = lines;
@@ -259,8 +259,8 @@ namespace Server.Items
 			{
 				"Immediately after the last",
 				"guard fell, one of",
-				"Yeager�s men yelled",
-				"�I�ve got them�, then",
+				"Yeager s men yelled",
+				" I ve got them , then",
 				"they all ran for the",
 				"storage room.",
 				"",
@@ -275,14 +275,14 @@ namespace Server.Items
 				"active! We tried to",
 				"enter, but it would not",
 				"allow it!",
-				"We�ll try again tomorrow.",
+				"We ll try again tomorrow.",
 				"",
 			};
 			Pages[cnt++].Lines = lines;
 			lines = new string[]
 			{
 				"--day 42",
-				"We�ve attempted to",
+				"We ve attempted to",
 				"escape several times now,",
 				"but to no avail. We have",
 				"however amassed a good",
@@ -300,7 +300,7 @@ namespace Server.Items
 				"me that the storage",
 				"room only takes you as",
 				"far as the old private",
-				"cave. He says it�s the",
+				"cave. He says it s the",
 			};
 			Pages[cnt++].Lines = lines;
 			lines = new string[]
@@ -319,7 +319,7 @@ namespace Server.Items
 			{
 				"--day 52",
 				"Me and Yeager are",
-				"getting out! We�ve",
+				"getting out! We ve",
 				"decided to let one of the",
 				"larger crews here at the",
 				"prison do the work of",
@@ -331,7 +331,7 @@ namespace Server.Items
 			{
 				"storage room for their",
 				"lighthouse passes.",
-				"I�m not spending another",
+				"I m not spending another",
 				"night here.",
 				"",
 				"",

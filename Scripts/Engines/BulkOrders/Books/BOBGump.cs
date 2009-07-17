@@ -603,4 +603,4 @@ namespace Server.Engines.BulkOrders
 			}
 		}
 	}
-}�
+} 

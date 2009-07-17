@@ -279,7 +279,7 @@ namespace Server.Items
 			m_City = city;
 			m_Owner = owner;
 			m_GuardType = guardType; 
-			ArrayList creaturesName = new ArrayList(); //bah *!�$ arraylists			
+			ArrayList creaturesName = new ArrayList(); //bah *! $ arraylists			
 			creaturesName.Add(guardType.ToString()); 
 
 			InitSpawn(1, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), 0, 4, creaturesName);
