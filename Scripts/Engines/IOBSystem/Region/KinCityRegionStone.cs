@@ -32,6 +32,8 @@
 
 /* Scripts\Engines\IOBSystem\Region\KinCityRegionStone.cs
  * CHANGELOG:
+ *	07/19/09, plasma
+ *		- More NULL checks in case of missing or corrupt city data
  *	06/27/09, plasma
  *		Added a bunch of OnEnter() messages
  *	05/25/09, plasma
@@ -151,7 +153,8 @@ namespace Server.Engines.IOBSystem
 		/// <param name="pm">The pm.</param>
 		private void ProcessVisitor(PlayerMobile pm)
 		{
-			if (CityData.ControlingKin != IOBAlignment.None && pm.IOBRealAlignment != CityData.ControlingKin && pm.IOBRealAlignment != IOBAlignment.None )
+			if (CityData == null) return;
+				if (CityData.ControlingKin != IOBAlignment.None && pm.IOBRealAlignment != CityData.ControlingKin && pm.IOBRealAlignment != IOBAlignment.None )
 			{
 				if (DateTime.Now > m_LastAnnounceTime.AddMinutes(15))
 				{
@@ -199,7 +202,7 @@ namespace Server.Engines.IOBSystem
 				m_VisitorQueue.Dequeue();
 
 			m_VisitorQueue.Enqueue(pm);
-
+			if (CityData == null) return;
 			if (pm.IOBRealAlignment == IOBAlignment.None || pm.IOBRealAlignment == CityData.ControlingKin)
 			{
 				//good (or non factioned) guys, + activity

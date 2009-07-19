@@ -19,6 +19,8 @@
 
 /* Scripts/Engines/IOBSystem/Gumps/ControlGump/KinCityControlGump.cs
  * CHANGELOG:
+ *	07/19/09, plasma
+ *		More NULL checks in case of missing or corrupt city data
  *	02/10/08 - Plasma,
  *		Initial creation
  */
@@ -115,6 +117,7 @@ namespace Server.Engines.IOBSystem.Gumps.ControlGump
 		{
 			//This ctor gets called the first time the gump is opened			
 			m_Data = KinCityManager.GetCityData(city);
+			if (m_Data == null) return;
 
 			Session["City"] = city;
 

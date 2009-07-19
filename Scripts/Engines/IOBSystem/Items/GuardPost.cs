@@ -32,6 +32,8 @@
 
 /* Engines/IOBSystem/Items/GuardPost.cs
  * CHANGELOG:
+ *	07/19/09, plasma
+ *		- More NULL checks in case of missing or corrupt city data
  *	05/25/09, plasma
  *		- Fixed a bug with spawning logic
  *		-	Changed single-click LabelTo
@@ -464,8 +466,11 @@ namespace Server.Items
 			if( from.AccessLevel > AccessLevel.Counselor)
 				base.OnDoubleClick(from);
 
+			KinCityData data = KinCityManager.GetCityData(m_City);
+			if (data == null) Delete();
+
 			//Only faction leader and the player assigned to this post should be able to see the gump
-			if (from == Owner || from == KinCityManager.GetCityData(m_City).CityLeader || from.AccessLevel > AccessLevel.Counselor)
+			if (from == Owner || (data.CityLeader!=null && from == data.CityLeader) || from.AccessLevel > AccessLevel.Counselor)
 			{
 				from.CloseGump(typeof(KinGuardPostGump));
 				from.SendGump( new KinGuardPostGump(this, from)); 
@@ -672,7 +677,9 @@ namespace Server.Items
 		/// <param name="from">From.</param>
 		void IChopable.OnChop(Mobile from)
 		{
-			if (from == m_Owner || from == KinCityManager.GetCityData(m_City).CityLeader || from.AccessLevel > AccessLevel.Counselor)
+			KinCityData data = KinCityManager.GetCityData(m_City);
+			if (data == null) Delete();
+			if (from == m_Owner || ( data.CityLeader !=null && from == data.CityLeader ) || from.AccessLevel > AccessLevel.Counselor)
 			{
 				Delete();
 			}

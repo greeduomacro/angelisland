@@ -32,6 +32,9 @@
 
 /* /Scripts/Engines/IOBSystem/KinCityManager.cs
  * CHANGELOG:
+ *	07/19/09, plasma
+ *		- More NULL checks in case of missing or corrupt city data
+ *		- Ensured new city data gets created if any they fail to load for whatever reason.
  *	07/03/09, plasma
  *		- Removed the -2 hours thing in the acitivty. I seem to be attempting to turn the hands of time myself rather than allowing that priviledge to the universe at large
  *	06/28/09, plasma
@@ -171,13 +174,27 @@ namespace Server.Engines.IOBSystem
 							{
 								for (int i = 0; i < cityCount; ++i)
 								{
-									KinCityData data = new KinCityData(datreader);
-									_cityData.Add(data.City, data);
+									try
+									{
+										KinCityData data = new KinCityData(datreader);
+										_cityData.Add(data.City, data);
+									}
+									catch
+									{
+									}
 								}
 							}
 							break;
 						}
 				}
+
+				//if any were corrupted and failed to load, create a new set of data.
+				foreach (int city in Enum.GetValues(typeof(KinFactionCities)))
+					if (!_cityData.ContainsKey((KinFactionCities)city))
+					{
+						Console.WriteLine("Warning: KinCityData for {0} did not load successfully, and a new blank set of data has been created.", ((KinFactionCities)city).ToString());
+						_cityData.Add((KinFactionCities)city, new KinCityData((KinFactionCities)city));
+					}
 
 				datreader.Close();
 			}
@@ -767,7 +784,7 @@ namespace Server.Engines.IOBSystem
 					//Note that pro activity counts for only a third that of negativity.  This levels the algorithm
 					//as it is constantly declining anyway and thus is balanced.
 					//////////////////////////////////////////////////////////////////////////////
-					
+
 					if (data.Sigil.NextEventTime == DateTime.MinValue) return;
 
 					act.PointsProcessed = data.ActivityDelta;
@@ -889,6 +906,7 @@ namespace Server.Engines.IOBSystem
 		public static void ProcessSale(KinFactionCities city, Mobile vendor, int totalTax)
 		{
 			KinCityData data = GetCityData(city);
+			if (data == null) return;
 			if (data.ControlingKin != IOBAlignment.None)
 				data.AddToTreasury(totalTax);
 		}

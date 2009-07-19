@@ -31,6 +31,8 @@
  ***************************************************************************/
 
 /* /Scripts/Engines/IOBSystem/Logging/KinLogging.cs	
+ *	07/19/09, plasma
+ *		More NULL checks in case of missing or corrupt city data
  *	07/03/09, plasma
  *		Reduced the log sizes a bit by abbreivating the elements (more work to do here yet)
  *	01/14/09, plasma
@@ -62,10 +64,12 @@ namespace Server.Engines.IOBSystem.Logging
 		public Player(PlayerMobile pm)
 		{
 			if (pm == null || pm.Deleted) return;
-
 			PlayerName = pm.Name;
-			PlayerGuild = pm.Guild.Name;
-			PlayerGuildAbbreviation = pm.Guild.Abbreviation;
+			if (pm.Guild != null)
+			{
+				PlayerGuild = pm.Guild.Name;
+				PlayerGuildAbbreviation = pm.Guild.Abbreviation;
+			}
 			PlayerIOB = pm.IOBRealAlignment.ToString();
 		}
 
@@ -163,10 +167,10 @@ namespace Server.Engines.IOBSystem.Logging
 			LogTime = DateTime.Now;
 			Kin = data.ControlingKin.ToString();
 			City = data.City.ToString();
-			Leader = new Player(data.CityLeader as PlayerMobile);
+			if( data.CityLeader != null ) Leader = new Player(data.CityLeader as PlayerMobile);
 			data.BeneficiaryDataList.ForEach(delegate(KinCityData.BeneficiaryData bd)
 			{
-				Beneficiaries.Add(new Player(bd.Pm));
+				if( bd.Pm != null ) Beneficiaries.Add(new Player(bd.Pm));
 			});
 			Treasury = data.Treasury;
 			TaxRate = data.TaxRate;
@@ -175,7 +179,8 @@ namespace Server.Engines.IOBSystem.Logging
 			GuardPostSlots = string.Format("{0} | {1}", KinSystem.GetCityGuardPostSlots(data.City), data.UnassignedGuardPostSlots);
 			foreach( KinCityData.BeneficiaryData bd in data.BeneficiaryDataList )
 				foreach( Items.KinGuardPost gp in bd.GuardPosts )
-					GuardPostData.Add( new GuardPost(gp));
+					if( gp != null && !gp.Deleted )
+						GuardPostData.Add(  new GuardPost(gp));
 		}
 
 		public DailyCitySummary() { }

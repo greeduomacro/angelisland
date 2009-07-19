@@ -32,6 +32,8 @@
 
 /* Scripts/Engines/IOBSystem/Keywords.cs
  * CHANGELOG:
+ *	07/19/09, plasma
+ *		- More NULL checks in case of missing or corrupt city data
  *  05/25/09, plasma
  *		- Prevent post placment too near a door, fixed some typos.
  *		- Prevent placement unless there's 1 empty tile in every direction
@@ -107,6 +109,7 @@ namespace Server.Engines.IOBSystem
 
 					//Check they are a beneficiary 
 					KinCityData cityData = KinCityManager.GetCityData(((KinCityRegion)pm.Region).KinFactionCity);
+					if (cityData == null) return;
 					KinCityData.BeneficiaryData bd = cityData.GetBeneficiary(pm);
 					if (bd == null)
 					{
