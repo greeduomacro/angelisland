@@ -23,6 +23,8 @@
 
 /* Server\Serialization.cs
  * Changelog
+ *	7/18/09, Adam
+ *		Remove iPack32Lib software dongle - no longer needed for open source
  *	1/1/09, Adam
  *		Add new SerializableObject for classes you want Serialized.
  *		This SerializableObject is checked in the ScriptCompiler to insure there are both
@@ -1503,10 +1505,21 @@ namespace Server
 
     public class Pack32
     {
+		/* software dongle no longer needed for open sorrce
         [DllImport("./server/bin/iPack32Lib.dll")]
         public static extern int iPack32(int value, bool pack);
         [DllImport("./server/bin/iPack32Lib.dll")]
         public static extern uint uPack32(uint value, bool pack);
+		 */
+
+		public static int iPack32(int value, bool pack)
+		{
+			return value;
+		}
+		public static uint uPack32(uint value, bool pack)
+		{
+			return value;
+		}
     }
 
 	public class SerializableObject
