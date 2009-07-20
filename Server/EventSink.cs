@@ -23,6 +23,9 @@
 
 /* Server/EventSink.cs
  * CHANGELOG
+ *	07/20/09, plasma
+ *		Refactored every handler except the guild one (46 in total) to use a more accepted practice of raising events.
+ *		This stops an unhandled exception in a delegate causing the whole thing to bomb out and the rest not getting executed.
  *  7/5/08, Adam
  *      Add fall-through exception handling for event handlers
  *  5/2/08, Adam
@@ -940,28 +943,6 @@ namespace Server
 		public static event UNUSEDEventHandler UNUSED;
 		public static event DropMobileEventHandler DropMobile;
 
-		public static void InvokeClientVersionReceived(ClientVersionReceivedArgs e)
-		{
-			if (ClientVersionReceived != null)
-				try { ClientVersionReceived(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeServerStarted()
-		{
-			if (ServerStarted != null)
-				try { ServerStarted(); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
 		public static BaseGuild InvokeCreateGuild(CreateGuildEventArgs e)
 		{
 			if (CreateGuild != null)
@@ -978,490 +959,926 @@ namespace Server
 				return null;
 		}
 
-		public static void InvokeSetAbility(SetAbilityEventArgs e)
-		{
-			if (SetAbility != null)
-				try { SetAbility(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeGuildGumpRequest(GuildGumpRequestArgs e)
-		{
-			if (GuildGumpRequest != null)
-				try { GuildGumpRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeQuestGumpRequest(QuestGumpRequestArgs e)
-		{
-			if (QuestGumpRequest != null)
-				try { QuestGumpRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeFastWalk(FastWalkEventArgs e)
-		{
-			if (FastWalk != null)
-				try { FastWalk(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeDeleteRequest(DeleteRequestEventArgs e)
-		{
-			if (DeleteRequest != null)
-				try { DeleteRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeGameLogin(GameLoginEventArgs e)
-		{
-			if (GameLogin != null)
-				try { GameLogin(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeCommand(CommandEventArgs e)
-		{
-			if (Command != null)
-				try { Command(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeAggressiveAction(AggressiveActionEventArgs e)
-		{
-			if (AggressiveAction != null)
-				try { AggressiveAction(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeProfileRequest(ProfileRequestEventArgs e)
-		{
-			if (ProfileRequest != null)
-				try { ProfileRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeChangeProfileRequest(ChangeProfileRequestEventArgs e)
-		{
-			if (ChangeProfileRequest != null)
-				try { ChangeProfileRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokePaperdollRequest(PaperdollRequestEventArgs e)
-		{
-			if (PaperdollRequest != null)
-				try { PaperdollRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeAccountLogin(AccountLoginEventArgs e)
-		{
-			if (AccountLogin != null)
-				try { AccountLogin(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeChatRequest(ChatRequestEventArgs e)
-		{
-			if (ChatRequest != null)
-				try { ChatRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeVirtueItemRequest(VirtueItemRequestEventArgs e)
-		{
-			if (VirtueItemRequest != null)
-				try { VirtueItemRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeVirtueGumpRequest(VirtueGumpRequestEventArgs e)
-		{
-			if (VirtueGumpRequest != null)
-				try { VirtueGumpRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeVirtueMacroRequest(VirtueMacroRequestEventArgs e)
-		{
-			if (VirtueMacroRequest != null)
-				try { VirtueMacroRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokePlayerDeath(PlayerDeathEventArgs e)
-		{
-			if (PlayerDeath != null)
-				try { PlayerDeath(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeRenameRequest(RenameRequestEventArgs e)
-		{
-			if (RenameRequest != null)
-				try { RenameRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeLogout(LogoutEventArgs e)
-		{
-			if (Logout != null)
-				try { Logout(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeSocketConnect(SocketConnectEventArgs e)
-		{
-			if (SocketConnect != null)
-				try { SocketConnect(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeConnected(ConnectedEventArgs e)
-		{
-			if (Connected != null)
-				try { Connected(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeDisconnected(DisconnectedEventArgs e)
-		{
-			if (Disconnected != null)
-				try { Disconnected(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeAnimateRequest(AnimateRequestEventArgs e)
-		{
-			if (AnimateRequest != null)
-				try { AnimateRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeCastSpellRequest(CastSpellRequestEventArgs e)
-		{
-			if (CastSpellRequest != null)
-				try { CastSpellRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeOpenSpellbookRequest(OpenSpellbookRequestEventArgs e)
-		{
-			if (OpenSpellbookRequest != null)
-				try { OpenSpellbookRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeDisarmRequest(DisarmRequestEventArgs e)
-		{
-			if (DisarmRequest != null)
-				try { DisarmRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeStunRequest(StunRequestEventArgs e)
-		{
-			if (StunRequest != null)
-				try { StunRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeHelpRequest(HelpRequestEventArgs e)
-		{
-			if (HelpRequest != null)
-				try { HelpRequest(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeShutdown(ShutdownEventArgs e)
-		{
-			if (Shutdown != null)
-				try { Shutdown(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeCrashed(CrashedEventArgs e)
-		{
-			if (Crashed != null)
-				try { Crashed(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeHungerChanged(HungerChangedEventArgs e)
-		{
-			if (HungerChanged != null)
-				try { HungerChanged(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeMovement(MovementEventArgs e)
-		{
-			if (Movement != null)
-				try { Movement(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeServerList(ServerListEventArgs e)
-		{
-			if (ServerList != null)
-				try { ServerList(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeLogin(LoginEventArgs e)
-		{
-			if (Login != null)
-				try { Login(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
-		public static void InvokeSpeech(SpeechEventArgs e)
-		{
-			if (Speech != null)
-				try { Speech(e); }
-				catch (Exception ex)
-				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
-				}
-		}
-
 		public static void InvokeCharacterCreated(CharacterCreatedEventArgs e)
 		{
 			if (CharacterCreated != null)
-				try { CharacterCreated(e); }
-				catch (Exception ex)
+			{
+				foreach (CharacterCreatedEventHandler currentDelegate in CharacterCreated.GetInvocationList())
 				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
 				}
+			}
 		}
+
 
 		public static void InvokeOpenDoorMacroUsed(OpenDoorMacroEventArgs e)
 		{
 			if (OpenDoorMacroUsed != null)
-				try { OpenDoorMacroUsed(e); }
-				catch (Exception ex)
+			{
+				foreach (OpenDoorMacroEventHandler currentDelegate in OpenDoorMacroUsed.GetInvocationList())
 				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
 				}
+			}
 		}
+
+
+		public static void InvokeSpeech(SpeechEventArgs e)
+		{
+			if (Speech != null)
+			{
+				foreach (SpeechEventHandler currentDelegate in Speech.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeLogin(LoginEventArgs e)
+		{
+			if (Login != null)
+			{
+				foreach (LoginEventHandler currentDelegate in Login.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeServerList(ServerListEventArgs e)
+		{
+			if (ServerList != null)
+			{
+				foreach (ServerListEventHandler currentDelegate in ServerList.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeMovement(MovementEventArgs e)
+		{
+			if (Movement != null)
+			{
+				foreach (MovementEventHandler currentDelegate in Movement.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeHungerChanged(HungerChangedEventArgs e)
+		{
+			if (HungerChanged != null)
+			{
+				foreach (HungerChangedEventHandler currentDelegate in HungerChanged.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeCrashed(CrashedEventArgs e)
+		{
+			if (Crashed != null)
+			{
+				foreach (CrashedEventHandler currentDelegate in Crashed.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeShutdown(ShutdownEventArgs e)
+		{
+			if (Shutdown != null)
+			{
+				foreach (ShutdownEventHandler currentDelegate in Shutdown.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeHelpRequest(HelpRequestEventArgs e)
+		{
+			if (HelpRequest != null)
+			{
+				foreach (HelpRequestEventHandler currentDelegate in HelpRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeDisarmRequest(DisarmRequestEventArgs e)
+		{
+			if (DisarmRequest != null)
+			{
+				foreach (DisarmRequestEventHandler currentDelegate in DisarmRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeStunRequest(StunRequestEventArgs e)
+		{
+			if (StunRequest != null)
+			{
+				foreach (StunRequestEventHandler currentDelegate in StunRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeOpenSpellbookRequest(OpenSpellbookRequestEventArgs e)
+		{
+			if (OpenSpellbookRequest != null)
+			{
+				foreach (OpenSpellbookRequestEventHandler currentDelegate in OpenSpellbookRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeCastSpellRequest(CastSpellRequestEventArgs e)
+		{
+			if (CastSpellRequest != null)
+			{
+				foreach (CastSpellRequestEventHandler currentDelegate in CastSpellRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeAnimateRequest(AnimateRequestEventArgs e)
+		{
+			if (AnimateRequest != null)
+			{
+				foreach (AnimateRequestEventHandler currentDelegate in AnimateRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeLogout(LogoutEventArgs e)
+		{
+			if (Logout != null)
+			{
+				foreach (LogoutEventHandler currentDelegate in Logout.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeSocketConnect(SocketConnectEventArgs e)
+		{
+			if (SocketConnect != null)
+			{
+				foreach (SocketConnectEventHandler currentDelegate in SocketConnect.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeConnected(ConnectedEventArgs e)
+		{
+			if (Connected != null)
+			{
+				foreach (ConnectedEventHandler currentDelegate in Connected.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeDisconnected(DisconnectedEventArgs e)
+		{
+			if (Disconnected != null)
+			{
+				foreach (DisconnectedEventHandler currentDelegate in Disconnected.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeRenameRequest(RenameRequestEventArgs e)
+		{
+			if (RenameRequest != null)
+			{
+				foreach (RenameRequestEventHandler currentDelegate in RenameRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokePlayerDeath(PlayerDeathEventArgs e)
+		{
+			if (PlayerDeath != null)
+			{
+				foreach (PlayerDeathEventHandler currentDelegate in PlayerDeath.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeVirtueGumpRequest(VirtueGumpRequestEventArgs e)
+		{
+			if (VirtueGumpRequest != null)
+			{
+				foreach (VirtueGumpRequestEventHandler currentDelegate in VirtueGumpRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeVirtueItemRequest(VirtueItemRequestEventArgs e)
+		{
+			if (VirtueItemRequest != null)
+			{
+				foreach (VirtueItemRequestEventHandler currentDelegate in VirtueItemRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeVirtueMacroRequest(VirtueMacroRequestEventArgs e)
+		{
+			if (VirtueMacroRequest != null)
+			{
+				foreach (VirtueMacroRequestEventHandler currentDelegate in VirtueMacroRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeChatRequest(ChatRequestEventArgs e)
+		{
+			if (ChatRequest != null)
+			{
+				foreach (ChatRequestEventHandler currentDelegate in ChatRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeAccountLogin(AccountLoginEventArgs e)
+		{
+			if (AccountLogin != null)
+			{
+				foreach (AccountLoginEventHandler currentDelegate in AccountLogin.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokePaperdollRequest(PaperdollRequestEventArgs e)
+		{
+			if (PaperdollRequest != null)
+			{
+				foreach (PaperdollRequestEventHandler currentDelegate in PaperdollRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeProfileRequest(ProfileRequestEventArgs e)
+		{
+			if (ProfileRequest != null)
+			{
+				foreach (ProfileRequestEventHandler currentDelegate in ProfileRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeChangeProfileRequest(ChangeProfileRequestEventArgs e)
+		{
+			if (ChangeProfileRequest != null)
+			{
+				foreach (ChangeProfileRequestEventHandler currentDelegate in ChangeProfileRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeAggressiveAction(AggressiveActionEventArgs e)
+		{
+			if (AggressiveAction != null)
+			{
+				foreach (AggressiveActionEventHandler currentDelegate in AggressiveAction.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeCommand(CommandEventArgs e)
+		{
+			if (Command != null)
+			{
+				foreach (CommandEventHandler currentDelegate in Command.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeGameLogin(GameLoginEventArgs e)
+		{
+			if (GameLogin != null)
+			{
+				foreach (GameLoginEventHandler currentDelegate in GameLogin.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeDeleteRequest(DeleteRequestEventArgs e)
+		{
+			if (DeleteRequest != null)
+			{
+				foreach (DeleteRequestEventHandler currentDelegate in DeleteRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
 
 		public static void InvokeWorldLoad()
 		{
 			if (WorldLoad != null)
-				try { WorldLoad(); }
-				catch (Exception ex)
+			{
+				foreach (WorldLoadEventHandler currentDelegate in WorldLoad.GetInvocationList())
 				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					try
+					{
+						currentDelegate.Invoke();
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
 				}
+			}
 		}
+
 
 		public static void InvokeWorldSave(WorldSaveEventArgs e)
 		{
 			if (WorldSave != null)
-				try { WorldSave(e); }
-				catch (Exception ex)
+			{
+				foreach (WorldSaveEventHandler currentDelegate in WorldSave.GetInvocationList())
 				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
 				}
+			}
 		}
+
+
+		public static void InvokeSetAbility(SetAbilityEventArgs e)
+		{
+			if (SetAbility != null)
+			{
+				foreach (SetAbilityEventHandler currentDelegate in SetAbility.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeFastWalk(FastWalkEventArgs e)
+		{
+			if (FastWalk != null)
+			{
+				foreach (FastWalkEventHandler currentDelegate in FastWalk.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeServerStarted()
+		{
+			if (ServerStarted != null)
+			{
+				foreach (ServerStartedEventHandler currentDelegate in ServerStarted.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke();
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeGuildGumpRequest(GuildGumpRequestArgs e)
+		{
+			if (GuildGumpRequest != null)
+			{
+				foreach (GuildGumpRequestHandler currentDelegate in GuildGumpRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeQuestGumpRequest(QuestGumpRequestArgs e)
+		{
+			if (QuestGumpRequest != null)
+			{
+				foreach (QuestGumpRequestHandler currentDelegate in QuestGumpRequest.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
+
+		public static void InvokeClientVersionReceived(ClientVersionReceivedArgs e)
+		{
+			if (ClientVersionReceived != null)
+			{
+				foreach (ClientVersionReceivedHandler currentDelegate in ClientVersionReceived.GetInvocationList())
+				{
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
+				}
+			}
+		}
+
 
 		public static void InvokeAddItem(AddItemEventArgs e)
 		{
 			if (AddItem != null)
-				try { AddItem(e); }
-				catch (Exception ex)
+			{
+				foreach (AddItemEventHandler currentDelegate in AddItem.GetInvocationList())
 				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
 				}
+			}
 		}
+
 
 		public static void InvokeWealthTracker(WealthTrackerEventArgs e)
 		{
 			if (WealthTracker != null)
-				try { WealthTracker(e); }
-				catch (Exception ex)
+			{
+				foreach (WealthTrackerEventHandler currentDelegate in WealthTracker.GetInvocationList())
 				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
 				}
+			}
 		}
+
 
 		public static void InvokeLogException(LogExceptionEventArgs e)
 		{
 			if (LogException != null)
-				try { LogException(e); }
-				catch (Exception ex)
+			{
+				foreach (LogExceptionEventHandler currentDelegate in LogException.GetInvocationList())
 				{
-					// do nothing ..
-					// do not recurse
-					Console.WriteLine(ex.ToString());
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
 				}
+			}
 		}
+
 
 		public static void InvokeUNUSED(UNUSEDEventArgs e)
 		{
 			if (UNUSED != null)
-				try { UNUSED(e); }
-				catch (Exception ex)
+			{
+				foreach (UNUSEDEventHandler currentDelegate in UNUSED.GetInvocationList())
 				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
 				}
+			}
 		}
+
 
 		public static void InvokeDropMobile(DropMobileEventArgs e)
 		{
 			if (DropMobile != null)
-				try { DropMobile(e); }
-				catch (Exception ex)
+			{
+				foreach (DropMobileEventHandler currentDelegate in DropMobile.GetInvocationList())
 				{
-					// Log an exception
-					EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					try
+					{
+						currentDelegate.Invoke(e);
+					}
+					catch (Exception ex)
+					{
+						// Log an exception
+						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+					}
 				}
+			}
 		}
+
+
 
 		public static void Reset()
 		{
