@@ -18,6 +18,8 @@
 
 /* Scripts/Engines/ResourcePool/ResourcePool.cs
  * ChangeLog
+ *	07/19/09, plasma
+ *			Added exception handler to the loading of Debts.dat
  *  7/13/07, Adam
  *      rewrite Debt hashtable saving and loading to eliminage
  *      BinaryFileReader.End() as the means for detecting the EOF.
@@ -1167,10 +1169,19 @@ namespace Server.Engines.ResourcePool
 
 					while (!dreader.End())
 					{
-						Mobile m = dreader.ReadMobile();
-						double debt = dreader.ReadDouble();
-						if (m != null)
-							m_Debts[m] = debt;
+						try
+						{
+							Mobile m = dreader.ReadMobile();
+							double debt = dreader.ReadDouble();
+							if (m != null)
+								m_Debts[m] = debt;
+						}
+						catch (Exception ex)
+						{
+							Console.WriteLine("Exception occured attempting to desrialize from Debts.dat : " + ex.Message );
+							break;
+						}
+						
 					}
 
 					break;
