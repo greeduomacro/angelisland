@@ -23,6 +23,8 @@
 
 /* Server/EventSink.cs
  * CHANGELOG
+ *	08/01/09, plasma
+ *		Fixed recursion bug introduced with last change, caused by codegen, where exceptions are thrown in InvokeLogException
  *	07/20/09, plasma
  *		Refactored every handler except the guild one (46 in total) to use a more accepted practice of raising events.
  *		This stops an unhandled exception in a delegate causing the whole thing to bomb out and the rest not getting executed.
@@ -1831,8 +1833,8 @@ namespace Server
 					}
 					catch (Exception ex)
 					{
-						// Log an exception
-						EventSink.InvokeLogException(new LogExceptionEventArgs(ex));
+						//Do nothing to avoid recursion
+						Console.WriteLine(ex.Message);
 					}
 				}
 			}
