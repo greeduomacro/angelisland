@@ -62,8 +62,8 @@ namespace Server.Accounting
 
 		public static void Configure()
 		{
-			EventSink.WorldLoad += new WorldLoadEventHandler( Load );
-			EventSink.WorldSave += new WorldSaveEventHandler( Save );
+			EventSink.WorldLoad += new WorldLoadEventHandler(Load);
+			EventSink.WorldSave += new WorldSaveEventHandler(Save);
 		}
 
 		public static void Initialize()
@@ -71,24 +71,24 @@ namespace Server.Accounting
 			EventSink.Login += new LoginEventHandler(OnLogin);
 			EventSink.Connected += new ConnectedEventHandler(OnConnected);
 		}
-		
+
 		private static void OnLogin(LoginEventArgs e)
 		{   // we delay adding the IPAddress to give us time to check for it in the WelcomeTimer
-            if (e.Mobile != null && e.Mobile.NetState != null)
-                new IPLogTimer(e.Mobile.NetState.Address).Start();
-		}
-		
-		private static void OnConnected(ConnectedEventArgs e)
-        {   // we delay adding the IPAddress to give us time to check for it in the WelcomeTimer
 			if (e.Mobile != null && e.Mobile.NetState != null)
-                new IPLogTimer(e.Mobile.NetState.Address).Start();
+				new IPLogTimer(e.Mobile.NetState.Address).Start();
+		}
+
+		private static void OnConnected(ConnectedEventArgs e)
+		{   // we delay adding the IPAddress to give us time to check for it in the WelcomeTimer
+			if (e.Mobile != null && e.Mobile.NetState != null)
+				new IPLogTimer(e.Mobile.NetState.Address).Start();
 		}
 
 		public static void IPDatabaseAdd(System.Net.IPAddress ax)
 		{
 			if (ax == null)
 				return;
-			string left=null;
+			string left = null;
 			Byte[] bytes = ax.GetAddressBytes();
 			if (bytes.Length != 4)
 			{
@@ -99,7 +99,7 @@ namespace Server.Accounting
 			left += bytes[0].ToString() + ".";
 			left += bytes[1].ToString() + ".";
 			left += bytes[2].ToString();
-			m_IPDatabase[left] = null;			
+			m_IPDatabase[left] = null;
 		}
 
 		static Accounts()
@@ -114,15 +114,15 @@ namespace Server.Accounting
 			}
 		}
 
-		public static Account GetAccount( string username )
+		public static Account GetAccount(string username)
 		{
 			return m_Accounts[username] as Account;
 		}
 
-		public static Account AddAccount( string user, string pass )
+		public static Account AddAccount(string user, string pass)
 		{
-			Account a = new Account( user, pass );
-			if ( m_Accounts.Count == 0 )
+			Account a = new Account(user, pass);
+			if (m_Accounts.Count == 0)
 				a.AccessLevel = AccessLevel.Administrator;
 
 			m_Accounts[a.Username] = a;
@@ -130,17 +130,17 @@ namespace Server.Accounting
 			return a;
 		}
 
-		public static int GetInt32( string intString, int defaultValue )
+		public static int GetInt32(string intString, int defaultValue)
 		{
 			try
 			{
-				return XmlConvert.ToInt32( intString );
+				return XmlConvert.ToInt32(intString);
 			}
 			catch
 			{
 				try
 				{
-					return Convert.ToInt32( intString );
+					return Convert.ToInt32(intString);
 				}
 				catch
 				{
@@ -149,17 +149,17 @@ namespace Server.Accounting
 			}
 		}
 
-		public static DateTime GetDateTime( string dateTimeString, DateTime defaultValue )
+		public static DateTime GetDateTime(string dateTimeString, DateTime defaultValue)
 		{
 			try
 			{
-				return XmlConvert.ToDateTime( dateTimeString );
+				return XmlConvert.ToDateTime(dateTimeString);
 			}
 			catch
 			{
 				try
 				{
-					return DateTime.Parse( dateTimeString );
+					return DateTime.Parse(dateTimeString);
 				}
 				catch
 				{
@@ -168,76 +168,76 @@ namespace Server.Accounting
 			}
 		}
 
-		public static string GetAttribute( XmlElement node, string attributeName )
+		public static string GetAttribute(XmlElement node, string attributeName)
 		{
-			return GetAttribute( node, attributeName, null );
+			return GetAttribute(node, attributeName, null);
 		}
 
-		public static string GetAttribute( XmlElement node, string attributeName, string defaultValue )
+		public static string GetAttribute(XmlElement node, string attributeName, string defaultValue)
 		{
-			if ( node == null )
+			if (node == null)
 				return defaultValue;
 
 			XmlAttribute attr = node.Attributes[attributeName];
 
-			if ( attr == null )
+			if (attr == null)
 				return defaultValue;
 
 			return attr.Value;
 		}
 
-		public static string GetText( XmlElement node, string defaultValue )
+		public static string GetText(XmlElement node, string defaultValue)
 		{
-			if ( node == null )
+			if (node == null)
 				return defaultValue;
 
 			return node.InnerText;
 		}
 
-		public static bool GetBool( XmlElement node, bool defaultValue )
+		public static bool GetBool(XmlElement node, bool defaultValue)
 		{
-			if( node == null )
+			if (node == null)
 				return defaultValue;
 
-			string strVal = GetText( node, "xxx" );
-			if( strVal == "xxx" ) return defaultValue;
-			else if( strVal == "true" ) return true;
-			else if( strVal == "false" ) return false;
+			string strVal = GetText(node, "xxx");
+			if (strVal == "xxx") return defaultValue;
+			else if (strVal == "true") return true;
+			else if (strVal == "false") return false;
 			else return defaultValue;
 		}
 
-		public static void Save( WorldSaveEventArgs e )
+		public static void Save(WorldSaveEventArgs e)
 		{
 			Console.WriteLine("Account information Saving...");
 
-			if ( !Directory.Exists( "Saves/Accounts" ) )
-				Directory.CreateDirectory( "Saves/Accounts" );
+			if (!Directory.Exists("Saves/Accounts"))
+				Directory.CreateDirectory("Saves/Accounts");
 
-			string filePath = Path.Combine( "Saves/Accounts", "accounts.xml" );
+			string filePath = Path.Combine("Saves/Accounts", "accounts.xml");
 
 			bool bNotSaved = true;
 			int attempt = 0;
-			while( bNotSaved && attempt < 3 )
+			while (bNotSaved && attempt < 3)
 			{
 				try
 				{
 					attempt++;
-					using ( StreamWriter op = new StreamWriter( filePath ) )
+					using (StreamWriter op = new StreamWriter(filePath))
 					{
-						XmlTextWriter xml = new XmlTextWriter( op );
+						XmlTextWriter xml = new XmlTextWriter(op);
 
 						xml.Formatting = Formatting.Indented;
 						xml.IndentChar = '\t';
 						xml.Indentation = 1;
 
-						xml.WriteStartDocument( true );
+						xml.WriteStartDocument(true);
 
-						xml.WriteStartElement( "accounts" );
+						xml.WriteStartElement("accounts");
 
-						xml.WriteAttributeString( "count", m_Accounts.Count.ToString() );
+						xml.WriteAttributeString("count", m_Accounts.Count.ToString());
 
-						foreach ( Account a in Accounts.Table.Values )
-							a.Save( xml );
+						foreach (Account a in Accounts.Table.Values)
+							a.Save(xml);
 
 						xml.WriteEndElement();
 
@@ -246,7 +246,7 @@ namespace Server.Accounting
 						bNotSaved = false;
 					}
 				}
-				catch( Exception ex )
+				catch (Exception ex)
 				{
 					LogHelper.LogException(ex);
 					System.Console.WriteLine("Caught exception in Accounts.Save: {0}", ex.Message);
@@ -272,75 +272,75 @@ namespace Server.Accounting
 			left += bytes[0].ToString() + ".";
 			left += bytes[1].ToString() + ".";
 			left += bytes[2].ToString();
-			return  m_IPDatabase.ContainsKey(left);
+			return m_IPDatabase.ContainsKey(left);
 		}
 
 		public static void Load()
 		{
-            int accounts=0, ips=0;
+			int accounts = 0, ips = 0;
 			Console.Write("Account information Loading...");
 
-			m_Accounts = new Hashtable( 32, 1.0f, CaseInsensitiveHashCodeProvider.Default, CaseInsensitiveComparer.Default );
+			m_Accounts = new Hashtable(32, 1.0f, CaseInsensitiveHashCodeProvider.Default, CaseInsensitiveComparer.Default);
 			m_IPDatabase = new Hashtable(32, 1.0f, CaseInsensitiveHashCodeProvider.Default, CaseInsensitiveComparer.Default);
 
-			string filePath = Path.Combine( "Saves/Accounts", "accounts.xml" );
+			string filePath = Path.Combine("Saves/Accounts", "accounts.xml");
 
-			if ( !File.Exists( filePath ) )
+			if (!File.Exists(filePath))
 				return;
 
 			XmlDocument doc = new XmlDocument();
-			doc.Load( filePath );
+			doc.Load(filePath);
 
 			XmlElement root = doc["accounts"];
 
-			foreach ( XmlElement account in root.GetElementsByTagName( "account" ) )
+			foreach (XmlElement account in root.GetElementsByTagName("account"))
 			{
 				try
 				{
 					// build the account database
-					Account acct = new Account( account );
+					Account acct = new Account(account);
 					m_Accounts[acct.Username] = acct;
-                    accounts++;
+					accounts++;
 
 					// build the IP database
-                    foreach (System.Net.IPAddress ax in acct.LoginIPs)
-                    {
-                        ips++;
-                        IPDatabaseAdd(ax);
-                    }
+					foreach (System.Net.IPAddress ax in acct.LoginIPs)
+					{
+						ips++;
+						IPDatabaseAdd(ax);
+					}
 				}
 				catch
 				{
-                    Console.WriteLine();
-					Console.WriteLine( "Warning: Account instance load failed" );
+					Console.WriteLine();
+					Console.WriteLine("Warning: Account instance load failed");
 				}
 			}
 
-            Console.WriteLine("done ({0} accounts, {1}/{2} IP addresses)", accounts, m_IPDatabase.Count, ips);
+			Console.WriteLine("done ({0} accounts, {1}/{2} IP addresses)", accounts, m_IPDatabase.Count, ips);
 		}
 	}
 
-    public class IPLogTimer : Timer
-    {
-        private System.Net.IPAddress m_IPAddress;
+	public class IPLogTimer : Timer
+	{
+		private System.Net.IPAddress m_IPAddress;
 
-        public IPLogTimer(System.Net.IPAddress IPAddress)
-            : base(TimeSpan.FromSeconds(30.0))
-        {
-            m_IPAddress = IPAddress;
-        }
+		public IPLogTimer(System.Net.IPAddress IPAddress)
+			: base(TimeSpan.FromSeconds(30.0))
+		{
+			m_IPAddress = IPAddress;
+		}
 
-        protected override void OnTick()
-        {
-            try
-            {
-                Accounts.IPDatabaseAdd(m_IPAddress);
-                Stop();
-            }
-            catch (Exception ex)
-            {
-                LogHelper.LogException(ex);
-            }
-        }
-    }
+		protected override void OnTick()
+		{
+			try
+			{
+				Accounts.IPDatabaseAdd(m_IPAddress);
+				Stop();
+			}
+			catch (Exception ex)
+			{
+				LogHelper.LogException(ex);
+			}
+		}
+	}
 }

@@ -64,15 +64,16 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "FindMobile", AccessLevel.Administrator, new CommandEventHandler( FindMobile_OnCommand ) );
+			Server.Commands.Register("FindMobile", AccessLevel.Administrator, new CommandEventHandler(FindMobile_OnCommand));
 			Server.Commands.Register("FindMobileByName", AccessLevel.GameMaster, new CommandEventHandler(FindMobileByName_OnCommand));
 		}
 
-		[Usage( "FindMobile <property> <value>" )]
-		[Description( "Finds all Mobiles with property matching value." )]
-		public static void FindMobile_OnCommand( CommandEventArgs e )
+		[Usage("FindMobile <property> <value>")]
+		[Description("Finds all Mobiles with property matching value.")]
+		public static void FindMobile_OnCommand(CommandEventArgs e)
 		{
-			if ( e.Length > 1 ) {
+			if (e.Length > 1)
+			{
 
 				LogHelper Logger = new LogHelper("findMobile.log", e.Mobile, false);
 
@@ -81,12 +82,13 @@ namespace Server.Scripts.Commands
 				string sProp = e.GetString(0);
 				string sVal = "";
 
-				if(e.Length > 2) {
+				if (e.Length > 2)
+				{
 
 					sVal = e.GetString(1);
 
 					// Concatenate the strings
-					for(int argi=2; argi<e.Length; argi++)
+					for (int argi = 2; argi < e.Length; argi++)
 						sVal += " " + e.GetString(argi);
 				}
 				else
@@ -101,19 +103,21 @@ namespace Server.Scripts.Commands
 
 				ArrayList MatchTypes = new ArrayList();
 
-				for ( int i = 0; i < asms.Length; ++i )
+				for (int i = 0; i < asms.Length; ++i)
 				{
-					types = ScriptCompiler.GetTypeCache( asms[i] ).Types;
+					types = ScriptCompiler.GetTypeCache(asms[i]).Types;
 
-					foreach(Type t in types) {
+					foreach (Type t in types)
+					{
 
-						if(typeof(Mobile).IsAssignableFrom( t )) {
+						if (typeof(Mobile).IsAssignableFrom(t))
+						{
 
 							// Reflect type
-							PropertyInfo[] allProps = t.GetProperties( BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public );
+							PropertyInfo[] allProps = t.GetProperties(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public);
 
-							foreach(PropertyInfo prop in allProps)
-								if(prop.Name.ToLower() == sProp.ToLower())
+							foreach (PropertyInfo prop in allProps)
+								if (prop.Name.ToLower() == sProp.ToLower())
 									MatchTypes.Add(t);
 						}
 					}
@@ -121,26 +125,28 @@ namespace Server.Scripts.Commands
 
 				// Loop items and check vs. types
 
-				foreach ( Mobile m in World.Mobiles.Values )
+				foreach (Mobile m in World.Mobiles.Values)
 				{
 					Type t = m.GetType();
 					bool match = false;
 
-					foreach(Type MatchType in MatchTypes) {
-						if(t == MatchType) {
+					foreach (Type MatchType in MatchTypes)
+					{
+						if (t == MatchType)
+						{
 							match = true;
 							break;
 						}
 					}
 
-					if(match == false)
+					if (match == false)
 						continue;
 
 					// Reflect instance of type (matched)
 
-					if(PattMatch.IsMatch(Properties.GetValue( e.Mobile, m, sProp)))
+					if (PattMatch.IsMatch(Properties.GetValue(e.Mobile, m, sProp)))
 						Logger.Log(LogType.Mobile, m);
-	
+
 				}
 
 				Logger.Finish();
@@ -148,7 +154,7 @@ namespace Server.Scripts.Commands
 			else
 			{
 				// Badly formatted
-				e.Mobile.SendMessage( "Format: FindMobile <property> <value>" );
+				e.Mobile.SendMessage("Format: FindMobile <property> <value>");
 			}
 		}
 
@@ -169,7 +175,7 @@ namespace Server.Scripts.Commands
 					PlayerMobile pm = m as PlayerMobile;
 					if (pm != null)
 						if (pm.Name.ToLower() == sName.ToLower())
-							Logger.Log(LogType.Mobile, m, String.Format("Online: {0}", ((bool)(pm.NetState != null)).ToString() ));
+							Logger.Log(LogType.Mobile, m, String.Format("Online: {0}", ((bool)(pm.NetState != null)).ToString()));
 				}
 
 				Logger.Finish();

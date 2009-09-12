@@ -149,15 +149,15 @@ namespace Server.Misc
 			return false;
 		}
 
-		public static bool Verify( IPAddress ourAddress )
+		public static bool Verify(IPAddress ourAddress)
 		{
-			if ( !Enabled )
+			if (!Enabled)
 				return true;
 
 			// see if there is another logged in account with this IP address
-            List<NetState> netStates = NetState.Instances;
+			List<NetState> netStates = NetState.Instances;
 			int count = 0;
-			for ( int i = 0; i < netStates.Count; ++i )
+			for (int i = 0; i < netStates.Count; ++i)
 			{
 				NetState compState = netStates[i];
 
@@ -165,18 +165,18 @@ namespace Server.Misc
 				//	note: because this check comes before the acct for ourAddress is known, staff can only exceed these limits if they login 
 				//	Player Accounts AFTER Staff Accounts.
 				if (compState.Mobile != null && compState.Mobile.Account != null)
-				{	
+				{
 					Server.Accounting.Account acct = compState.Mobile.Account as Server.Accounting.Account;
 					if (acct.GetAccessLevel() > AccessLevel.Player)
 						continue;
 				}
 
 				// add up matching accounts (connections to this IP address)
-				if ( ourAddress.Equals( compState.Address ) )
+				if (ourAddress.Equals(compState.Address))
 				{
 					++count;
 
-					if ( count > MaxAddresses )
+					if (count > MaxAddresses)
 						return false;
 				}
 			}

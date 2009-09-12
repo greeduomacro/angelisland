@@ -50,10 +50,10 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "CheckLOS", AccessLevel.Player, new CommandEventHandler( CheckLOS_OnCommand ) );
+			Server.Commands.Register("CheckLOS", AccessLevel.Player, new CommandEventHandler(CheckLOS_OnCommand));
 		}
 
-		public static void CheckLOS_OnCommand( CommandEventArgs e )
+		public static void CheckLOS_OnCommand(CommandEventArgs e)
 		{
 			if (e.Mobile.AccessLevel == AccessLevel.Player && TestCenter.Enabled == false)
 			{	// Players can only test this on Test Center
@@ -66,7 +66,7 @@ namespace Server.Scripts.Commands
 				e.Mobile.SendMessage("You should test this with AccessLevel.Player.");
 				return;
 			}
-			
+
 			try
 			{
 				e.Mobile.Target = new LOSTarget();
@@ -76,7 +76,7 @@ namespace Server.Scripts.Commands
 			{
 				LogHelper.LogException(ex);
 			}
-			
+
 		}
 
 		private class LOSTarget : Target
@@ -92,6 +92,6 @@ namespace Server.Scripts.Commands
 				return;
 			}
 		}
-		
+
 	}
 }

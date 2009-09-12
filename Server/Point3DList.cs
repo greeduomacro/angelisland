@@ -51,7 +51,7 @@ namespace Server
 
 		public Point3D Last
 		{
-			get{ return m_List[m_Count - 1]; }
+			get { return m_List[m_Count - 1]; }
 		}
 
 		public Point3D this[int index]
@@ -62,14 +62,14 @@ namespace Server
 			}
 		}
 
-		public void Add( int x, int y, int z )
+		public void Add(int x, int y, int z)
 		{
-			if ( (m_Count + 1) > m_List.Length )
+			if ((m_Count + 1) > m_List.Length)
 			{
 				Point3D[] old = m_List;
 				m_List = new Point3D[old.Length * 2];
 
-				for ( int i = 0; i < old.Length; ++i )
+				for (int i = 0; i < old.Length; ++i)
 					m_List[i] = old[i];
 			}
 
@@ -79,14 +79,14 @@ namespace Server
 			++m_Count;
 		}
 
-		public void Add( Point3D p )
+		public void Add(Point3D p)
 		{
-			if ( (m_Count + 1) > m_List.Length )
+			if ((m_Count + 1) > m_List.Length)
 			{
 				Point3D[] old = m_List;
 				m_List = new Point3D[old.Length * 2];
 
-				for ( int i = 0; i < old.Length; ++i )
+				for (int i = 0; i < old.Length; ++i)
 					m_List[i] = old[i];
 			}
 
@@ -100,12 +100,12 @@ namespace Server
 
 		public Point3D[] ToArray()
 		{
-			if ( m_Count == 0 )
+			if (m_Count == 0)
 				return m_EmptyList;
 
 			Point3D[] list = new Point3D[m_Count];
 
-			for ( int i = 0; i < m_Count; ++i )
+			for (int i = 0; i < m_Count; ++i)
 				list[i] = m_List[i];
 
 			m_Count = 0;

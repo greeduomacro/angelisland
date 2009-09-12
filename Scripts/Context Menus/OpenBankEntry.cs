@@ -51,19 +51,20 @@ namespace Server.ContextMenus
 	{
 		private Mobile m_Banker;
 
-		public OpenBankEntry( Mobile from, Mobile banker ) : base( 6105, 12 )
+		public OpenBankEntry(Mobile from, Mobile banker)
+			: base(6105, 12)
 		{
 			m_Banker = banker;
 		}
 
 		public override void OnClick()
 		{
-			if ( !Owner.From.CheckAlive() )
+			if (!Owner.From.CheckAlive())
 				return;
 
-			if ( Owner.From.Criminal )
+			if (Owner.From.Criminal)
 			{
-				m_Banker.Say( 500378 ); // Thou art a criminal and cannot access thy bank box.
+				m_Banker.Say(500378); // Thou art a criminal and cannot access thy bank box.
 			}
 			else
 			{
@@ -95,13 +96,13 @@ namespace Server.ContextMenus
 			for (int i = 0; i < pm.Aggressed.Count; ++i)
 			{
 				AggressorInfo info = (AggressorInfo)pm.Aggressed[i];
-                if (!info.Expired)
-                {
-                    if (info.Attacker == pm && info.Defender is PlayerMobile)
-                    {
-                        return true;
-                    }
-                }
+				if (!info.Expired)
+				{
+					if (info.Attacker == pm && info.Defender is PlayerMobile)
+					{
+						return true;
+					}
+				}
 			}
 
 			return false;

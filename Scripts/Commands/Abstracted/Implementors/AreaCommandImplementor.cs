@@ -47,7 +47,7 @@ namespace Server.Scripts.Commands
 	{
 		public AreaCommandImplementor()
 		{
-			Accessors = new string[]{ "Area", "Group" };
+			Accessors = new string[] { "Area", "Group" };
 			SupportRequirement = CommandSupport.Area;
 			SupportsConditionals = true;
 			AccessLevel = AccessLevel.GameMaster;
@@ -55,12 +55,12 @@ namespace Server.Scripts.Commands
 			Description = "Invokes the command on all appropriate objects in a targeted area. Optional condition arguments can further restrict the set of objects.";
 		}
 
-		public override void Process( Mobile from, BaseCommand command, string[] args )
+		public override void Process(Mobile from, BaseCommand command, string[] args)
 		{
-			BoundingBoxPicker.Begin( from, new BoundingBoxCallback( OnTarget ), new object[]{ command, args } );
+			BoundingBoxPicker.Begin(from, new BoundingBoxCallback(OnTarget), new object[] { command, args });
 		}
 
-		public void OnTarget( Mobile from, Map map, Point3D start, Point3D end, object state )
+		public void OnTarget(Mobile from, Map map, Point3D start, Point3D end, object state)
 		{
 			try
 			{
@@ -68,49 +68,49 @@ namespace Server.Scripts.Commands
 				BaseCommand command = (BaseCommand)states[0];
 				string[] args = (string[])states[1];
 
-				ObjectConditional cond = ObjectConditional.Parse( from, ref args );
+				ObjectConditional cond = ObjectConditional.Parse(from, ref args);
 
-				Rectangle2D rect = new Rectangle2D( start.X, start.Y, end.X - start.X + 1, end.Y - start.Y + 1 );
+				Rectangle2D rect = new Rectangle2D(start.X, start.Y, end.X - start.X + 1, end.Y - start.Y + 1);
 
 				bool items, mobiles;
 
-				if ( !CheckObjectTypes( command, cond, out items, out mobiles ) )
+				if (!CheckObjectTypes(command, cond, out items, out mobiles))
 					return;
 
 				IPooledEnumerable eable;
 
-				if ( items && mobiles )
-					eable = map.GetObjectsInBounds( rect );
-				else if ( items )
-					eable = map.GetItemsInBounds( rect );
-				else if ( mobiles )
-					eable = map.GetMobilesInBounds( rect );
+				if (items && mobiles)
+					eable = map.GetObjectsInBounds(rect);
+				else if (items)
+					eable = map.GetItemsInBounds(rect);
+				else if (mobiles)
+					eable = map.GetMobilesInBounds(rect);
 				else
 					return;
 
 				ArrayList objs = new ArrayList();
 
-				foreach ( object obj in eable )
+				foreach (object obj in eable)
 				{
-					if ( mobiles && obj is Mobile && !BaseCommand.IsAccessible( from, obj ) )
+					if (mobiles && obj is Mobile && !BaseCommand.IsAccessible(from, obj))
 						continue;
 
-					if ( cond.CheckCondition( obj ) )
-						objs.Add( obj );
+					if (cond.CheckCondition(obj))
+						objs.Add(obj);
 				}
 
 				eable.Free();
 
-				RunCommand( from, objs, command, args );
+				RunCommand(from, objs, command, args);
 			}
-			catch ( Exception ex )
+			catch (Exception ex)
 			{
 				LogHelper.LogException(ex);
-				from.SendMessage( ex.Message );
+				from.SendMessage(ex.Message);
 			}
 		}
 
-		public void OnTarget( Mobile from, object targeted, object state )
+		public void OnTarget(Mobile from, object targeted, object state)
 		{
 			try
 			{
@@ -118,48 +118,48 @@ namespace Server.Scripts.Commands
 				BaseCommand command = (BaseCommand)states[0];
 				string[] args = (string[])states[1];
 
-				switch ( command.ObjectTypes )
+				switch (command.ObjectTypes)
 				{
 					case ObjectTypes.Both:
-					{
-						if ( !(targeted is Item) && !(targeted is Mobile) )
 						{
-							from.SendMessage( "This command does not work on that." );
-							return;
-						}
+							if (!(targeted is Item) && !(targeted is Mobile))
+							{
+								from.SendMessage("This command does not work on that.");
+								return;
+							}
 
-						break;
-					}
+							break;
+						}
 					case ObjectTypes.Items:
-					{
-						if ( !(targeted is Item) )
 						{
-							from.SendMessage( "This command only works on items." );
-							return;
-						}
+							if (!(targeted is Item))
+							{
+								from.SendMessage("This command only works on items.");
+								return;
+							}
 
-						break;
-					}
+							break;
+						}
 					case ObjectTypes.Mobiles:
-					{
-						if ( !(targeted is Mobile) )
 						{
-							from.SendMessage( "This command only works on mobiles." );
-							return;
-						}
+							if (!(targeted is Mobile))
+							{
+								from.SendMessage("This command only works on mobiles.");
+								return;
+							}
 
-						break;
-					}
+							break;
+						}
 				}
 
-				RunCommand( from, targeted, command, args );
+				RunCommand(from, targeted, command, args);
 
-				from.BeginTarget( -1, command.ObjectTypes == ObjectTypes.All, TargetFlags.None, new TargetStateCallback( OnTarget ), new object[]{ command, args } );
+				from.BeginTarget(-1, command.ObjectTypes == ObjectTypes.All, TargetFlags.None, new TargetStateCallback(OnTarget), new object[] { command, args });
 			}
-			catch ( Exception ex )
+			catch (Exception ex)
 			{
 				LogHelper.LogException(ex);
-				from.SendMessage( ex.Message );
+				from.SendMessage(ex.Message);
 			}
 		}
 	}

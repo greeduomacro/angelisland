@@ -208,7 +208,7 @@ namespace Server.Mobiles
 			try
 			{
 				Mobile opponent = m_Mobile.Combatant; //this will get set to null if something happens to the combat timer
-				
+
 				if (opponent != null && !opponent.Deleted && opponent.Alive && !opponent.IsDeadBondedPet && m_Mobile.CanSee(opponent) &&
 					m_Mobile.CanBeHarmful(opponent, false) && opponent.Map == m_Mobile.Map && m_Mobile.InLOS(opponent))
 				{
@@ -237,7 +237,7 @@ namespace Server.Mobiles
 
 			return base.DoActionChase();
 		}
-		
+
 
 		public override bool DoActionWander()
 		{
@@ -398,7 +398,7 @@ namespace Server.Mobiles
 					m_Mobile.CanFly = true;
 
 				// wea: switch to chase action type instead of hacking at it
-				if( !m_Mobile.InRange(c, 6)) //Mobile is 6 tiles away or more Take to the air unless we're already chasing them!!
+				if (!m_Mobile.InRange(c, 6)) //Mobile is 6 tiles away or more Take to the air unless we're already chasing them!!
 				{
 					Action = ActionType.Chase;
 					RunTo(c, CanRun);
@@ -407,9 +407,9 @@ namespace Server.Mobiles
 
 				if (m_Mobile.InRange(c, 1)) //ok where close we will walk and look cool vs trying to run all fast 1 tile at a time 
 				{	// Design error: See above comment
-					if(m_Mobile is Vampire && ((Vampire)m_Mobile).BatForm == true && ( CheckNight(m_Mobile) ) && ( CheckLand() ) ) //change to human form
+					if (m_Mobile is Vampire && ((Vampire)m_Mobile).BatForm == true && (CheckNight(m_Mobile)) && (CheckLand())) //change to human form
 					{
-						((Vampire)m_Mobile).DoTransform((Vampire)m_Mobile, (m_Mobile.Female) ? 0x191 : 0x190, ((Vampire)m_Mobile).Hue, ((Vampire)m_Mobile).toHumanForm); 
+						((Vampire)m_Mobile).DoTransform((Vampire)m_Mobile, (m_Mobile.Female) ? 0x191 : 0x190, ((Vampire)m_Mobile).Hue, ((Vampire)m_Mobile).toHumanForm);
 						m_Mobile.ActiveSpeed = ActiveSpeedNormal;
 						m_Mobile.CurrentSpeed = ActiveSpeedNormal;
 						m_Mobile.CanFly = false;
@@ -592,7 +592,7 @@ namespace Server.Mobiles
 
 #else
 
-			if(hours <= 5 || hours >= 21  ) //9pm to 6am uo time
+			if (hours <= 5 || hours >= 21) //9pm to 6am uo time
 				return true;
 			else
 				return false;

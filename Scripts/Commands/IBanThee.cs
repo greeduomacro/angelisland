@@ -41,29 +41,30 @@ namespace Server.PJUM
 	{
 		public static void Initialize()
 		{
-			Commands.Register( "ibanthee", AccessLevel.FightBroker, new CommandEventHandler( IBanThee_OnCommand ) );
+			Commands.Register("ibanthee", AccessLevel.FightBroker, new CommandEventHandler(IBanThee_OnCommand));
 		}
 
 		public IBanThee()//Mobile m, DateTime dt, Location loc)
 		{
 		}
 
-		public static void IBanThee_OnCommand( CommandEventArgs e )
+		public static void IBanThee_OnCommand(CommandEventArgs e)
 		{
 			e.Mobile.Target = new IBanTheeTarget();
 			e.Mobile.SendMessage("Who do you wish to ban?");
 			e.Mobile.Say("I ban thee");
 		}
-	
+
 		private class IBanTheeTarget : Target
 		{
-			public IBanTheeTarget() : base( 15, false, TargetFlags.None )
+			public IBanTheeTarget()
+				: base(15, false, TargetFlags.None)
 			{
 			}
 
-			protected override void OnTarget( Mobile from, object targ )
+			protected override void OnTarget(Mobile from, object targ)
 			{
-				if( targ is PlayerMobile )
+				if (targ is PlayerMobile)
 				{
 					try
 					{
@@ -73,75 +74,75 @@ namespace Server.PJUM
 						int xLong = 0, yLat = 0, xMins = 0, yMins = 0;
 						bool xEast = false, ySouth = false;
 						Map map = pm.Map;
-						bool valid = Sextant.Format( pm.Location, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth );
+						bool valid = Sextant.Format(pm.Location, map, ref xLong, ref yLat, ref xMins, ref yMins, ref xEast, ref ySouth);
 
-						if ( valid )
-							location = Sextant.Format( xLong, yLat, xMins, yMins, xEast, ySouth );
+						if (valid)
+							location = Sextant.Format(xLong, yLat, xMins, yMins, xEast, ySouth);
 						else
 							location = "????";
 
-						if( !valid )
-							location = string.Format("{0} {1}", pm.X, pm.Y );
+						if (!valid)
+							location = string.Format("{0} {1}", pm.X, pm.Y);
 
-						if ( map != null )
+						if (map != null)
 						{
 							Region reg = pm.Region;
 
-							if ( reg != map.DefaultRegion )
+							if (reg != map.DefaultRegion)
 							{
 								location += (" in " + reg);
 							}
 						}
 
 						//Output command log.
-						Server.Scripts.Commands.CommandLogging.WriteLine( from, "{0} used [ibanthee command on {1}({2}) - at {3}",
+						Server.Scripts.Commands.CommandLogging.WriteLine(from, "{0} used [ibanthee command on {1}({2}) - at {3}",
 							from.Name, pm.Name, pm.Serial, location);
 
 						from.SendMessage("Reporting {0} as Banned!", pm.Name);
-				
+
 						string[] lns = new string[2];
 						lns[0] = String.Format("A bounty has been placed on the head of {0} for disrupting a royal tournament. .", pm.Name);
 						lns[1] = String.Format("{0} was last seen at {1}.", pm.Name, location);
 
 
-						if( PJUM.HasBeenReported( pm ) )
+						if (PJUM.HasBeenReported(pm))
 						{
-							from.SendMessage( "{0} has already been reported.", pm.Name );
+							from.SendMessage("{0} has already been reported.", pm.Name);
 						}
 						else
 						{
-							
+
 							//move player to outside arena
 							pm.MoveToWorld(new Point3D(353, 905, 0), Map.Felucca);
 
-							PJUM.AddMacroer( lns, pm, DateTime.Now + TimeSpan.FromHours(2) );
+							PJUM.AddMacroer(lns, pm, DateTime.Now + TimeSpan.FromHours(2));
 
 							//Add bounty to player
-							string name = String.Format("Officer {0}", Utility.RandomBool() ? NameList.RandomName("male") : NameList.RandomName("female") );
+							string name = String.Format("Officer {0}", Utility.RandomBool() ? NameList.RandomName("male") : NameList.RandomName("female"));
 
 							int bountyAmount = 0;
 							Container cont = pm.BankBox;
-							if( cont != null )
+							if (cont != null)
 							{
 								int iAmountInBank = 0;
 
 								Item[] golds = cont.FindItemsByType(typeof(Gold), true);
-								foreach(Item g in golds)
+								foreach (Item g in golds)
 								{
 									iAmountInBank += g.Amount;
 								}
 
-								int min = Math.Min( iAmountInBank, 1000 );
-								int max = Math.Min( iAmountInBank, 3000 );
+								int min = Math.Min(iAmountInBank, 1000);
+								int max = Math.Min(iAmountInBank, 3000);
 
 								int randomAmount = Utility.RandomMinMax(min, max);
 
-								if( cont.ConsumeTotal( typeof( Gold ), randomAmount ) )
+								if (cont.ConsumeTotal(typeof(Gold), randomAmount))
 								{
 									bountyAmount = randomAmount;
 								}
 							}
-							if( bountyAmount == 0 )
+							if (bountyAmount == 0)
 							{
 								bountyAmount = 100;
 							}
@@ -156,10 +157,10 @@ namespace Server.PJUM
 								from.Name,
 								pm.Name,
 								location);
-							acc.Comments.Add( new AccountComment( from.Name, comment ) );
+							acc.Comments.Add(new AccountComment(from.Name, comment));
 						}
 					}
-					catch(Exception except)
+					catch (Exception except)
 					{
 						LogHelper.LogException(except);
 						System.Console.WriteLine("Caught exception in [ibanthee command: {0}", except.Message);

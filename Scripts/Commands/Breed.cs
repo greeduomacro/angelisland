@@ -38,7 +38,7 @@ namespace Server.Scripts.Commands
 		public static void Initialize()
 		{
 			//if (Server.Misc.TestCenter.Enabled)
-				//Server.Commands.Register("Breed", AccessLevel.Player, new CommandEventHandler(Breed_OnCommand));
+			//Server.Commands.Register("Breed", AccessLevel.Player, new CommandEventHandler(Breed_OnCommand));
 		}
 
 		public static void Breed_OnCommand(CommandEventArgs e)

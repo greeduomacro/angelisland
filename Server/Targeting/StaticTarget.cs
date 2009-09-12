@@ -30,14 +30,14 @@ namespace Server.Targeting
 		private Point3D m_Location;
 		private int m_ItemID;
 
-		public StaticTarget( Point3D location, int itemID )
+		public StaticTarget(Point3D location, int itemID)
 		{
 			m_Location = location;
 			m_ItemID = itemID & 0x3FFF;
 			m_Location.Z += TileData.ItemTable[m_ItemID].CalcHeight;
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public Point3D Location
 		{
 			get
@@ -46,7 +46,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public string Name
 		{
 			get
@@ -55,7 +55,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public TileFlag Flags
 		{
 			get
@@ -64,7 +64,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public int X
 		{
 			get
@@ -73,7 +73,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public int Y
 		{
 			get
@@ -82,7 +82,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public int Z
 		{
 			get
@@ -91,7 +91,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public int ItemID
 		{
 			get

@@ -57,58 +57,58 @@ namespace Server.Scripts.Commands
 			Server.Commands.Register("FindItemByID", AccessLevel.GameMaster, new CommandEventHandler(FindItemByID_OnCommand));
 		}
 
-		[Usage( "FindItemByID <ItemID>" )]
-		[Description( "Finds an item by graphic ID." )]
-		public static void FindItemByID_OnCommand( CommandEventArgs e )
+		[Usage("FindItemByID <ItemID>")]
+		[Description("Finds an item by graphic ID.")]
+		public static void FindItemByID_OnCommand(CommandEventArgs e)
 		{
 			try
 			{
-				if ( e.Length == 1 )
+				if (e.Length == 1)
 				{
 					//erl: LogHelper class handles generic logging functionality
 					LogHelper Logger = new LogHelper("FindItemByID.log", e.Mobile, false);
 
-                    int ItemId = 0;
-                    string sx = e.GetString(0).ToLower();
+					int ItemId = 0;
+					string sx = e.GetString(0).ToLower();
 
-                    try
-                    {
-                        if (sx.StartsWith("0x"))
-                        {   // assume hex
-                            sx = sx.Substring(2);
-                            ItemId = int.Parse(sx, System.Globalization.NumberStyles.AllowHexSpecifier);
-                        }
-                        else
-                        {   // assume decimal
-                            ItemId = int.Parse(sx);
-                        }
-                    }
-                    catch
-                    {
-                        e.Mobile.SendMessage("Format: FindItemByID <ItemID>");
-                        return;
-                    }
-
-					foreach ( Item ix in World.Items.Values )
+					try
 					{
-                        if (ix is Item)
-                            if (ix.ItemID == ItemId)
-                            {
-                                Logger.Log(LogType.Item, ix);
-                            }
-                	}
+						if (sx.StartsWith("0x"))
+						{   // assume hex
+							sx = sx.Substring(2);
+							ItemId = int.Parse(sx, System.Globalization.NumberStyles.AllowHexSpecifier);
+						}
+						else
+						{   // assume decimal
+							ItemId = int.Parse(sx);
+						}
+					}
+					catch
+					{
+						e.Mobile.SendMessage("Format: FindItemByID <ItemID>");
+						return;
+					}
+
+					foreach (Item ix in World.Items.Values)
+					{
+						if (ix is Item)
+							if (ix.ItemID == ItemId)
+							{
+								Logger.Log(LogType.Item, ix);
+							}
+					}
 					Logger.Finish();
 				}
 				else
-					e.Mobile.SendMessage( "Format: FindItemByID <ItemID>" );
+					e.Mobile.SendMessage("Format: FindItemByID <ItemID>");
 			}
-			catch (Exception err) 
-            {
+			catch (Exception err)
+			{
 
-				e.Mobile.SendMessage( "Exception: " + err.Message );
+				e.Mobile.SendMessage("Exception: " + err.Message);
 			}
 
-            e.Mobile.SendMessage("Done.");
+			e.Mobile.SendMessage("Done.");
 		}
 	}
 }

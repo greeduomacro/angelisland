@@ -40,7 +40,7 @@ namespace Server.Gumps
 		private GumpButtonType m_Type;
 		private int m_Param;
 
-		public GumpButton( int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param )
+		public GumpButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param)
 		{
 			m_X = x;
 			m_Y = y;
@@ -59,7 +59,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_X, value );
+				Delta(ref m_X, value);
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Y, value );
+				Delta(ref m_Y, value);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_ID1, value );
+				Delta(ref m_ID1, value);
 			}
 		}
 
@@ -95,7 +95,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_ID2, value );
+				Delta(ref m_ID2, value);
 			}
 		}
 
@@ -107,7 +107,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_ButtonID, value );
+				Delta(ref m_ButtonID, value);
 			}
 		}
 
@@ -119,13 +119,13 @@ namespace Server.Gumps
 			}
 			set
 			{
-				if ( m_Type != value )
+				if (m_Type != value)
 				{
 					m_Type = value;
 
 					Gump parent = Parent;
 
-					if ( parent != null )
+					if (parent != null)
 					{
 						parent.Invalidate();
 					}
@@ -141,27 +141,27 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Param, value );
+				Delta(ref m_Param, value);
 			}
 		}
 
 		public override string Compile()
 		{
-			return String.Format( "{{ button {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_ID1, m_ID2, (int)m_Type, m_Param, m_ButtonID );
+			return String.Format("{{ button {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_ID1, m_ID2, (int)m_Type, m_Param, m_ButtonID);
 		}
 
-		private static byte[] m_LayoutName = Gump.StringToBuffer( "button" );
+		private static byte[] m_LayoutName = Gump.StringToBuffer("button");
 
-		public override void AppendTo( DisplayGumpFast disp )
+		public override void AppendTo(DisplayGumpFast disp)
 		{
-			disp.AppendLayout( m_LayoutName );
-			disp.AppendLayout( m_X );
-			disp.AppendLayout( m_Y );
-			disp.AppendLayout( m_ID1 );
-			disp.AppendLayout( m_ID2 );
-			disp.AppendLayout( (int)m_Type );
-			disp.AppendLayout( m_Param );
-			disp.AppendLayout( m_ButtonID );
+			disp.AppendLayout(m_LayoutName);
+			disp.AppendLayout(m_X);
+			disp.AppendLayout(m_Y);
+			disp.AppendLayout(m_ID1);
+			disp.AppendLayout(m_ID2);
+			disp.AppendLayout((int)m_Type);
+			disp.AppendLayout(m_Param);
+			disp.AppendLayout(m_ButtonID);
 		}
 	}
 }

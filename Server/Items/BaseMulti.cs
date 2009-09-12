@@ -35,26 +35,28 @@ namespace Server.Items
 	public class BaseMulti : Item
 	{
 		[Constructable]
-		public BaseMulti( int itemID ) : base( itemID )
+		public BaseMulti(int itemID)
+			: base(itemID)
 		{
 			Movable = false;
 		}
 
-		public BaseMulti( Serial serial ) : base( serial )
+		public BaseMulti(Serial serial)
+			: base(serial)
 		{
 		}
 
 		public virtual void RefreshComponents()
 		{
-			if ( Parent != null )
+			if (Parent != null)
 				return;
 
 			Map map = Map;
 
-			if ( map != null )
+			if (map != null)
 			{
-				map.OnLeave( this );
-				map.OnEnter( this );
+				map.OnLeave(this);
+				map.OnEnter(this);
 			}
 		}
 
@@ -64,7 +66,7 @@ namespace Server.Items
 			{
 				MultiComponentList mcl = this.Components;
 
-				if ( mcl.List.Length > 0 )
+				if (mcl.List.Length > 0)
 					return 1020000 + (mcl.List[0].m_ItemID & 0x3FFF);
 
 				return base.LabelNumber;
@@ -76,7 +78,7 @@ namespace Server.Items
 			return 22;
 		}
 
-		public override int GetUpdateRange( Mobile m )
+		public override int GetUpdateRange(Mobile m)
 		{
 			return 22;
 		}
@@ -85,26 +87,26 @@ namespace Server.Items
 		{
 			get
 			{
-				return MultiData.GetComponents( ItemID );
+				return MultiData.GetComponents(ItemID);
 			}
 		}
 
-		public virtual bool Contains( Point2D p )
+		public virtual bool Contains(Point2D p)
 		{
-			return Contains( p.m_X, p.m_Y );
+			return Contains(p.m_X, p.m_Y);
 		}
 
-		public virtual bool Contains( Point3D p )
+		public virtual bool Contains(Point3D p)
 		{
-			return Contains( p.m_X, p.m_Y );
+			return Contains(p.m_X, p.m_Y);
 		}
 
-		public virtual bool Contains( IPoint3D p )
+		public virtual bool Contains(IPoint3D p)
 		{
-			return Contains( p.X, p.Y );
+			return Contains(p.X, p.Y);
 		}
 
-		public virtual bool Contains( int x, int y )
+		public virtual bool Contains(int x, int y)
 		{
 			MultiComponentList mcl = this.Components;
 
@@ -118,85 +120,85 @@ namespace Server.Items
 				&& mcl.Tiles[x][y].Length > 0;
 		}
 
-		public bool Contains( Mobile m )
+		public bool Contains(Mobile m)
 		{
-			if ( m.Map == this.Map )
-				return Contains( m.X, m.Y );
+			if (m.Map == this.Map)
+				return Contains(m.X, m.Y);
 			else
 				return false;
 		}
 
-		public bool Contains( Item item )
+		public bool Contains(Item item)
 		{
-			if ( item.Map == this.Map )
-				return Contains( item.X, item.Y );
+			if (item.Map == this.Map)
+				return Contains(item.X, item.Y);
 			else
 				return false;
 		}
 
-        public virtual bool Inside(int x, int y)
-        {
-            MultiComponentList mcl = this.Components;
+		public virtual bool Inside(int x, int y)
+		{
+			MultiComponentList mcl = this.Components;
 
-            x -= this.X + mcl.Min.m_X;
-            y -= this.Y + mcl.Min.m_Y;
+			x -= this.X + mcl.Min.m_X;
+			y -= this.Y + mcl.Min.m_Y;
 
-            return x >= 0
-                && x < mcl.Width
-                && y >= 0
-                && y < mcl.Height;
-        }
+			return x >= 0
+				&& x < mcl.Width
+				&& y >= 0
+				&& y < mcl.Height;
+		}
 
-        public static BaseMulti Find(Point3D p, Map map)
-        {
-            if (map == null)
-                return null;
+		public static BaseMulti Find(Point3D p, Map map)
+		{
+			if (map == null)
+				return null;
 
-            Sector sector = map.GetSector(p);
-
-            foreach (BaseMulti mult in sector.Multis.Values)
-            {
-                if (mult == null)
-                    continue;
-
-                if (mult.Contains(p) || mult.Inside(p.X, p.Y))
-                    return mult;
-            }
-
-            return null;
-        }
-        
-        public static ArrayList FindAll(Point3D p, Map map)
-        {
-            ArrayList all = new ArrayList();
-
-            if (map == null)
-                return all;
-
-            Sector sector = map.GetSector(p);
+			Sector sector = map.GetSector(p);
 
 			foreach (BaseMulti mult in sector.Multis.Values)
-            {
+			{
 				if (mult == null)
 					continue;
-                
-                if (mult.Contains(p) || mult.Inside(p.X, p.Y))
-                    all.Add(mult);
-            }
 
-            return all;
-        }
-        
-		public override void Serialize( GenericWriter writer )
-		{
-			base.Serialize( writer );
+				if (mult.Contains(p) || mult.Inside(p.X, p.Y))
+					return mult;
+			}
 
-			writer.Write( (int) 0 ); // version
+			return null;
 		}
 
-		public override void Deserialize( GenericReader reader )
+		public static ArrayList FindAll(Point3D p, Map map)
 		{
-			base.Deserialize( reader );
+			ArrayList all = new ArrayList();
+
+			if (map == null)
+				return all;
+
+			Sector sector = map.GetSector(p);
+
+			foreach (BaseMulti mult in sector.Multis.Values)
+			{
+				if (mult == null)
+					continue;
+
+				if (mult.Contains(p) || mult.Inside(p.X, p.Y))
+					all.Add(mult);
+			}
+
+			return all;
+		}
+
+		public override void Serialize(GenericWriter writer)
+		{
+			base.Serialize(writer);
+
+			writer.Write((int)0); // version
+		}
+
+		public override void Deserialize(GenericReader reader)
+		{
+			base.Deserialize(reader);
 
 			int version = reader.ReadInt();
 		}

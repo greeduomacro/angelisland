@@ -53,13 +53,14 @@ namespace Server.Mobiles
 {
 	public class SuicideAI : BaseAI
 	{
-		public SuicideAI(BaseCreature m) : base (m)
+		public SuicideAI(BaseCreature m)
+			: base(m)
 		{
 		}
 
 		public override bool Think()
 		{
-			if( m_Mobile.Poisoned != true )
+			if (m_Mobile.Poisoned != true)
 			{
 				m_Mobile.Poison = Poison.Lethal;
 			}

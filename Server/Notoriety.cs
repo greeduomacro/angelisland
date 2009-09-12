@@ -36,8 +36,8 @@ using Server.Items;
 
 namespace Server
 {
-	public delegate int NotorietyHandler( Mobile source, Mobile target );
-	public delegate int NotorietyBeneficialActsHandler( Mobile source, Mobile target );
+	public delegate int NotorietyHandler(Mobile source, Mobile target);
+	public delegate int NotorietyBeneficialActsHandler(Mobile source, Mobile target);
 
 	public class Notoriety
 	{
@@ -54,8 +54,8 @@ namespace Server
 
 		public static NotorietyHandler Handler
 		{
-			get{ return m_Handler; }
-			set{ m_Handler = value; }
+			get { return m_Handler; }
+			set { m_Handler = value; }
 		}
 
 		public static NotorietyBeneficialActsHandler BeneficialActsHandler
@@ -78,21 +78,21 @@ namespace Server
 
 		public static int[] Hues
 		{
-			get{ return m_Hues; }
-			set{ m_Hues = value; }
+			get { return m_Hues; }
+			set { m_Hues = value; }
 		}
 
-		public static int GetHue( int noto )
+		public static int GetHue(int noto)
 		{
-			if ( noto < 0 || noto >= m_Hues.Length )
+			if (noto < 0 || noto >= m_Hues.Length)
 				return 0;
 
 			return m_Hues[noto];
 		}
 
-		public static int Compute( Mobile source, Mobile target )
+		public static int Compute(Mobile source, Mobile target)
 		{
-			return m_Handler == null ? CanBeAttacked : m_Handler( source, target );
+			return m_Handler == null ? CanBeAttacked : m_Handler(source, target);
 		}
 
 		public static int GetBeneficialHue(Mobile source, Mobile target)

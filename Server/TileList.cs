@@ -44,29 +44,29 @@ namespace Server
 			}
 		}
 
-		public void AddRange( Tile[] tiles )
+		public void AddRange(Tile[] tiles)
 		{
-			if ( (m_Count + tiles.Length) > m_Tiles.Length )
+			if ((m_Count + tiles.Length) > m_Tiles.Length)
 			{
 				Tile[] old = m_Tiles;
 				m_Tiles = new Tile[(m_Count + tiles.Length) * 2];
 
-				for ( int i = 0; i < old.Length; ++i )
+				for (int i = 0; i < old.Length; ++i)
 					m_Tiles[i] = old[i];
 			}
 
-			for ( int i = 0; i < tiles.Length; ++i )
+			for (int i = 0; i < tiles.Length; ++i)
 				m_Tiles[m_Count++] = tiles[i];
 		}
 
-		public void Add( short id, sbyte z )
+		public void Add(short id, sbyte z)
 		{
-			if ( (m_Count + 1) > m_Tiles.Length )
+			if ((m_Count + 1) > m_Tiles.Length)
 			{
 				Tile[] old = m_Tiles;
 				m_Tiles = new Tile[old.Length * 2];
 
-				for ( int i = 0; i < old.Length; ++i )
+				for (int i = 0; i < old.Length; ++i)
 					m_Tiles[i] = old[i];
 			}
 
@@ -79,12 +79,12 @@ namespace Server
 
 		public Tile[] ToArray()
 		{
-			if ( m_Count == 0 )
+			if (m_Count == 0)
 				return m_EmptyTiles;
 
 			Tile[] tiles = new Tile[m_Count];
 
-			for ( int i = 0; i < m_Count; ++i )
+			for (int i = 0; i < m_Count; ++i)
 				tiles[i] = m_Tiles[i];
 
 			m_Count = 0;

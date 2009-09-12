@@ -60,70 +60,70 @@ namespace Server
 
 		public void Cancel()
 		{
-			if ( !m_Valid )
+			if (!m_Valid)
 				return;
 
-            List<Item> list = new List<Item>();
-            try
-            {
-                for (int i = 0; i < m_From.Container.Items.Count; i++)
-                {
-                    try
-                    {
-                        Item it = m_From.Container.Items[i] as Item;
-                        if (it != null)
-                        {
-                            list.Add(it);
-                        }
-                    }
-                    catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
-                }
-            }
-            catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
-
-			for ( int i = list.Count - 1; i >= 0; --i )
+			List<Item> list = new List<Item>();
+			try
 			{
-				if ( i < list.Count )
+				for (int i = 0; i < m_From.Container.Items.Count; i++)
+				{
+					try
+					{
+						Item it = m_From.Container.Items[i] as Item;
+						if (it != null)
+						{
+							list.Add(it);
+						}
+					}
+					catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+				}
+			}
+			catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+
+			for (int i = list.Count - 1; i >= 0; --i)
+			{
+				if (i < list.Count)
 				{
 					Item item = list[i];
 
-					item.OnSecureTrade( m_From.Mobile, m_To.Mobile, m_From.Mobile, false );
+					item.OnSecureTrade(m_From.Mobile, m_To.Mobile, m_From.Mobile, false);
 
-					if ( !item.Deleted )
-						m_From.Mobile.AddToBackpack( item );
+					if (!item.Deleted)
+						m_From.Mobile.AddToBackpack(item);
 				}
 			}
 
 			//list = m_To.Container.Items;
-            list = new List<Item>();
-            try
-            {
-                for (int i = 0; i < m_To.Container.Items.Count; i++)
-                {
-                    try
-                    {
-                        Item it = m_To.Container.Items[i] as Item;
-                        if (it != null)
-                        {
-                            list.Add(it);
-                        }
-                    }
-                    catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
-                }
-            }
-            catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
-
-
-			for ( int i = list.Count - 1; i >= 0; --i )
+			list = new List<Item>();
+			try
 			{
-				if ( i < list.Count )
+				for (int i = 0; i < m_To.Container.Items.Count; i++)
+				{
+					try
+					{
+						Item it = m_To.Container.Items[i] as Item;
+						if (it != null)
+						{
+							list.Add(it);
+						}
+					}
+					catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+				}
+			}
+			catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+
+
+			for (int i = list.Count - 1; i >= 0; --i)
+			{
+				if (i < list.Count)
 				{
 					Item item = list[i];
 
-					item.OnSecureTrade( m_To.Mobile, m_From.Mobile, m_To.Mobile, false );
+					item.OnSecureTrade(m_To.Mobile, m_From.Mobile, m_To.Mobile, false);
 
-					if ( !item.Deleted )
-						m_To.Mobile.AddToBackpack( item );
+					if (!item.Deleted)
+						m_To.Mobile.AddToBackpack(item);
 				}
 			}
 
@@ -132,23 +132,23 @@ namespace Server
 
 		public void Close()
 		{
-			if ( !m_Valid )
+			if (!m_Valid)
 				return;
 
-			m_From.Mobile.Send( new CloseSecureTrade( m_From.Container ) );
-			m_To.Mobile.Send( new CloseSecureTrade( m_To.Container ) );
+			m_From.Mobile.Send(new CloseSecureTrade(m_From.Container));
+			m_To.Mobile.Send(new CloseSecureTrade(m_To.Container));
 
 			m_Valid = false;
 
 			NetState ns = m_From.Mobile.NetState;
 
-			if ( ns != null )
-				ns.RemoveTrade( this );
+			if (ns != null)
+				ns.RemoveTrade(this);
 
 			ns = m_To.Mobile.NetState;
 
-			if ( ns != null )
-				ns.RemoveTrade( this );
+			if (ns != null)
+				ns.RemoveTrade(this);
 
 			m_From.Container.Delete();
 			m_To.Container.Delete();
@@ -156,147 +156,147 @@ namespace Server
 
 		public void Update()
 		{
-			if ( !m_Valid )
+			if (!m_Valid)
 				return;
 
-			if ( m_From.Accepted && m_To.Accepted )
+			if (m_From.Accepted && m_To.Accepted)
 			{
 				//List<Item> list = m_From.Container.Items;
-                List<Item> list = new List<Item>();
-                try
-                {
-                    for (int i = 0; i < m_From.Container.Items.Count; i++)
-                    {
-                        try
-                        {
-                            Item it = m_From.Container.Items[i] as Item;
-                            if (it != null)
-                            {
-                                list.Add(it);
-                            }
-                        }
-                        catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
-                    }
-                }
-                catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+				List<Item> list = new List<Item>();
+				try
+				{
+					for (int i = 0; i < m_From.Container.Items.Count; i++)
+					{
+						try
+						{
+							Item it = m_From.Container.Items[i] as Item;
+							if (it != null)
+							{
+								list.Add(it);
+							}
+						}
+						catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+					}
+				}
+				catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
 
 				bool allowed = true;
 
-				for ( int i = list.Count - 1; allowed && i >= 0; --i )
+				for (int i = list.Count - 1; allowed && i >= 0; --i)
 				{
-					if ( i < list.Count )
+					if (i < list.Count)
 					{
 						Item item = list[i];
 
-						if ( !item.AllowSecureTrade( m_From.Mobile, m_To.Mobile, m_To.Mobile, true ) )
+						if (!item.AllowSecureTrade(m_From.Mobile, m_To.Mobile, m_To.Mobile, true))
 							allowed = false;
 					}
 				}
 
 				//list = m_To.Container.Items;
-                list = new List<Item>();
-                try
-                {
-                    for (int i = 0; i < m_To.Container.Items.Count; i++)
-                    {
-                        try
-                        {
-                            Item it = m_To.Container.Items[i] as Item;
-                            if (it != null)
-                            {
-                                list.Add(it);
-                            }
-                        }
-                        catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
-                    }
-                }
-                catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
-
-
-				for ( int i = list.Count - 1; allowed && i >= 0; --i )
+				list = new List<Item>();
+				try
 				{
-					if ( i < list.Count )
+					for (int i = 0; i < m_To.Container.Items.Count; i++)
+					{
+						try
+						{
+							Item it = m_To.Container.Items[i] as Item;
+							if (it != null)
+							{
+								list.Add(it);
+							}
+						}
+						catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+					}
+				}
+				catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+
+
+				for (int i = list.Count - 1; allowed && i >= 0; --i)
+				{
+					if (i < list.Count)
 					{
 						Item item = list[i];
 
-						if ( !item.AllowSecureTrade( m_To.Mobile, m_From.Mobile, m_From.Mobile, true ) )
+						if (!item.AllowSecureTrade(m_To.Mobile, m_From.Mobile, m_From.Mobile, true))
 							allowed = false;
 					}
 				}
 
-				if ( !allowed )
+				if (!allowed)
 				{
 					m_From.Accepted = false;
 					m_To.Accepted = false;
 
-					m_From.Mobile.Send( new UpdateSecureTrade( m_From.Container, m_From.Accepted, m_To.Accepted ) );
-					m_To.Mobile.Send( new UpdateSecureTrade( m_To.Container, m_To.Accepted, m_From.Accepted ) );
+					m_From.Mobile.Send(new UpdateSecureTrade(m_From.Container, m_From.Accepted, m_To.Accepted));
+					m_To.Mobile.Send(new UpdateSecureTrade(m_To.Container, m_To.Accepted, m_From.Accepted));
 
 					return;
 				}
 
 				//list = m_From.Container.Items;
-                list = new List<Item>();
-                try
-                {
-                    for (int i = 0; i < m_From.Container.Items.Count; i++)
-                    {
-                        try
-                        {
-                            Item it = m_From.Container.Items[i] as Item;
-                            if (it != null)
-                            {
-                                list.Add(it);
-                            }
-                        }
-                        catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
-                    }
-                }
-                catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
-
-				for ( int i = list.Count - 1; i >= 0; --i )
+				list = new List<Item>();
+				try
 				{
-					if ( i < list.Count )
+					for (int i = 0; i < m_From.Container.Items.Count; i++)
+					{
+						try
+						{
+							Item it = m_From.Container.Items[i] as Item;
+							if (it != null)
+							{
+								list.Add(it);
+							}
+						}
+						catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+					}
+				}
+				catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+
+				for (int i = list.Count - 1; i >= 0; --i)
+				{
+					if (i < list.Count)
 					{
 						Item item = list[i];
 
-						item.OnSecureTrade( m_From.Mobile, m_To.Mobile, m_To.Mobile, true );
+						item.OnSecureTrade(m_From.Mobile, m_To.Mobile, m_To.Mobile, true);
 
-						if ( !item.Deleted )
-							m_To.Mobile.AddToBackpack( item );
+						if (!item.Deleted)
+							m_To.Mobile.AddToBackpack(item);
 					}
 				}
 
-                //list = m_To.Container.Items;
-                list = new List<Item>();
-                try
-                {
-                    for (int i = 0; i < m_To.Container.Items.Count; i++)
-                    {
-                        try
-                        {
-                            Item it = m_To.Container.Items[i] as Item;
-                            if (it != null)
-                            {
-                                list.Add(it);
-                            }
-                        }
-                        catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
-                    }
-                }
-                catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
-
-
-				for ( int i = list.Count - 1; i >= 0; --i )
+				//list = m_To.Container.Items;
+				list = new List<Item>();
+				try
 				{
-					if ( i < list.Count )
+					for (int i = 0; i < m_To.Container.Items.Count; i++)
+					{
+						try
+						{
+							Item it = m_To.Container.Items[i] as Item;
+							if (it != null)
+							{
+								list.Add(it);
+							}
+						}
+						catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+					}
+				}
+				catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+
+
+				for (int i = list.Count - 1; i >= 0; --i)
+				{
+					if (i < list.Count)
 					{
 						Item item = list[i];
 
-						item.OnSecureTrade( m_To.Mobile, m_From.Mobile, m_From.Mobile, true );
+						item.OnSecureTrade(m_To.Mobile, m_From.Mobile, m_From.Mobile, true);
 
-						if ( !item.Deleted )
-							m_From.Mobile.AddToBackpack( item );
+						if (!item.Deleted)
+							m_From.Mobile.AddToBackpack(item);
 					}
 				}
 
@@ -304,56 +304,56 @@ namespace Server
 			}
 			else
 			{
-				m_From.Mobile.Send( new UpdateSecureTrade( m_From.Container, m_From.Accepted, m_To.Accepted ) );
-				m_To.Mobile.Send( new UpdateSecureTrade( m_To.Container, m_To.Accepted, m_From.Accepted ) );
+				m_From.Mobile.Send(new UpdateSecureTrade(m_From.Container, m_From.Accepted, m_To.Accepted));
+				m_To.Mobile.Send(new UpdateSecureTrade(m_To.Container, m_To.Accepted, m_From.Accepted));
 			}
 		}
 
-		public SecureTrade( Mobile from, Mobile to )
+		public SecureTrade(Mobile from, Mobile to)
 		{
 			m_Valid = true;
 
-			m_From = new SecureTradeInfo( this, from, new SecureTradeContainer( this ) );
-			m_To = new SecureTradeInfo( this, to, new SecureTradeContainer( this ) );
+			m_From = new SecureTradeInfo(this, from, new SecureTradeContainer(this));
+			m_To = new SecureTradeInfo(this, to, new SecureTradeContainer(this));
 
-            bool from6017 = (from.NetState == null ? false : from.NetState.IsPost6017);
-            bool to6017 = (to.NetState == null ? false : to.NetState.IsPost6017);
+			bool from6017 = (from.NetState == null ? false : from.NetState.IsPost6017);
+			bool to6017 = (to.NetState == null ? false : to.NetState.IsPost6017);
 
-			from.Send( new MobileStatus( from, to ) );
-			from.Send( new UpdateSecureTrade( m_From.Container, false, false ) );
-            
-            if (from6017)
-                from.Send(new SecureTradeEquip6017(m_To.Container, to));
-            else
-                from.Send(new SecureTradeEquip(m_To.Container, to));
+			from.Send(new MobileStatus(from, to));
+			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
 
-			from.Send( new UpdateSecureTrade( m_From.Container, false, false ) );
-            
-            if (from6017)
-                from.Send(new SecureTradeEquip6017(m_From.Container, from));
-            else
-                from.Send(new SecureTradeEquip(m_From.Container, from));
-			
-            from.Send( new DisplaySecureTrade( to, m_From.Container, m_To.Container, to.Name ) );
-			from.Send( new UpdateSecureTrade( m_From.Container, false, false ) );
+			if (from6017)
+				from.Send(new SecureTradeEquip6017(m_To.Container, to));
+			else
+				from.Send(new SecureTradeEquip(m_To.Container, to));
 
-			to.Send( new MobileStatus( to, from ) );
-			to.Send( new UpdateSecureTrade( m_To.Container, false, false ) );
-            
-            if (to6017)
-                to.Send(new SecureTradeEquip6017(m_From.Container, from));
-            else
-                to.Send(new SecureTradeEquip(m_From.Container, from));
-			
-            to.Send( new UpdateSecureTrade( m_To.Container, false, false ) );
-            
-            if (to6017)
-                to.Send(new SecureTradeEquip6017(m_To.Container, to));
-            else
-                to.Send(new SecureTradeEquip(m_To.Container, to));
-			
-            to.Send( new DisplaySecureTrade( from, m_To.Container, m_From.Container, from.Name ) );
-			to.Send( new UpdateSecureTrade( m_To.Container, false, false ) );
+			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
+
+			if (from6017)
+				from.Send(new SecureTradeEquip6017(m_From.Container, from));
+			else
+				from.Send(new SecureTradeEquip(m_From.Container, from));
+
+			from.Send(new DisplaySecureTrade(to, m_From.Container, m_To.Container, to.Name));
+			from.Send(new UpdateSecureTrade(m_From.Container, false, false));
+
+			to.Send(new MobileStatus(to, from));
+			to.Send(new UpdateSecureTrade(m_To.Container, false, false));
+
+			if (to6017)
+				to.Send(new SecureTradeEquip6017(m_From.Container, from));
+			else
+				to.Send(new SecureTradeEquip(m_From.Container, from));
+
+			to.Send(new UpdateSecureTrade(m_To.Container, false, false));
+
+			if (to6017)
+				to.Send(new SecureTradeEquip6017(m_To.Container, to));
+			else
+				to.Send(new SecureTradeEquip(m_To.Container, to));
+
+			to.Send(new DisplaySecureTrade(from, m_To.Container, m_From.Container, from.Name));
+			to.Send(new UpdateSecureTrade(m_To.Container, false, false));
 		}
 	}
 
@@ -364,13 +364,13 @@ namespace Server
 		private SecureTradeContainer m_Container;
 		private bool m_Accepted;
 
-		public SecureTradeInfo( SecureTrade owner, Mobile m, SecureTradeContainer c )
+		public SecureTradeInfo(SecureTrade owner, Mobile m, SecureTradeContainer c)
 		{
 			m_Owner = owner;
 			m_Mobile = m;
 			m_Container = c;
 
-			m_Mobile.AddItem( m_Container );
+			m_Mobile.AddItem(m_Container);
 		}
 
 		public SecureTrade Owner

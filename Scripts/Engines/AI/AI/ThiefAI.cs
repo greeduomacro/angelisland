@@ -58,19 +58,20 @@ namespace Server.Mobiles
 {
 	public class ThiefAI : BaseAI
 	{
-		public ThiefAI(BaseCreature m) : base (m)
+		public ThiefAI(BaseCreature m)
+			: base(m)
 		{
 		}
 
 		//private Item m_toDisarm;
 		public override bool DoActionWander()
 		{
-			m_Mobile.DebugSay( "I have no combatant" );
+			m_Mobile.DebugSay("I have no combatant");
 
-			if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
-				if ( m_Mobile.Debug )
-					m_Mobile.DebugSay( "I have detected {0}, attacking", m_Mobile.FocusMob.Name );
+				if (m_Mobile.Debug)
+					m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
@@ -222,10 +223,10 @@ namespace Server.Mobiles
 
 		public override bool DoActionGuard()
 		{
-			if ( AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
-				if ( m_Mobile.Debug )
-					m_Mobile.DebugSay( "I have detected {0}, attacking", m_Mobile.FocusMob.Name );
+				if (m_Mobile.Debug)
+					m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
@@ -240,9 +241,9 @@ namespace Server.Mobiles
 
 		public override bool DoActionFlee()
 		{
-			if ( m_Mobile.Hits > m_Mobile.HitsMax/2 )
+			if (m_Mobile.Hits > m_Mobile.HitsMax / 2)
 			{
-				m_Mobile.DebugSay( "I am stronger now, so I will continue fighting" );
+				m_Mobile.DebugSay("I am stronger now, so I will continue fighting");
 				Action = ActionType.Combat;
 			}
 			else

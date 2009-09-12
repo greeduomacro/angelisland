@@ -105,7 +105,7 @@ namespace Server.Scripts.Commands
 			}
 
 			public Int32 CompareTo(Object obj)
-			{	
+			{
 				InvItem tmpObj = (InvItem)obj;
 				return (this.m_description.CompareTo(tmpObj.m_description));
 			}
@@ -371,7 +371,7 @@ namespace Server.Scripts.Commands
 
 		private static bool valid(string sx)
 		{
-			if (sx == null || sx == "")	return false; else return true;
+			if (sx == null || sx == "") return false; else return true;
 		}
 	}
 }

@@ -80,14 +80,14 @@ namespace Server.Scripts.Commands
 				from.SendMessage("Usage: [email <TO Address> <\"Subject\"> <\"Body\">");
 		}
 
-		[Usage( "Email <TO Address> <\"Subject\"> <\"Body\">" )]
-		[Description( "Send an email." )]
-		public static void Email_OnCommand( CommandEventArgs e )
+		[Usage("Email <TO Address> <\"Subject\"> <\"Body\">")]
+		[Description("Send an email.")]
+		public static void Email_OnCommand(CommandEventArgs e)
 		{
 			Mobile from = e.Mobile;
 
 			// check arguments
-			if ( e.Length != 3 ) 
+			if (e.Length != 3)
 			{
 				Usage(from);
 				return;
@@ -95,27 +95,27 @@ namespace Server.Scripts.Commands
 
 			try
 			{
-				string To = e.GetString( 0 );
-				string Subject = e.GetString( 1 );
-				string Body = e.GetString( 2 );
+				string To = e.GetString(0);
+				string Subject = e.GetString(1);
+				string Body = e.GetString(2);
 
-                if (SmtpDirect.CheckEmailAddy(To, true) == false)
-                {
-                    from.SendMessage("Error: The 'to' address is ill formed.");
-                    return;
-                }
+				if (SmtpDirect.CheckEmailAddy(To, true) == false)
+				{
+					from.SendMessage("Error: The 'to' address is ill formed.");
+					return;
+				}
 
 				// okay, now hand the list of users off to our mailer daemon
-				new Emailer().SendEmail( To, Subject, Body, false );
+				new Emailer().SendEmail(To, Subject, Body, false);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				LogHelper.LogException(ex);
 				System.Console.WriteLine("Exception Caught in generic emailer: " + ex.Message);
 				System.Console.WriteLine(ex.StackTrace);
 			}
 
-			return ;
+			return;
 		}
 	}
 
@@ -134,7 +134,7 @@ namespace Server.Scripts.Commands
 				from.SendMessage("Example: [AddressDump {0}", DateTime.Now.ToShortDateString());
 			}
 		}
-		
+
 		private static bool ValidEmail(string addy)
 		{
 			if (addy == null) return false;					// may not be null
@@ -150,19 +150,19 @@ namespace Server.Scripts.Commands
 
 		private static bool LooksLikeInt(string text)
 		{
-			try {int temp = Convert.ToInt32( text );}
+			try { int temp = Convert.ToInt32(text); }
 			catch { return false; }
 			return true;
 		}
 
-		[Usage( "AddressDump <PlayersDaysActive|Activations since 'date'>" )]
-		[Description( "Dump email addresses of players active within X days or since Y date." )]
-		public static void AddressDump_OnCommand( CommandEventArgs e )
+		[Usage("AddressDump <PlayersDaysActive|Activations since 'date'>")]
+		[Description("Dump email addresses of players active within X days or since Y date.")]
+		public static void AddressDump_OnCommand(CommandEventArgs e)
 		{
 			Mobile from = e.Mobile;
 
 			// check arguments
-			if ( e.Length < 1 ) 
+			if (e.Length < 1)
 			{
 				Usage(from);
 				return;
@@ -176,12 +176,12 @@ namespace Server.Scripts.Commands
 				ArrayList results = new ArrayList();
 
 				// assume DaysActive
-				if (e.Length == 1 && LooksLikeInt(e.GetString( 0 )))
-				{	
+				if (e.Length == 1 && LooksLikeInt(e.GetString(0)))
+				{
 					int days = 0;
-					try {days = Convert.ToInt32( e.GetString( 0 ) );}
+					try { days = Convert.ToInt32(e.GetString(0)); }
 					catch { Usage(from); return; }
-					foreach ( Account acct in Accounts.Table.Values )
+					foreach (Account acct in Accounts.Table.Values)
 					{
 						iChecked++;
 						// logged in the last n days.
@@ -190,7 +190,7 @@ namespace Server.Scripts.Commands
 							if (ValidEmail(acct.EmailAddress))
 							{
 								Reminders++;
-								results.Add( acct.EmailAddress );
+								results.Add(acct.EmailAddress);
 							}
 						}
 					}
@@ -198,15 +198,15 @@ namespace Server.Scripts.Commands
 				// assume activations since date
 				else
 				{
-					string buff=null;
-					for (int ix=0; ix < e.Length; ix++)
-						buff += e.GetString( ix ) + " ";
+					string buff = null;
+					for (int ix = 0; ix < e.Length; ix++)
+						buff += e.GetString(ix) + " ";
 
 					DateTime Since;
-					try {Since = DateTime.Parse(buff);}
+					try { Since = DateTime.Parse(buff); }
 					catch { Usage(from); return; }
 
-					foreach ( Account acct in Accounts.Table.Values )
+					foreach (Account acct in Accounts.Table.Values)
 					{
 						iChecked++;
 						// account created since...
@@ -215,17 +215,17 @@ namespace Server.Scripts.Commands
 							if (ValidEmail(acct.EmailAddress))
 							{
 								Reminders++;
-								results.Add( acct.EmailAddress );
+								results.Add(acct.EmailAddress);
 							}
 						}
 					}
 				}
 
 				if (Reminders > 0)
-				{	
+				{
 					from.SendMessage("Logging {0} email address(es).", Reminders);
 					LogHelper Logger = new LogHelper("accountEmails.log", true);
-					
+
 					foreach (object ox in results)
 					{
 						string address = ox as string;
@@ -234,16 +234,16 @@ namespace Server.Scripts.Commands
 					}
 					Logger.Finish();
 				}
-				
+
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				LogHelper.LogException(ex);
 				System.Console.WriteLine("Exception Caught in generic emailer: " + ex.Message);
 				System.Console.WriteLine(ex.StackTrace);
 			}
 
-			return ;
+			return;
 		}
 	}
 
@@ -260,21 +260,21 @@ namespace Server.Scripts.Commands
 				from.SendMessage("Usage: [Announcement <PlayersDaysActive> <\"Subject\"> <MessageFileName>");
 		}
 
-		[Usage( "Announcement <PlayersDaysActive> <\"Subject\"> <MessageFileName>" )]
-		[Description( "Send a mass mailing to the players active within PlayersDaysActive." )]
-		public static void Announcement_OnCommand( CommandEventArgs e )
+		[Usage("Announcement <PlayersDaysActive> <\"Subject\"> <MessageFileName>")]
+		[Description("Send a mass mailing to the players active within PlayersDaysActive.")]
+		public static void Announcement_OnCommand(CommandEventArgs e)
 		{
 			Mobile from = e.Mobile;
 
 			// check arguments
-			if ( e.Length != 3 ) 
+			if (e.Length != 3)
 			{
 				Usage(from);
 				return;
 			}
 
 			// can only be run on Test Center
-			if ( TestCenter.Enabled == false ) 
+			if (TestCenter.Enabled == false)
 			{
 				from.SendMessage("This command may only be executed on Test Center.");
 				return;
@@ -288,31 +288,31 @@ namespace Server.Scripts.Commands
 				ArrayList results = new ArrayList();
 
 				int days = 0;
-				try {days = Convert.ToInt32( e.GetString( 0 ) );}
+				try { days = Convert.ToInt32(e.GetString(0)); }
 				catch { Usage(from); return; }
 
-				foreach ( Account acct in Accounts.Table.Values )
+				foreach (Account acct in Accounts.Table.Values)
 				{
 					iChecked++;
 					// logged in the last n days.
 					if (Server.Engines.CronScheduler.EmailHelpers.RecentLogin(acct, days) == true)
 					{
 						Reminders++;
-						results.Add( acct.EmailAddress );
+						results.Add(acct.EmailAddress);
 					}
 				}
 
 				if (Reminders > 0)
-				{	
+				{
 					from.SendMessage("Sending {0} email announcement(s).", Reminders);
 
-					string subject = String.Format(e.GetString( 1 ));
+					string subject = String.Format(e.GetString(1));
 					string body = null;
 
 					try
 					{
 						// create reader & open file
-						TextReader tr = new StreamReader(String.Format("Msgs/{0}",e.GetString( 2 )));
+						TextReader tr = new StreamReader(String.Format("Msgs/{0}", e.GetString(2)));
 
 						// read it
 						body = tr.ReadToEnd();
@@ -320,7 +320,7 @@ namespace Server.Scripts.Commands
 						// close the stream
 						tr.Close();
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogHelper.LogException(ex);
 						from.SendMessage(ex.Message);
@@ -329,18 +329,18 @@ namespace Server.Scripts.Commands
 					}
 
 					// okay, now hand the list of users off to our mailer daemon
-					new Emailer().SendEmail( results, subject, body, false );
+					new Emailer().SendEmail(results, subject, body, false);
 				}
-				
+
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				LogHelper.LogException(ex);
 				System.Console.WriteLine("Exception Caught in generic emailer: " + ex.Message);
 				System.Console.WriteLine(ex.StackTrace);
 			}
 
-			return ;
+			return;
 		}
 	}
 }

@@ -44,24 +44,24 @@ namespace Server
 			}
 		}
 
-		public bool Contains( int keyword )
+		public bool Contains(int keyword)
 		{
 			bool contains = false;
 
-			for ( int i = 0; !contains && i < m_Count; ++i )
-				contains = ( keyword == m_Keywords[i] );
+			for (int i = 0; !contains && i < m_Count; ++i)
+				contains = (keyword == m_Keywords[i]);
 
 			return contains;
 		}
 
-		public void Add( int keyword )
+		public void Add(int keyword)
 		{
-			if ( (m_Count + 1) > m_Keywords.Length )
+			if ((m_Count + 1) > m_Keywords.Length)
 			{
 				int[] old = m_Keywords;
 				m_Keywords = new int[old.Length * 2];
 
-				for ( int i = 0; i < old.Length; ++i )
+				for (int i = 0; i < old.Length; ++i)
 					m_Keywords[i] = old[i];
 			}
 
@@ -72,12 +72,12 @@ namespace Server
 
 		public int[] ToArray()
 		{
-			if ( m_Count == 0 )
+			if (m_Count == 0)
 				return m_EmptyInts;
 
 			int[] keywords = new int[m_Count];
 
-			for ( int i = 0; i < m_Count; ++i )
+			for (int i = 0; i < m_Count; ++i)
 				keywords[i] = m_Keywords[i];
 
 			m_Count = 0;

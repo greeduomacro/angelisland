@@ -51,20 +51,20 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "Resynch", AccessLevel.Player, new CommandEventHandler( Resynch_OnCommand ) );
+			Server.Commands.Register("Resynch", AccessLevel.Player, new CommandEventHandler(Resynch_OnCommand));
 		}
 
-		public static void Resynch_OnCommand( CommandEventArgs e )
+		public static void Resynch_OnCommand(CommandEventArgs e)
 		{
 			Mobile m = e.Mobile;
 
-			if( m is PlayerMobile )
+			if (m is PlayerMobile)
 			{
-				if( ((PlayerMobile)m).m_LastResynchTime < (DateTime.Now - TimeSpan.FromMinutes(2.0)) 
-					|| (m.AccessLevel > AccessLevel.Player) )
+				if (((PlayerMobile)m).m_LastResynchTime < (DateTime.Now - TimeSpan.FromMinutes(2.0))
+					|| (m.AccessLevel > AccessLevel.Player))
 				{
 					m.SendMessage("Resynchronizing server and client.");
-					m.Send( new MobileUpdate(m) );
+					m.Send(new MobileUpdate(m));
 					((PlayerMobile)m).m_LastResynchTime = DateTime.Now;
 				}
 				else
@@ -74,6 +74,6 @@ namespace Server.Scripts.Commands
 			}
 
 		}
-		
+
 	}
 }

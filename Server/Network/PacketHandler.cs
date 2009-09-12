@@ -22,8 +22,8 @@ using System;
 
 namespace Server.Network
 {
-	public delegate void OnPacketReceive( NetState state, PacketReader pvSrc );
-	public delegate bool ThrottlePacketCallback( NetState state );
+	public delegate void OnPacketReceive(NetState state, PacketReader pvSrc);
+	public delegate bool ThrottlePacketCallback(NetState state);
 
 	public class PacketHandler
 	{
@@ -33,7 +33,7 @@ namespace Server.Network
 		private OnPacketReceive m_OnReceive;
 		private ThrottlePacketCallback m_ThrottleCallback;
 
-		public PacketHandler( int packetID, int length, bool ingame, OnPacketReceive onReceive )
+		public PacketHandler(int packetID, int length, bool ingame, OnPacketReceive onReceive)
 		{
 			m_PacketID = packetID;
 			m_Length = length;
@@ -67,8 +67,8 @@ namespace Server.Network
 
 		public ThrottlePacketCallback ThrottleCallback
 		{
-			get{ return m_ThrottleCallback; }
-			set{ m_ThrottleCallback = value; }
+			get { return m_ThrottleCallback; }
+			set { m_ThrottleCallback = value; }
 		}
 
 		public bool Ingame

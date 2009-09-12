@@ -75,9 +75,9 @@ namespace Server.Scripts.Commands
 			if (e.ArgString.ToLower() == "list")
 			{
 				LoadDict(dict);
-				
+
 				LogHelper Logger = new LogHelper(logname, e.Mobile, true);
-				int orphans=0;
+				int orphans = 0;
 				foreach (Serial serial in dict.Keys)
 				{
 					Item item = World.FindItem(serial);

@@ -95,7 +95,7 @@ namespace Server.Mobiles
 
 			return daw;
 		}
-		
+
 		public override bool PreferMagic()
 		{	// if we are a warrior and we have low mana, move in!
 			if (IsAllowed(FightStyle.Melee) /*&& m_Mobile.Mana < m_Mobile.ManaMax * .30*/)

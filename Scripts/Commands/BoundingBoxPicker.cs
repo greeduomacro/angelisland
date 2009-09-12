@@ -36,14 +36,14 @@ using Server.Targeting;
 
 namespace Server
 {
-	public delegate void BoundingBoxCallback( Mobile from, Map map, Point3D start, Point3D end, object state );
+	public delegate void BoundingBoxCallback(Mobile from, Map map, Point3D start, Point3D end, object state);
 
 	public class BoundingBoxPicker
 	{
-		public static void Begin( Mobile from, BoundingBoxCallback callback, object state )
+		public static void Begin(Mobile from, BoundingBoxCallback callback, object state)
 		{
-			from.SendMessage( "Target the first location of the bounding box." );
-			from.Target = new PickTarget( callback, state );
+			from.SendMessage("Target the first location of the bounding box.");
+			from.Target = new PickTarget(callback, state);
 		}
 
 		private class PickTarget : Target
@@ -54,11 +54,13 @@ namespace Server
 			private BoundingBoxCallback m_Callback;
 			private object m_State;
 
-			public PickTarget( BoundingBoxCallback callback, object state ) : this( Point3D.Zero, true, null, callback, state )
+			public PickTarget(BoundingBoxCallback callback, object state)
+				: this(Point3D.Zero, true, null, callback, state)
 			{
 			}
 
-			public PickTarget( Point3D store, bool first, Map map, BoundingBoxCallback callback, object state ) : base( -1, true, TargetFlags.None )
+			public PickTarget(Point3D store, bool first, Map map, BoundingBoxCallback callback, object state)
+				: base(-1, true, TargetFlags.None)
 			{
 				m_Store = store;
 				m_First = first;
@@ -67,34 +69,34 @@ namespace Server
 				m_State = state;
 			}
 
-			protected override void OnTarget( Mobile from, object targeted )
+			protected override void OnTarget(Mobile from, object targeted)
 			{
 				IPoint3D p = targeted as IPoint3D;
 
-				if ( p == null )
+				if (p == null)
 					return;
-				else if ( p is Item )
+				else if (p is Item)
 					p = ((Item)p).GetWorldTop();
 
-				if ( m_First )
+				if (m_First)
 				{
-					from.SendMessage( "Target another location to complete the bounding box." );
-					from.Target = new PickTarget( new Point3D( p ), false, from.Map, m_Callback, m_State );
+					from.SendMessage("Target another location to complete the bounding box.");
+					from.Target = new PickTarget(new Point3D(p), false, from.Map, m_Callback, m_State);
 				}
-				else if ( from.Map != m_Map )
+				else if (from.Map != m_Map)
 				{
-					from.SendMessage( "Both locations must reside on the same map." );
+					from.SendMessage("Both locations must reside on the same map.");
 				}
-				else if ( m_Map != null && m_Map != Map.Internal && m_Callback != null )
+				else if (m_Map != null && m_Map != Map.Internal && m_Callback != null)
 				{
 					Point3D start = m_Store;
-					Point3D end = new Point3D( p );
+					Point3D end = new Point3D(p);
 
-					Utility.FixPoints( ref start, ref end );
+					Utility.FixPoints(ref start, ref end);
 
-					m_Callback( from, m_Map, start, end, m_State );
+					m_Callback(from, m_Map, start, end, m_State);
 				}
 			}
 		}
 	}
-} 
+}

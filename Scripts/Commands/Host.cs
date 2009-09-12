@@ -54,24 +54,24 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "Host", AccessLevel.GameMaster, new CommandEventHandler( Host_OnCommand ) );
+			Server.Commands.Register("Host", AccessLevel.GameMaster, new CommandEventHandler(Host_OnCommand));
 		}
 
-		[Usage( "Host" )]
-		[Description( "Display host information." )]
-		public static void Host_OnCommand( CommandEventArgs e )
+		[Usage("Host")]
+		[Description("Display host information.")]
+		public static void Host_OnCommand(CommandEventArgs e)
 		{
 			try
 			{
 				string host = Dns.GetHostName();
-				IPHostEntry iphe = Dns.Resolve( host );
+				IPHostEntry iphe = Dns.Resolve(host);
 				IPAddress[] ips = iphe.AddressList;
 
-                e.Mobile.SendMessage("You are on the \"{0}\" Server.",
-                    Utility.IsHostPROD(host) ? "PROD" : Utility.IsHostTC(host) ? "Test Center" : host );
+				e.Mobile.SendMessage("You are on the \"{0}\" Server.",
+					Utility.IsHostPROD(host) ? "PROD" : Utility.IsHostTC(host) ? "Test Center" : host);
 
-				for ( int i = 0; i < ips.Length; ++i )
-					e.Mobile.SendMessage( "IP: {0}", ips[i]);
+				for (int i = 0; i < ips.Length; ++i)
+					e.Mobile.SendMessage("IP: {0}", ips[i]);
 			}
 			catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
 		}

@@ -53,26 +53,26 @@ namespace Server
 {
 	public struct TimedLock : IDisposable
 	{
-		public static TimedLock Lock (object o)
+		public static TimedLock Lock(object o)
 		{
-			return Lock (o, TimeSpan.FromMilliseconds(1000));
+			return Lock(o, TimeSpan.FromMilliseconds(1000));
 		}
 
-		public static TimedLock Lock (object o, TimeSpan timeout)
+		public static TimedLock Lock(object o, TimeSpan timeout)
 		{
-			TimedLock tl = new TimedLock (o);
-			if (!Monitor.TryEnter (o, timeout))
+			TimedLock tl = new TimedLock(o);
+			if (!Monitor.TryEnter(o, timeout))
 			{
 #if DEBUG
             System.GC.SuppressFinalize(tl.leakDetector);
 #endif
-				throw new LockTimeoutException ();
+				throw new LockTimeoutException();
 			}
 
 			return tl;
 		}
 
-		private TimedLock (object o)
+		private TimedLock(object o)
 		{
 			target = o;
 #if DEBUG
@@ -81,9 +81,9 @@ namespace Server
 		}
 		private object target;
 
-		public void Dispose ()
+		public void Dispose()
 		{
-			Monitor.Exit (target);
+			Monitor.Exit(target);
 
 			// It's a bad error if someone forgets to call Dispose,
 			// so in Debug builds, we put a finalizer in to detect
@@ -114,7 +114,8 @@ namespace Server
 
 	public class LockTimeoutException : ApplicationException
 	{
-		public LockTimeoutException () : base("Timeout waiting for lock")
+		public LockTimeoutException()
+			: base("Timeout waiting for lock")
 		{
 		}
 	}

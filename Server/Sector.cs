@@ -42,11 +42,11 @@ namespace Server
 		private bool m_Active;
 
 		private static ArrayList m_DefaultList = ArrayList.ReadOnly(new ArrayList(0));
-        private static Dictionary<Serial, object> m_DefaultTable = new Dictionary<Serial, object>(0);
+		private static Dictionary<Serial, object> m_DefaultTable = new Dictionary<Serial, object>(0);
 
 		//public static ArrayList EmptyList
 		//{
-			//get { return m_DefaultList; }
+		//get { return m_DefaultList; }
 		//}
 
 		public Sector(int x, int y, Map owner)
@@ -187,9 +187,9 @@ namespace Server
 				if (m_Items != null)
 					foreach (Item item in m_Items.Values)
 						item.OnSectorActivate();
-					
+
 				//for (int i = 0; m_Items != null && i < m_Items.Count; i++)
-					//((Item)m_Items.Values[i]).OnSectorActivate();
+				//((Item)m_Items.Values[i]).OnSectorActivate();
 
 
 				if (m_Mobiles != null)
@@ -221,14 +221,14 @@ namespace Server
 						item.OnSectorDeactivate();
 
 				//for (int i = 0; m_Items != null && i < m_Items.Count; i++)
-					//((Item)m_Items[i]).OnSectorDeactivate();
+				//((Item)m_Items[i]).OnSectorDeactivate();
 
 				if (m_Mobiles != null)
 					foreach (Mobile m in m_Mobiles.Values)
 						m.OnSectorDeactivate();
 
 				//for (int i = 0; m_Mobiles != null && i < m_Mobiles.Count; i++)
-					//((Mobile)m_Mobiles.Values[i]).OnSectorDeactivate();
+				//((Mobile)m_Mobiles.Values[i]).OnSectorDeactivate();
 
 				m_Active = false;
 			}
@@ -250,24 +250,24 @@ namespace Server
 			get
 			{
 				if (m_Multis == null)
-                    return m_DefaultTable;
+					return m_DefaultTable;
 
-                return m_Multis;
+				return m_Multis;
 			}
 		}
 
-        public Dictionary<Serial, object> Mobiles
+		public Dictionary<Serial, object> Mobiles
 		{
 			get
 			{
 				if (m_Mobiles == null)
-                    return m_DefaultTable;
+					return m_DefaultTable;
 
 				return m_Mobiles;
 			}
 		}
 
-        public Dictionary<Serial, object> Items
+		public Dictionary<Serial, object> Items
 		{
 			get
 			{
@@ -278,23 +278,23 @@ namespace Server
 			}
 		}
 
-        public Dictionary<Serial, object> Clients
+		public Dictionary<Serial, object> Clients
 		{
 			get
 			{
 				if (m_Clients == null)
-                    return m_DefaultTable;
+					return m_DefaultTable;
 
 				return m_Clients;
 			}
 		}
 
-        public Dictionary<Serial, object> Players
+		public Dictionary<Serial, object> Players
 		{
 			get
 			{
 				if (m_Players == null)
-                    return m_DefaultTable;
+					return m_DefaultTable;
 
 				return m_Players;
 			}

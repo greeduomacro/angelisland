@@ -1,23 +1,23 @@
 
- 
- /*
- *	This program is the CONFIDENTIAL and PROPRIETARY property 
- *	of Tomasello Software LLC. Any unauthorized use, reproduction or
- *	transfer of this computer program is strictly prohibited.
- *
- *      Copyright (c) 2004 Tomasello Software LLC.
- *	This is an unpublished work, and is subject to limited distribution and
- *	restricted disclosure only. ALL RIGHTS RESERVED.
- *
- *			RESTRICTED RIGHTS LEGEND
- *	Use, duplication, or disclosure by the Government is subject to
- *	restrictions set forth in subparagraph (c)(1)(ii) of the Rights in
- * 	Technical Data and Computer Software clause at DFARS 252.227-701.
- *
- *	Angel Island UO Shard	Version 1.0
- *			Release A
- *			March 25, 2004
- */
+
+/*
+*	This program is the CONFIDENTIAL and PROPRIETARY property 
+*	of Tomasello Software LLC. Any unauthorized use, reproduction or
+*	transfer of this computer program is strictly prohibited.
+*
+*      Copyright (c) 2004 Tomasello Software LLC.
+*	This is an unpublished work, and is subject to limited distribution and
+*	restricted disclosure only. ALL RIGHTS RESERVED.
+*
+*			RESTRICTED RIGHTS LEGEND
+*	Use, duplication, or disclosure by the Government is subject to
+*	restrictions set forth in subparagraph (c)(1)(ii) of the Rights in
+* 	Technical Data and Computer Software clause at DFARS 252.227-701.
+*
+*	Angel Island UO Shard	Version 1.0
+*			Release A
+*			March 25, 2004
+*/
 
 /* Scripts/Commands/PackMemory.cs
  * CHANGELOG:
@@ -94,34 +94,34 @@ using Server.Accounting;
 namespace Server.Scripts.Commands
 {
 
-    public class PackMemory
-    {
-        public static void Initialize()
-        {
-            Server.Commands.Register("PackMemory", AccessLevel.Administrator, new CommandEventHandler(PackMemory_OnCommand));
-        }
+	public class PackMemory
+	{
+		public static void Initialize()
+		{
+			Server.Commands.Register("PackMemory", AccessLevel.Administrator, new CommandEventHandler(PackMemory_OnCommand));
+		}
 
-        [Usage("PackMemory")]
-        [Description("Global Garbage Collect")]
-        public static void PackMemory_OnCommand(CommandEventArgs e)
-        {
-            if (e.Arguments.Length == 0 || ((e.Arguments[0] != "true" && e.Arguments[0] != "false")))
-            {
-                e.Mobile.SendMessage("Usage: PackMemory <true|false>");
-                e.Mobile.SendMessage("Where: true means to WaitForPendingFinalizers.");
-                return;
-            }
+		[Usage("PackMemory")]
+		[Description("Global Garbage Collect")]
+		public static void PackMemory_OnCommand(CommandEventArgs e)
+		{
+			if (e.Arguments.Length == 0 || ((e.Arguments[0] != "true" && e.Arguments[0] != "false")))
+			{
+				e.Mobile.SendMessage("Usage: PackMemory <true|false>");
+				e.Mobile.SendMessage("Where: true means to WaitForPendingFinalizers.");
+				return;
+			}
 
-            Utility.TimeCheck tc = new Utility.TimeCheck();
-            e.Mobile.SendMessage("Packing memory...");
-            tc.Start();
-            System.GC.Collect();
-            if (e.Arguments[0] == "true")
-                System.GC.WaitForPendingFinalizers();
-            tc.End();
-            e.Mobile.SendMessage("{0} bytes in allocated memory", System.GC.GetTotalMemory(false));
-            e.Mobile.SendMessage("PackMemory took {0}", tc.TimeTaken);
-        }
-    }
+			Utility.TimeCheck tc = new Utility.TimeCheck();
+			e.Mobile.SendMessage("Packing memory...");
+			tc.Start();
+			System.GC.Collect();
+			if (e.Arguments[0] == "true")
+				System.GC.WaitForPendingFinalizers();
+			tc.End();
+			e.Mobile.SendMessage("{0} bytes in allocated memory", System.GC.GetTotalMemory(false));
+			e.Mobile.SendMessage("PackMemory took {0}", tc.TimeTaken);
+		}
+	}
 }
 

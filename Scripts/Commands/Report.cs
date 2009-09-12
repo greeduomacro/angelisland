@@ -83,7 +83,8 @@ namespace Scripts.Commands
 
 		private class ReportTarget : Target
 		{
-			public ReportTarget() : base(11, false, TargetFlags.None)
+			public ReportTarget()
+				: base(11, false, TargetFlags.None)
 			{
 			}
 
@@ -103,23 +104,24 @@ namespace Scripts.Commands
 		{
 			private PlayerMobile m_Player;
 
-			public ReportGump(PlayerMobile player) : base(400, 350)
+			public ReportGump(PlayerMobile player)
+				: base(400, 350)
 			{
 				m_Player = player;
 
-				AddPage( 0 );
+				AddPage(0);
 
-				AddBackground( 0, 0, 400, 350, 2600 );
+				AddBackground(0, 0, 400, 350, 2600);
 
-				AddHtml( 0, 20, 400, 35, "<center>Report Abusive Player</center>", false, false );
+				AddHtml(0, 20, 400, 35, "<center>Report Abusive Player</center>", false, false);
 
-				AddHtml( 50, 55, 300, 140, "You are about to report " + player.Name + " to the Angel Island Staff. This is a serious charge, and is not in place for simple trash talking. Use this command to report racism, sexually offensive language and other such activities. All reports will be reviewed by an Administrator. Do you want to continue?", true, false ); 
-		
-				AddButton( 200, 227, 4005, 4007, 0, GumpButtonType.Reply, 0 );
-				AddHtmlLocalized( 235, 230, 110, 35, 1011012, false, false ); // CANCEL
+				AddHtml(50, 55, 300, 140, "You are about to report " + player.Name + " to the Angel Island Staff. This is a serious charge, and is not in place for simple trash talking. Use this command to report racism, sexually offensive language and other such activities. All reports will be reviewed by an Administrator. Do you want to continue?", true, false);
 
-				AddButton( 65, 227, 4005, 4007, 1, GumpButtonType.Reply, 0 );
-				AddHtmlLocalized( 100, 230, 110, 35, 1011011, false, false ); // CONTINUE				
+				AddButton(200, 227, 4005, 4007, 0, GumpButtonType.Reply, 0);
+				AddHtmlLocalized(235, 230, 110, 35, 1011012, false, false); // CANCEL
+
+				AddButton(65, 227, 4005, 4007, 1, GumpButtonType.Reply, 0);
+				AddHtmlLocalized(100, 230, 110, 35, 1011011, false, false); // CONTINUE				
 			}
 
 			public override void OnResponse(Server.Network.NetState sender, RelayInfo info)
@@ -136,12 +138,12 @@ namespace Scripts.Commands
 
 					// don't announce to staff if staff is being reported!
 					if (m_Player.AccessLevel <= AccessLevel.Player)
-						foreach ( Server.Network.NetState state in Server.Network.NetState.Instances )
+						foreach (Server.Network.NetState state in Server.Network.NetState.Instances)
 						{
 							Mobile m = state.Mobile;
 
-							if ( m != null && m.AccessLevel > AccessLevel.Player )
-								m.SendMessage( from.Name + " has reported " + m_Player.Name + " as abusive." );
+							if (m != null && m.AccessLevel > AccessLevel.Player)
+								m.SendMessage(from.Name + " has reported " + m_Player.Name + " as abusive.");
 						}
 				}
 				else

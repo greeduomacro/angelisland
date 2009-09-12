@@ -49,21 +49,21 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "Listen", AccessLevel.GameMaster, new CommandEventHandler( Listen_OnCommand ) );
+			Server.Commands.Register("Listen", AccessLevel.GameMaster, new CommandEventHandler(Listen_OnCommand));
 		}
 
-		public static void Listen_OnCommand( CommandEventArgs e )
+		public static void Listen_OnCommand(CommandEventArgs e)
 		{
-			e.Mobile.BeginTarget( -1, false, TargetFlags.None, new TargetCallback( Listen_OnTarget ) );
-			e.Mobile.SendMessage( "Target a player." );
+			e.Mobile.BeginTarget(-1, false, TargetFlags.None, new TargetCallback(Listen_OnTarget));
+			e.Mobile.SendMessage("Target a player.");
 		}
 
-		public static void Listen_OnTarget( Mobile from, object obj )
+		public static void Listen_OnTarget(Mobile from, object obj)
 		{
-			if ( obj is Mobile )
+			if (obj is Mobile)
 			{
-				Server.Engines.PartySystem.Party.ListenToParty_OnTarget( from, obj );
-				Server.Guilds.Guild.ListenToGuild_OnTarget( from, obj );
+				Server.Engines.PartySystem.Party.ListenToParty_OnTarget(from, obj);
+				Server.Guilds.Guild.ListenToGuild_OnTarget(from, obj);
 			}
 		}
 

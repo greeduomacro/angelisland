@@ -77,16 +77,19 @@ namespace Server.Scripts.Commands
 	{
 		private ArrayList m_LogFile;
 		private string m_LogFilename;
-        private int m_MaxOutput = 25;   // only display first 25 lines
+		private int m_MaxOutput = 25;   // only display first 25 lines
 		private int m_Count;
 		private static ArrayList m_OpenLogs = new ArrayList();
-		public static ArrayList OpenLogs { get { return m_OpenLogs; }		}
+		public static ArrayList OpenLogs { get { return m_OpenLogs; } }
 
-		public int Count {
-			get {
+		public int Count
+		{
+			get
+			{
 				return m_Count;
 			}
-			set {
+			set
+			{
 				m_Count = value;
 			}
 		}
@@ -115,7 +118,7 @@ namespace Server.Scripts.Commands
 		public LogHelper(string filename, Mobile from)
 		{
 			m_Overwrite = false;
-			m_Person	= from;
+			m_Person = from;
 			m_LogFilename = filename;
 			m_SingleLine = false;
 
@@ -146,7 +149,7 @@ namespace Server.Scripts.Commands
 		public LogHelper(string filename, Mobile from, bool overwrite)
 		{
 			m_Overwrite = overwrite;
-			m_Person	= from;
+			m_Person = from;
 			m_LogFilename = filename;
 			m_SingleLine = false;
 
@@ -157,34 +160,34 @@ namespace Server.Scripts.Commands
 		public LogHelper(string filename, Mobile from, bool overwrite, bool sline)
 		{
 			m_Overwrite = overwrite;
-			m_Person	= from;
+			m_Person = from;
 			m_LogFilename = filename;
 			m_SingleLine = sline;
 
 			Start();
 		}
 
-        private static int m_LogExceptionCount = 0;
-        public static void LogException(Exception ex)
-        {
-            if (m_LogExceptionCount++ > 100)
-                return;
+		private static int m_LogExceptionCount = 0;
+		public static void LogException(Exception ex)
+		{
+			if (m_LogExceptionCount++ > 100)
+				return;
 
-            try
-            {
-                LogHelper Logger = new LogHelper("Exception.log", false);
-                string text = String.Format("{0}\r\n{1}", ex.Message, ex.StackTrace);
-                Logger.Log(LogType.Text, text);
-                Logger.Finish();
+			try
+			{
+				LogHelper Logger = new LogHelper("Exception.log", false);
+				string text = String.Format("{0}\r\n{1}", ex.Message, ex.StackTrace);
+				Logger.Log(LogType.Text, text);
+				Logger.Finish();
 				Console.WriteLine(text);
-            }
-            catch
-            {
-                // do nothing here as we do not want to enter a "cycle of doom!"
-                //  Basically, we do not want the caller to catch an exception here, and call
-                //  LogException() again, where it throws another exception, and so forth
-            } 
-        }
+			}
+			catch
+			{
+				// do nothing here as we do not want to enter a "cycle of doom!"
+				//  Basically, we do not want the caller to catch an exception here, and call
+				//  LogException() again, where it throws another exception, and so forth
+			}
+		}
 
 		public static void LogException(Exception ex, string additionalMessage)
 		{
@@ -204,19 +207,19 @@ namespace Server.Scripts.Commands
 			}
 		}
 
-        public static void Cheater(Mobile from, string text)
+		public static void Cheater(Mobile from, string text)
 		{
-            try
-            {
-                Cheater(from, text, false);
-            }
-            catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
+			try
+			{
+				Cheater(from, text, false);
+			}
+			catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
 		}
 
 		public static void Cheater(Mobile from, string text, bool accomplice)
 		{
-            if (from is PlayerMobile == false)
-                return;
+			if (from is PlayerMobile == false)
+				return;
 
 			// log what's going on
 			TrackIt(from, text, accomplice);
@@ -226,8 +229,8 @@ namespace Server.Scripts.Commands
 
 			//Add comment to account
 			Account a = (from as PlayerMobile).Account as Account;
-			if( a != null )
-				a.Comments.Add( new AccountComment("System", text) );
+			if (a != null)
+				a.Comments.Add(new AccountComment("System", text));
 		}
 
 		public static void TrackIt(Mobile from, string text, bool accomplice)
@@ -235,18 +238,18 @@ namespace Server.Scripts.Commands
 			LogHelper Logger = new LogHelper("Cheater.log", false);
 			Logger.Log(LogType.Mobile, from, text);
 			if (accomplice == true)
-                        {
-				IPooledEnumerable eable = from.GetMobilesInRange( 24 );
+			{
+				IPooledEnumerable eable = from.GetMobilesInRange(24);
 				foreach (Mobile m in eable)
-				{	
+				{
 					if (m is PlayerMobile && m != from)
 						Logger.Log(LogType.Mobile, m, "Possible accomplice.");
 				}
 				eable.Free();
-                        }
+			}
 			Logger.Finish();
 		}
-		
+
 		// Clear in memory log
 		public void Clear()
 		{
@@ -269,7 +272,7 @@ namespace Server.Scripts.Commands
 			m_Finished = false;
 			m_LogFile = new ArrayList();
 
-			if(!m_SingleLine)
+			if (!m_SingleLine)
 				m_LogFile.Add(string.Format("Log start : {0}", m_StartTime));
 
 			m_OpenLogs.Add(this);
@@ -283,7 +286,7 @@ namespace Server.Scripts.Commands
 				m_Finished = true;
 				TimeSpan ts = DateTime.Now - m_StartTime;
 
-				if(!m_SingleLine)
+				if (!m_SingleLine)
 					m_LogFile.Add(string.Format("Completed in {0} seconds, {1} entr{2} logged", ts.TotalSeconds, m_Count, m_Count == 1 ? "y" : "ies"));
 
 				// Report
@@ -291,44 +294,44 @@ namespace Server.Scripts.Commands
 				string sFilename = "logs/" + m_LogFilename;
 				StreamWriter LogFile = null;
 
-				try 
+				try
 				{
-					LogFile =  new StreamWriter( sFilename, !m_Overwrite );
+					LogFile = new StreamWriter(sFilename, !m_Overwrite);
 				}
-				catch (Exception e) 
+				catch (Exception e)
 				{
 					Console.WriteLine("Failed to open logfile '{0}' for writing : {1}", sFilename, e);
 				}
 
 				// Loop through the list stored and log
-				for(int i=0; i < m_LogFile.Count; i++) 
+				for (int i = 0; i < m_LogFile.Count; i++)
 				{
 
-					if(LogFile!=null)
+					if (LogFile != null)
 						LogFile.WriteLine(m_LogFile[i]);
 
-                    // Send message to the player too
-                    if (m_Person is PlayerMobile)
-                    {
-                        m_MaxOutput--;
+					// Send message to the player too
+					if (m_Person is PlayerMobile)
+					{
+						m_MaxOutput--;
 
-                        if (m_MaxOutput > 0)
-                        {
-                            if (i + 1 < m_LogFile.Count && i != 0)
-                                m_Person.SendMessage(((string)m_LogFile[i]).Replace(" ", ""));
-                            else
-                                m_Person.SendMessage((string)m_LogFile[i]);
-                        }
-                        else if (m_MaxOutput == 0)
-                        {
-                            m_Person.SendMessage("Skipping remainder of output. See log file.");
-                        }
-                    }
+						if (m_MaxOutput > 0)
+						{
+							if (i + 1 < m_LogFile.Count && i != 0)
+								m_Person.SendMessage(((string)m_LogFile[i]).Replace(" ", ""));
+							else
+								m_Person.SendMessage((string)m_LogFile[i]);
+						}
+						else if (m_MaxOutput == 0)
+						{
+							m_Person.SendMessage("Skipping remainder of output. See log file.");
+						}
+					}
 				}
 
 				// If successfully opened a stream just now, close it off!
 
-				if(LogFile!=null)
+				if (LogFile != null)
 					LogFile.Close();
 
 				if (m_OpenLogs.Contains(this))
@@ -356,24 +359,26 @@ namespace Server.Scripts.Commands
 		{
 			string LogLine = "";
 
-			if(logtype == LogType.Mixed) {
+			if (logtype == LogType.Mixed)
+			{
 
 				// Work out most appropriate in absence of specific
 
-				if(data is Mobile)
+				if (data is Mobile)
 					logtype = LogType.Mobile;
-				else if(data is Item)
+				else if (data is Item)
 					logtype = LogType.Item;
 				else
 					logtype = LogType.Text;
 
 			}
 
-			switch(logtype) {
+			switch (logtype)
+			{
 
-				case LogType.Mobile :
+				case LogType.Mobile:
 
-					Mobile mob = (Mobile) data;
+					Mobile mob = (Mobile)data;
 					LogLine = string.Format("{0}:Loc({1},{2},{3}):{4}:Mob({5})({6}):{7}:{8}:{9}",
 								mob.GetType().Name,
 								mob.Location.X, mob.Location.Y, mob.Location.Z,
@@ -382,17 +387,17 @@ namespace Server.Scripts.Commands
 								mob.Serial,
 								mob.Region.Name,
 								mob.Account,
-								additional );
+								additional);
 
 					break;
 
-				case LogType.ItemSerial :
-				case LogType.Item :
+				case LogType.ItemSerial:
+				case LogType.Item:
 
-					Item item = (Item) data;
+					Item item = (Item)data;
 					object root = item.RootParent;
 
-					if ( root is Mobile )
+					if (root is Mobile)
 						// Item loc, map, root type, root name
 						LogLine = string.Format("{0}:Loc{1}:{2}:{3}({4}):Mob({5})({6}):{7}",
 							item.GetType().Name,
@@ -404,7 +409,7 @@ namespace Server.Scripts.Commands
 							((Mobile)root).Serial,
 							additional
 						);
-					else 
+					else
 						// Item loc, map
 						LogLine = string.Format("{0}:Loc{1}:{2}:{3}({4}):{5}",
 							item.GetType().Name,
@@ -417,7 +422,7 @@ namespace Server.Scripts.Commands
 
 					break;
 
-				case LogType.Text :
+				case LogType.Text:
 
 					LogLine = data.ToString();
 					break;
@@ -425,11 +430,11 @@ namespace Server.Scripts.Commands
 
 			// If this is a "single line" loghelper instance, we need to replace
 			// out newline characters
-			if(m_SingleLine)
+			if (m_SingleLine)
 			{
-            	LogLine = LogLine.Replace("\n", " || ");
-				LogLine = m_StartTime.ToString().Replace(":",".") + ":" + LogLine;
-            }
+				LogLine = LogLine.Replace("\n", " || ");
+				LogLine = m_StartTime.ToString().Replace(":", ".") + ":" + LogLine;
+			}
 
 			m_LogFile.Add(LogLine);
 			m_Count++;
@@ -468,7 +473,7 @@ namespace Server.Scripts.Commands
 			try { LogException(e.Exception); }
 			catch { Console.WriteLine("Nested exception while processing: {0}", e.Exception.Message); }	// do not call LogException
 		}
-		
+
 	}
 
 	public enum LogType

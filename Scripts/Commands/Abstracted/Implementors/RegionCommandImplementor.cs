@@ -47,7 +47,7 @@ namespace Server.Scripts.Commands
 	{
 		public RegionCommandImplementor()
 		{
-			Accessors = new string[]{ "Region" };
+			Accessors = new string[] { "Region" };
 			SupportRequirement = CommandSupport.Region;
 			SupportsConditionals = true;
 			AccessLevel = AccessLevel.Administrator;
@@ -55,41 +55,41 @@ namespace Server.Scripts.Commands
 			Description = "Invokes the command on all appropriate mobiles in your current region. Optional condition arguments can further restrict the set of objects.";
 		}
 
-		public override void Compile( Mobile from, BaseCommand command, ref string[] args, ref object obj )
+		public override void Compile(Mobile from, BaseCommand command, ref string[] args, ref object obj)
 		{
 			try
 			{
-				ObjectConditional cond = ObjectConditional.Parse( from, ref args );
+				ObjectConditional cond = ObjectConditional.Parse(from, ref args);
 
 				bool items, mobiles;
 
-				if ( !CheckObjectTypes( command, cond, out items, out mobiles ) )
+				if (!CheckObjectTypes(command, cond, out items, out mobiles))
 					return;
 
 				Region reg = from.Region;
 
 				ArrayList list = new ArrayList();
 
-				if ( mobiles )
+				if (mobiles)
 				{
-					foreach ( Mobile mob in reg.Mobiles.Values )
+					foreach (Mobile mob in reg.Mobiles.Values)
 					{
-						if ( cond.CheckCondition( mob ) )
-							list.Add( mob );
+						if (cond.CheckCondition(mob))
+							list.Add(mob);
 					}
 				}
 				else
 				{
-					command.LogFailure( "This command does not support mobiles." );
+					command.LogFailure("This command does not support mobiles.");
 					return;
 				}
 
 				obj = list;
 			}
-			catch ( Exception ex )
+			catch (Exception ex)
 			{
 				LogHelper.LogException(ex);
-				from.SendMessage( ex.Message );
+				from.SendMessage(ex.Message);
 			}
 		}
 	}

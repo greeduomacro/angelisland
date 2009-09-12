@@ -56,11 +56,13 @@ namespace Server.Targeting
 			}
 		}
 
-		public MultiTarget( int multiID, Point3D offset ) : this( multiID, offset, 10, true, TargetFlags.None )
+		public MultiTarget(int multiID, Point3D offset)
+			: this(multiID, offset, 10, true, TargetFlags.None)
 		{
 		}
 
-		public MultiTarget( int multiID, Point3D offset, int range, bool allowGround, TargetFlags flags ) : base( range, allowGround, flags )
+		public MultiTarget(int multiID, Point3D offset, int range, bool allowGround, TargetFlags flags)
+			: base(range, allowGround, flags)
 		{
 			m_MultiID = multiID;
 			m_Offset = offset;
@@ -68,7 +70,7 @@ namespace Server.Targeting
 
 		public override Packet GetPacket()
 		{
-			return new MultiTargetReq( this );
+			return new MultiTargetReq(this);
 		}
 	}
 }

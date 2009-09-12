@@ -40,28 +40,28 @@ namespace Server.Scripts.Commands
 
 		public static void Initialize()
 		{
-			Server.Commands.Register( "Lag", AccessLevel.Player, new CommandEventHandler( LagReport_OnCommand ) );
+			Server.Commands.Register("Lag", AccessLevel.Player, new CommandEventHandler(LagReport_OnCommand));
 		}
 
-		[Usage( "Lag" )]
-		[Description( "Reports lag to the administrators" )]
-		private static void LagReport_OnCommand( CommandEventArgs arg )
+		[Usage("Lag")]
+		[Description("Reports lag to the administrators")]
+		private static void LagReport_OnCommand(CommandEventArgs arg)
 		{
 			Mobile from = arg.Mobile;
 
-			if( from is PlayerMobile )
+			if (from is PlayerMobile)
 			{
-				PlayerMobile pm = (PlayerMobile) from;
+				PlayerMobile pm = (PlayerMobile)from;
 
 				// Limit to 5 minutes between lag reports
-				if( (pm.LastLagTime + TimeSpan.FromMinutes(5.0)) < DateTime.Now )
+				if ((pm.LastLagTime + TimeSpan.FromMinutes(5.0)) < DateTime.Now)
 				{
 					// Let them log again
 					LogHelper lh = new LogHelper("lagreports.log", false, true);
 					lh.Log(LogType.Mobile, from, Server.Engines.CronScheduler.Cron.GetRecentTasks()); //adam: added schduled tasks!
 
 					//Requested by Adam:
-					Console.WriteLine("Lag at: {0}", DateTime.Now.ToShortTimeString() );
+					Console.WriteLine("Lag at: {0}", DateTime.Now.ToShortTimeString());
 
 					// Update LastLagTime on PlayerMobile
 					pm.LastLagTime = DateTime.Now;

@@ -75,241 +75,241 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "FindRunes", AccessLevel.Administrator, new CommandEventHandler( FindRunes_OnCommand ) );
-			Server.Commands.Register( "Retarget", AccessLevel.Administrator, new CommandEventHandler( RetargetRunes_OnCommand ) );
+			Server.Commands.Register("FindRunes", AccessLevel.Administrator, new CommandEventHandler(FindRunes_OnCommand));
+			Server.Commands.Register("Retarget", AccessLevel.Administrator, new CommandEventHandler(RetargetRunes_OnCommand));
 		}
 
-		[Usage( "Retarget <-regionName|-type|-point|-RegionUID> <name|type|point|uid>" )]
-		[Description( "Retargets runes, runebooks, or moonstones of the specified region to jail." )]
-		public static void RetargetRunes_OnCommand( CommandEventArgs e )
+		[Usage("Retarget <-regionName|-type|-point|-RegionUID> <name|type|point|uid>")]
+		[Description("Retargets runes, runebooks, or moonstones of the specified region to jail.")]
+		public static void RetargetRunes_OnCommand(CommandEventArgs e)
 		{
-            ArrayList regionList = new ArrayList();
-            if (HaveRegions(e, regionList))
+			ArrayList regionList = new ArrayList();
+			if (HaveRegions(e, regionList))
 			{
 				try
 				{
 					LogHelper Logger = new LogHelper("retarget.log", e.Mobile, true);
 
-					foreach ( Item item in World.Items.Values )
+					foreach (Item item in World.Items.Values)
 					{
-						if ( item is RecallRune )
+						if (item is RecallRune)
 						{
 							RecallRune rune = (RecallRune)item;
 
-                            for (int ix = 0; ix < regionList.Count; ix++)
-                            {
-                                if (rune.Marked && rune.TargetMap != null && (regionList[ix] as Region).Contains(rune.Target))
-                                {
-                                    object root = item.RootParent;
+							for (int ix = 0; ix < regionList.Count; ix++)
+							{
+								if (rune.Marked && rune.TargetMap != null && (regionList[ix] as Region).Contains(rune.Target))
+								{
+									object root = item.RootParent;
 
-                                    if (root is Mobile)
-                                    {
-                                        if (((Mobile)root).AccessLevel < AccessLevel.GameMaster)
-                                        {
-                                            Logger.Log(LogType.Item, rune, rune.Description);
-                                            rune.Target = new Point3D(0, 0, 0);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Logger.Log(LogType.Item, rune, rune.Description);
-                                        rune.Target = new Point3D(0, 0, 0);
-                                    }
-                                }
-                            }
+									if (root is Mobile)
+									{
+										if (((Mobile)root).AccessLevel < AccessLevel.GameMaster)
+										{
+											Logger.Log(LogType.Item, rune, rune.Description);
+											rune.Target = new Point3D(0, 0, 0);
+										}
+									}
+									else
+									{
+										Logger.Log(LogType.Item, rune, rune.Description);
+										rune.Target = new Point3D(0, 0, 0);
+									}
+								}
+							}
 						}
-						else if( item is Moonstone )
+						else if (item is Moonstone)
 						{
 							Moonstone stone = (Moonstone)item;
 
-                            for (int ix = 0; ix < regionList.Count; ix++)
-                            {
-                                if (stone.Marked && (regionList[ix] as Region).Contains(stone.Destination))
-                                {
-                                    object root = item.RootParent;
+							for (int ix = 0; ix < regionList.Count; ix++)
+							{
+								if (stone.Marked && (regionList[ix] as Region).Contains(stone.Destination))
+								{
+									object root = item.RootParent;
 
-                                    if (root is Mobile)
-                                    {
-                                        if (((Mobile)root).AccessLevel < AccessLevel.GameMaster)
-                                        {
-                                            Logger.Log(LogType.Item, stone, stone.Description);
-                                            stone.Destination = new Point3D(0, 0, 0);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Logger.Log(LogType.Item, stone, stone.Description);
-                                        stone.Destination = new Point3D(0, 0, 0);
-                                    }
-                                }
-                            }
+									if (root is Mobile)
+									{
+										if (((Mobile)root).AccessLevel < AccessLevel.GameMaster)
+										{
+											Logger.Log(LogType.Item, stone, stone.Description);
+											stone.Destination = new Point3D(0, 0, 0);
+										}
+									}
+									else
+									{
+										Logger.Log(LogType.Item, stone, stone.Description);
+										stone.Destination = new Point3D(0, 0, 0);
+									}
+								}
+							}
 						}
-						else if ( item is Runebook )
+						else if (item is Runebook)
 						{
 							Runebook book = (Runebook)item;
 
-                            for (int ix = 0; ix < regionList.Count; ix++)
-                            {
-							    for ( int i = 0; i < book.Entries.Count; ++i )
-							    {
-								    RunebookEntry entry = (RunebookEntry)book.Entries[i];
+							for (int ix = 0; ix < regionList.Count; ix++)
+							{
+								for (int i = 0; i < book.Entries.Count; ++i)
+								{
+									RunebookEntry entry = (RunebookEntry)book.Entries[i];
 
-								    if ( entry.Map != null && (regionList[ix] as Region).Contains( entry.Location) )
-								    {
-									    object root = item.RootParent;
+									if (entry.Map != null && (regionList[ix] as Region).Contains(entry.Location))
+									{
+										object root = item.RootParent;
 
-									    if ( root is Mobile )
-									    {
-										    if ( ((Mobile)root).AccessLevel < AccessLevel.GameMaster )
-										    {
-											    Logger.Log(LogType.Item, item, string.Format("{0}:{1}:{2}",
-																				    i,
-																				    entry.Description,
-																				    book.Description));
-    																				
-											    entry.Location = new Point3D(0, 0, 0);
-										    }
-									    }
-									    else
-									    {
-										    Logger.Log(LogType.Item, item, string.Format("{0}:{1}:{2}",
-																			    i,
-																			    entry.Description,
-																			    book.Description ));
-    																			
-										    entry.Location = new Point3D(0, 0, 0);
-									    }
-								    }
-							    }
-                            }
+										if (root is Mobile)
+										{
+											if (((Mobile)root).AccessLevel < AccessLevel.GameMaster)
+											{
+												Logger.Log(LogType.Item, item, string.Format("{0}:{1}:{2}",
+																					i,
+																					entry.Description,
+																					book.Description));
+
+												entry.Location = new Point3D(0, 0, 0);
+											}
+										}
+										else
+										{
+											Logger.Log(LogType.Item, item, string.Format("{0}:{1}:{2}",
+																				i,
+																				entry.Description,
+																				book.Description));
+
+											entry.Location = new Point3D(0, 0, 0);
+										}
+									}
+								}
+							}
 						}
 					}
-					
+
 					Logger.Finish();
 					e.Mobile.SendMessage("DONE search for runes.");
-					
+
 					return;
 				}
-				catch(Exception exc)
+				catch (Exception exc)
 				{
 					LogHelper.LogException(exc);
-                    e.Mobile.SendMessage("Exception in [Retarget -- see console.");
-                    System.Console.WriteLine("Exception in [Retarget: {0}", exc.Message);
+					e.Mobile.SendMessage("Exception in [Retarget -- see console.");
+					System.Console.WriteLine("Exception in [Retarget: {0}", exc.Message);
 					System.Console.WriteLine(exc.StackTrace);
 					return;
 				}
 			}
 			else
 			{
-                e.Mobile.SendMessage("Usage: [Retarget <-regionName|-type|-point|-RegionUID> <name|type|point|uid>");
+				e.Mobile.SendMessage("Usage: [Retarget <-regionName|-type|-point|-RegionUID> <name|type|point|uid>");
 			}
 		}
 
-        [Usage("FindRunes <-regionName|-type|-point|-RegionUID> <name|type|point|uid>")]
-		[Description( "Lists runes, runebooks, or moonstones to the specified region." )]
-		public static void FindRunes_OnCommand( CommandEventArgs e )
+		[Usage("FindRunes <-regionName|-type|-point|-RegionUID> <name|type|point|uid>")]
+		[Description("Lists runes, runebooks, or moonstones to the specified region.")]
+		public static void FindRunes_OnCommand(CommandEventArgs e)
 		{
 			try
 			{
-                ArrayList regionList = new ArrayList();
-                if (HaveRegions(e, regionList))
+				ArrayList regionList = new ArrayList();
+				if (HaveRegions(e, regionList))
 				{
 					LogHelper Logger = new LogHelper("findrunes.log", e.Mobile, true);
 
-					foreach ( Item item in World.Items.Values )
+					foreach (Item item in World.Items.Values)
 					{
-						if ( item is RecallRune )
+						if (item is RecallRune)
 						{
 							RecallRune rune = (RecallRune)item;
 
-                            for (int ix = 0; ix < regionList.Count; ix++)
-                            {
-                                if (rune.Marked && rune.TargetMap != null && (regionList[ix] as Region).Contains(rune.Target))
-                                {
-                                    object root = item.RootParent;
+							for (int ix = 0; ix < regionList.Count; ix++)
+							{
+								if (rune.Marked && rune.TargetMap != null && (regionList[ix] as Region).Contains(rune.Target))
+								{
+									object root = item.RootParent;
 
-                                    if (root is Mobile)
-                                    {
-                                        if (((Mobile)root).AccessLevel < AccessLevel.GameMaster)
-                                            Logger.Log(LogType.Item, item, rune.Description);
+									if (root is Mobile)
+									{
+										if (((Mobile)root).AccessLevel < AccessLevel.GameMaster)
+											Logger.Log(LogType.Item, item, rune.Description);
 
-                                    }
-                                    else
-                                    {
-                                        Logger.Log(LogType.Item, item, rune.Description);
-                                    }
-                                }
-                            }
+									}
+									else
+									{
+										Logger.Log(LogType.Item, item, rune.Description);
+									}
+								}
+							}
 						}
-						else if( item is Moonstone )
+						else if (item is Moonstone)
 						{
 							Moonstone stone = (Moonstone)item;
 
-                            for (int ix = 0; ix < regionList.Count; ix++)
-                            {
-                                if (stone.Marked && (regionList[ix] as Region).Contains(stone.Destination))
-                                {
-                                    object root = item.RootParent;
+							for (int ix = 0; ix < regionList.Count; ix++)
+							{
+								if (stone.Marked && (regionList[ix] as Region).Contains(stone.Destination))
+								{
+									object root = item.RootParent;
 
-                                    if (root is Mobile)
-                                    {
-                                        if (((Mobile)root).AccessLevel < AccessLevel.GameMaster)
-                                            Logger.Log(LogType.Item, item, stone.Description);
-                                    }
-                                    else
-                                    {
-                                        Logger.Log(LogType.Item, item, stone.Description);
-                                    }
-                                }
-                            }
+									if (root is Mobile)
+									{
+										if (((Mobile)root).AccessLevel < AccessLevel.GameMaster)
+											Logger.Log(LogType.Item, item, stone.Description);
+									}
+									else
+									{
+										Logger.Log(LogType.Item, item, stone.Description);
+									}
+								}
+							}
 						}
-						else if ( item is Runebook )
+						else if (item is Runebook)
 						{
 							Runebook book = (Runebook)item;
 
-                            for (int ix = 0; ix < regionList.Count; ix++)
-                            {
-                                for (int i = 0; i < book.Entries.Count; ++i)
-                                {
-                                    RunebookEntry entry = (RunebookEntry)book.Entries[i];
+							for (int ix = 0; ix < regionList.Count; ix++)
+							{
+								for (int i = 0; i < book.Entries.Count; ++i)
+								{
+									RunebookEntry entry = (RunebookEntry)book.Entries[i];
 
-                                    if (entry.Map != null && (regionList[ix] as Region).Contains(entry.Location))
-                                    {
-                                        object root = item.RootParent;
+									if (entry.Map != null && (regionList[ix] as Region).Contains(entry.Location))
+									{
+										object root = item.RootParent;
 
-                                        if (root is Mobile)
-                                        {
-                                            if (((Mobile)root).AccessLevel < AccessLevel.GameMaster)
-                                                Logger.Log(LogType.Item, item, string.Format("{0}:{1}:{2}",
-                                                    i,
-                                                    entry.Description,
-                                                    book.Description));
-                                        }
-                                        else
-                                        {
-                                            Logger.Log(LogType.Item, item, string.Format("{0}:{1}:{2}",
-                                                    i,
-                                                    entry.Description,
-                                                    book.Description));
+										if (root is Mobile)
+										{
+											if (((Mobile)root).AccessLevel < AccessLevel.GameMaster)
+												Logger.Log(LogType.Item, item, string.Format("{0}:{1}:{2}",
+													i,
+													entry.Description,
+													book.Description));
+										}
+										else
+										{
+											Logger.Log(LogType.Item, item, string.Format("{0}:{1}:{2}",
+													i,
+													entry.Description,
+													book.Description));
 
-                                        }
-                                    }
-                                }
-                            }
+										}
+									}
+								}
+							}
 						}
 					}
 
 					Logger.Finish();
 					e.Mobile.SendMessage("DONE search for runes.");
-					
+
 					return;
 				}
-                else
-                {
-                    e.Mobile.SendMessage("Usage: [FindRunes <-regionName|-type|-point|-RegionUID> <name|type|point|uid>");
-                }
+				else
+				{
+					e.Mobile.SendMessage("Usage: [FindRunes <-regionName|-type|-point|-RegionUID> <name|type|point|uid>");
+				}
 			}
-			catch(Exception exc)
+			catch (Exception exc)
 			{
 				LogHelper.LogException(exc);
 				e.Mobile.SendMessage("Exception in [findrunes -- see console.");
@@ -319,127 +319,127 @@ namespace Server.Scripts.Commands
 			}
 		}
 
-        private static bool HaveRegions(CommandEventArgs e, ArrayList regionList)
-        {
-            if (e.ArgString == null || e.ArgString.Length == 0)
-                return false;
+		private static bool HaveRegions(CommandEventArgs e, ArrayList regionList)
+		{
+			if (e.ArgString == null || e.ArgString.Length == 0)
+				return false;
 
-            string argString = e.ArgString.ToLower();
+			string argString = e.ArgString.ToLower();
 
-            if (argString.Contains("-regionname"))
-            {
-                string[] name = argString.Split(new string[] { "-regionname" }, StringSplitOptions.RemoveEmptyEntries);
-                if (name == null || name.Length == 0)
-                    return false;
+			if (argString.Contains("-regionname"))
+			{
+				string[] name = argString.Split(new string[] { "-regionname" }, StringSplitOptions.RemoveEmptyEntries);
+				if (name == null || name.Length == 0)
+					return false;
 
-                name[0] = name[0].Trim();
-                for (int ix = 0; ix < Region.Regions.Count; ix++)
-                {
-                    if ((Region.Regions[ix] as Region).Name != null && (Region.Regions[ix] as Region).Name.ToLower() == name[0])
-                        regionList.Add(Region.Regions[ix]);
-                }
+				name[0] = name[0].Trim();
+				for (int ix = 0; ix < Region.Regions.Count; ix++)
+				{
+					if ((Region.Regions[ix] as Region).Name != null && (Region.Regions[ix] as Region).Name.ToLower() == name[0])
+						regionList.Add(Region.Regions[ix]);
+				}
 
-                if (regionList.Count == 0)
-                {
-                    e.Mobile.SendMessage("No regions with a name of \"{0}\" found.", name[0]);
-                    return true;
-                }
+				if (regionList.Count == 0)
+				{
+					e.Mobile.SendMessage("No regions with a name of \"{0}\" found.", name[0]);
+					return true;
+				}
 
-                return true;
-            }
-            else if (argString.Contains("-type"))
-            {
-                string[] name = argString.Split(new string[] { "-type" }, StringSplitOptions.RemoveEmptyEntries);
-                if (name == null || name.Length == 0)
-                    return false;
+				return true;
+			}
+			else if (argString.Contains("-type"))
+			{
+				string[] name = argString.Split(new string[] { "-type" }, StringSplitOptions.RemoveEmptyEntries);
+				if (name == null || name.Length == 0)
+					return false;
 
-                name[0] = name[0].Trim();
-                for (int ix = 0; ix < Region.Regions.Count; ix++)
-                {
-                    if ((Region.Regions[ix] as Region).GetType().ToString().ToLower().Contains(name[0]))
-                        regionList.Add(Region.Regions[ix]);
-                }
+				name[0] = name[0].Trim();
+				for (int ix = 0; ix < Region.Regions.Count; ix++)
+				{
+					if ((Region.Regions[ix] as Region).GetType().ToString().ToLower().Contains(name[0]))
+						regionList.Add(Region.Regions[ix]);
+				}
 
-                if (regionList.Count == 0)
-                {
-                    e.Mobile.SendMessage("No regions with a type of \"{0}\" found.", name[0]);
-                    return true;
-                }
+				if (regionList.Count == 0)
+				{
+					e.Mobile.SendMessage("No regions with a type of \"{0}\" found.", name[0]);
+					return true;
+				}
 
-                return true;
-            }
-            else if (argString.Contains("-point"))
-            {
-                string[] name = argString.Split(new string[] { "-point" }, StringSplitOptions.RemoveEmptyEntries);
-                if (name == null || name.Length == 0)
-                    return false;
+				return true;
+			}
+			else if (argString.Contains("-point"))
+			{
+				string[] name = argString.Split(new string[] { "-point" }, StringSplitOptions.RemoveEmptyEntries);
+				if (name == null || name.Length == 0)
+					return false;
 
-                name[0] = name[0].Trim();
+				name[0] = name[0].Trim();
 
-                string[] xy = name[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-                if (xy == null || xy.Length != 2)
-                {
-                    e.Mobile.SendMessage("Pooly formatted point: \"{0}\".", name[0]);
-                    return false;
-                }
+				string[] xy = name[0].Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+				if (xy == null || xy.Length != 2)
+				{
+					e.Mobile.SendMessage("Pooly formatted point: \"{0}\".", name[0]);
+					return false;
+				}
 
-                int x, y;
-                if (int.TryParse(xy[0], out x) == false || int.TryParse(xy[1], out y) == false)
-                {
-                    e.Mobile.SendMessage("Pooly formatted point: \"{0}\".", name[0]);
-                    return false;
-                }
+				int x, y;
+				if (int.TryParse(xy[0], out x) == false || int.TryParse(xy[1], out y) == false)
+				{
+					e.Mobile.SendMessage("Pooly formatted point: \"{0}\".", name[0]);
+					return false;
+				}
 
-                Point3D px = new Point3D(x, y, 0);
-                for (int ix = 0; ix < Region.Regions.Count; ix++)
-                {
-                    if ((Region.Regions[ix] as Region).Contains(px))
-                        regionList.Add(Region.Regions[ix]);
-                }
+				Point3D px = new Point3D(x, y, 0);
+				for (int ix = 0; ix < Region.Regions.Count; ix++)
+				{
+					if ((Region.Regions[ix] as Region).Contains(px))
+						regionList.Add(Region.Regions[ix]);
+				}
 
-                if (regionList.Count == 0)
-                {
-                    e.Mobile.SendMessage("No regions containing the point \"{0}\" found.", name[0]);
-                    return true;
-                }
+				if (regionList.Count == 0)
+				{
+					e.Mobile.SendMessage("No regions containing the point \"{0}\" found.", name[0]);
+					return true;
+				}
 
-                return true;
-            }
-            else if (argString.Contains("-regionuid"))
-            {
-                string[] name = argString.Split(new string[] { "-regionuid" }, StringSplitOptions.RemoveEmptyEntries);
-                if (name == null || name.Length == 0)
-                    return false;
+				return true;
+			}
+			else if (argString.Contains("-regionuid"))
+			{
+				string[] name = argString.Split(new string[] { "-regionuid" }, StringSplitOptions.RemoveEmptyEntries);
+				if (name == null || name.Length == 0)
+					return false;
 
-                name[0] = name[0].Trim();
-                int uid;
-                if (int.TryParse(name[0], out uid) == false)
-                {
-                    e.Mobile.SendMessage("Bad UID format: \"{0}\".", name[0]);
-                    return false;
-                }
-                for (int ix = 0; ix < Region.Regions.Count; ix++)
-                {
-                    if ((Region.Regions[ix] as Region).UId == uid)
-                    {
-                        regionList.Add(Region.Regions[ix]);
-                        break;  // only one of these
-                    }
-                }
+				name[0] = name[0].Trim();
+				int uid;
+				if (int.TryParse(name[0], out uid) == false)
+				{
+					e.Mobile.SendMessage("Bad UID format: \"{0}\".", name[0]);
+					return false;
+				}
+				for (int ix = 0; ix < Region.Regions.Count; ix++)
+				{
+					if ((Region.Regions[ix] as Region).UId == uid)
+					{
+						regionList.Add(Region.Regions[ix]);
+						break;  // only one of these
+					}
+				}
 
-                if (regionList.Count == 0)
-                {
-                    e.Mobile.SendMessage("No regions with a UID of \"{0}\" found.", name[0]);
-                    return true;
-                }
+				if (regionList.Count == 0)
+				{
+					e.Mobile.SendMessage("No regions with a UID of \"{0}\" found.", name[0]);
+					return true;
+				}
 
-                return true;
-            }
-            else
-                return false;
-        }
+				return true;
+			}
+			else
+				return false;
+		}
 
-        /*
+		/*
 		public static bool IsInRegion( Point3D loc, string regionName )
 		{
 			Region reg = Region.GetByName( regionName, Map.Felucca );
@@ -473,7 +473,7 @@ namespace Server.Scripts.Commands
 			
 			return false;
 		}
-         */
+		 */
 	}
 }
 

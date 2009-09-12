@@ -59,20 +59,21 @@ namespace Server.Mobiles
 	{
 		private TimeSpan m_ShotDelay = TimeSpan.FromSeconds(0.7);
 		public DateTime m_NextShotTime;
-		
-		public ArcherAI(BaseCreature m) : base (m)
+
+		public ArcherAI(BaseCreature m)
+			: base(m)
 		{
 			m_NextShotTime = DateTime.Now + m_ShotDelay;
 		}
 
 		public override bool DoActionWander()
 		{
-			m_Mobile.DebugSay( "I have no combatant" );
+			m_Mobile.DebugSay("I have no combatant");
 
 			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
-				if ( m_Mobile.Debug )
-					m_Mobile.DebugSay( "I have detected {0} and I will attack", m_Mobile.FocusMob.Name );
+				if (m_Mobile.Debug)
+					m_Mobile.DebugSay("I have detected {0} and I will attack", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
@@ -90,120 +91,120 @@ namespace Server.Mobiles
 			Mobile c = m_Mobile.Combatant;
 			m_Mobile.Warmode = true;
 
-			if ( m_Mobile.Debug )
-				m_Mobile.DebugSay( "Doing ArcherAI DoActionCombat" );
+			if (m_Mobile.Debug)
+				m_Mobile.DebugSay("Doing ArcherAI DoActionCombat");
 
-			if ( c == null || c.Deleted || !c.Alive || c.IsDeadBondedPet || !m_Mobile.CanSee( c ) || !m_Mobile.CanBeHarmful( c, false ) || c.Map != m_Mobile.Map )
+			if (c == null || c.Deleted || !c.Alive || c.IsDeadBondedPet || !m_Mobile.CanSee(c) || !m_Mobile.CanBeHarmful(c, false) || c.Map != m_Mobile.Map)
 			{
-				if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 				{
-					if ( m_Mobile.Debug )
-						m_Mobile.DebugSay( "Something happened to my combatant, so I am going to fight {0}", m_Mobile.FocusMob.Name );
+					if (m_Mobile.Debug)
+						m_Mobile.DebugSay("Something happened to my combatant, so I am going to fight {0}", m_Mobile.FocusMob.Name);
 
 					m_Mobile.Combatant = c = m_Mobile.FocusMob;
 					m_Mobile.FocusMob = null;
 				}
 				else
 				{
-					m_Mobile.DebugSay( "Something happened to my combatant, and nothing is around. I am on guard." );
+					m_Mobile.DebugSay("Something happened to my combatant, and nothing is around. I am on guard.");
 					Action = ActionType.Guard;
 					return true;
 				}
-			
-				if ( !m_Mobile.InRange( c, m_Mobile.RangePerception ) )
+
+				if (!m_Mobile.InRange(c, m_Mobile.RangePerception))
 				{
 					// They are somewhat far away, can we find something else?
-					if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+					if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 					{
 						m_Mobile.Combatant = m_Mobile.FocusMob;
 						m_Mobile.FocusMob = null;
 					}
-					else if ( !m_Mobile.InRange( c, m_Mobile.RangePerception * 3 ) )
+					else if (!m_Mobile.InRange(c, m_Mobile.RangePerception * 3))
 					{
 						m_Mobile.Combatant = null;
 					}
 
 					c = m_Mobile.Combatant;
 
-					if ( c == null )
+					if (c == null)
 					{
-						m_Mobile.DebugSay( "My combatant has fled, so I am on guard" );
+						m_Mobile.DebugSay("My combatant has fled, so I am on guard");
 						Action = ActionType.Guard;
 						return true;
 					}
 				}
 			}
-		
-			if(c != null)
-			{	
+
+			if (c != null)
+			{
 				//caculate delta offset for when to stop and fire.
 				DateTime NextFire = m_Mobile.NextCombatTime;
-				bool bTimeout = ( DateTime.Now + TimeSpan.FromSeconds(0.25)) >= NextFire;
-					
+				bool bTimeout = (DateTime.Now + TimeSpan.FromSeconds(0.25)) >= NextFire;
+
 				//pause to fire when need be, based on swing timer and core delay
 				//computer swing time via next combat time and then subtract 0.25 as
 				//that is the delay returned when moving and a bow is equipped.
-				if(m_Mobile.InRange(c, m_Mobile.Weapon.MaxRange) &&  bTimeout == true )
+				if (m_Mobile.InRange(c, m_Mobile.Weapon.MaxRange) && bTimeout == true)
 				{
-					if ( m_Mobile.Debug )
+					if (m_Mobile.Debug)
 						m_Mobile.DebugSay("pauseing to shoot");
 
 					m_NextShotTime = DateTime.Now + m_ShotDelay;
-					m_Mobile.Direction = m_Mobile.GetDirectionTo( c );
+					m_Mobile.Direction = m_Mobile.GetDirectionTo(c);
 				}
-											
+
 				//only run when were not waiting for a shot delay
-				if ( DateTime.Now >= m_NextShotTime )
+				if (DateTime.Now >= m_NextShotTime)
 				{
-				
-					if (WalkMobileRange(c, 1, true, m_Mobile.RangeFight, m_Mobile.Weapon.MaxRange -2))
+
+					if (WalkMobileRange(c, 1, true, m_Mobile.RangeFight, m_Mobile.Weapon.MaxRange - 2))
 					{
-						if ( m_Mobile.Debug )
-							m_Mobile.DebugSay( "I am in range");
+						if (m_Mobile.Debug)
+							m_Mobile.DebugSay("I am in range");
 					}
-						
+
 				}
-								
+
 				// When we have no ammo, we flee
-				if(m_Mobile.UsesHumanWeapons)
+				if (m_Mobile.UsesHumanWeapons)
 				{
 					Container pack = m_Mobile.Backpack;
 
-					if (pack == null || pack.FindItemByType( typeof( Arrow ) ) == null)
+					if (pack == null || pack.FindItemByType(typeof(Arrow)) == null)
 					{
-						if ( m_Mobile.Debug )
-							m_Mobile.DebugSay( "I am out of ammo and thus going to flee");
+						if (m_Mobile.Debug)
+							m_Mobile.DebugSay("I am out of ammo and thus going to flee");
 
 						Action = ActionType.Flee;
 						return true;
 					}
 				}
-			
+
 				// At 20% we should check if we must leave
-				if ( m_Mobile.Hits < m_Mobile.HitsMax*20/100 )
+				if (m_Mobile.Hits < m_Mobile.HitsMax * 20 / 100)
 				{
 					bool bFlee = false;
 					// if my current hits are more than my opponent, i don't care
-					if ( m_Mobile.Combatant != null && m_Mobile.Hits < m_Mobile.Combatant.Hits)
+					if (m_Mobile.Combatant != null && m_Mobile.Hits < m_Mobile.Combatant.Hits)
 					{
 						int iDiff = m_Mobile.Combatant.Hits - m_Mobile.Hits;
 
-						if ( Utility.Random(0, 100) > 10 + iDiff) // 10% to flee + the diff of hits
+						if (Utility.Random(0, 100) > 10 + iDiff) // 10% to flee + the diff of hits
 						{
 							bFlee = true;
 						}
 					}
-					else if ( m_Mobile.Combatant != null && m_Mobile.Hits >= m_Mobile.Combatant.Hits)
+					else if (m_Mobile.Combatant != null && m_Mobile.Hits >= m_Mobile.Combatant.Hits)
 					{
-						if ( Utility.Random(0, 100) > 10 ) // 10% to flee
+						if (Utility.Random(0, 100) > 10) // 10% to flee
 						{
 							bFlee = true;
 						}
 					}
-						
+
 					if (bFlee)
 					{
-						Action = ActionType.Flee; 
+						Action = ActionType.Flee;
 					}
 				}
 
@@ -214,10 +215,10 @@ namespace Server.Mobiles
 
 		public override bool DoActionGuard()
 		{
-			if ( AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+			if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
-				if ( m_Mobile.Debug )
-					m_Mobile.DebugSay( "I have detected {0}, attacking", m_Mobile.FocusMob.Name );
+				if (m_Mobile.Debug)
+					m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;

@@ -34,9 +34,9 @@ namespace Server
 		AOS,
 		SE,
 		ML,
-        reserved1,
-        reserved2,
-        AngelIsland
+		reserved1,
+		reserved2,
+		AngelIsland
 	}
 	public class ExpansionInfo
 	{
@@ -45,15 +45,15 @@ namespace Server
 
 		private ClientVersion m_RequiredClient;	//Used as an alternative to the flags
 
-		public string Name{ get{ return m_Name; } }
-		public int ID{ get{ return m_ID; } }
-		public int NetStateFlag{ get{ return m_NetStateFlag; } }
-		public int SupportedFeatures{ get{ return m_SupportedFeatures; } }
+		public string Name { get { return m_Name; } }
+		public int ID { get { return m_ID; } }
+		public int NetStateFlag { get { return m_NetStateFlag; } }
+		public int SupportedFeatures { get { return m_SupportedFeatures; } }
 		public int CharacterListFlags { get { return m_CharListFlags; } }
-		public int CustomHousingFlag { get{ return m_CustomHousingFlag; } }
+		public int CustomHousingFlag { get { return m_CustomHousingFlag; } }
 		public ClientVersion RequiredClient { get { return m_RequiredClient; } }
 
-		public ExpansionInfo( int id, string name, int netStateFlag, int supportedFeatures, int charListFlags, int customHousingFlag )
+		public ExpansionInfo(int id, string name, int netStateFlag, int supportedFeatures, int charListFlags, int customHousingFlag)
 		{
 			m_Name = name;
 			m_ID = id;
@@ -63,7 +63,7 @@ namespace Server
 			m_CustomHousingFlag = customHousingFlag;
 		}
 
-		public ExpansionInfo( int id, string name, ClientVersion requiredClient, int supportedFeatures, int charListFlags, int customHousingFlag )
+		public ExpansionInfo(int id, string name, ClientVersion requiredClient, int supportedFeatures, int charListFlags, int customHousingFlag)
 		{
 			m_Name = name;
 			m_ID = id;
@@ -88,22 +88,22 @@ namespace Server
 				//0x200 + 0x400 for KR?
 			};
 
-		public static ExpansionInfo GetInfo( Expansion ex )
+		public static ExpansionInfo GetInfo(Expansion ex)
 		{
-			return GetInfo( (int)ex );
+			return GetInfo((int)ex);
 		}
 
-		public static ExpansionInfo GetInfo( int ex )
+		public static ExpansionInfo GetInfo(int ex)
 		{
 			int v = (int)ex;
 
-			if( v < 0 || v >= m_Table.Length )
+			if (v < 0 || v >= m_Table.Length)
 				v = 0;
 
 			return m_Table[v];
 		}
 
-		public static ExpansionInfo CurrentExpansion { get { return GetInfo( Core.Expansion ); } }
+		public static ExpansionInfo CurrentExpansion { get { return GetInfo(Core.Expansion); } }
 
 		public override string ToString()
 		{

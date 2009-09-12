@@ -30,18 +30,18 @@ namespace Server.Targeting
 		private Point3D m_Location;
 		private int m_TileID;
 
-		public LandTarget( Point3D location, Map map )
+		public LandTarget(Point3D location, Map map)
 		{
 			m_Location = location;
 
-			if ( map != null )
+			if (map != null)
 			{
-				m_Location.Z = map.GetAverageZ( m_Location.X, m_Location.Y );
-				m_TileID = map.Tiles.GetLandTile( m_Location.X, m_Location.Y ).ID & 0x3FFF;
+				m_Location.Z = map.GetAverageZ(m_Location.X, m_Location.Y);
+				m_TileID = map.Tiles.GetLandTile(m_Location.X, m_Location.Y).ID & 0x3FFF;
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public string Name
 		{
 			get
@@ -50,7 +50,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public TileFlag Flags
 		{
 			get
@@ -59,7 +59,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public int TileID
 		{
 			get
@@ -68,7 +68,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public Point3D Location
 		{
 			get
@@ -77,7 +77,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public int X
 		{
 			get
@@ -86,7 +86,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public int Y
 		{
 			get
@@ -95,7 +95,7 @@ namespace Server.Targeting
 			}
 		}
 
-		[CommandProperty( AccessLevel.Counselor )]
+		[CommandProperty(AccessLevel.Counselor)]
 		public int Z
 		{
 			get

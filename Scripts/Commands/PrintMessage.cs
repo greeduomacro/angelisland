@@ -36,12 +36,12 @@ namespace Server.Scripts.Commands
 
 		public static void Initialize()
 		{
-			Server.Commands.Register( "PrintMessage", AccessLevel.GameMaster, new CommandEventHandler( PrintMessage_OnCommand ) );
+			Server.Commands.Register("PrintMessage", AccessLevel.GameMaster, new CommandEventHandler(PrintMessage_OnCommand));
 		}
 
-		[Usage( "PrintMessage <msg_number>" )]
-		[Description( "Print the localized message associated with msg_number." )]
-		private static void PrintMessage_OnCommand( CommandEventArgs arg )
+		[Usage("PrintMessage <msg_number>")]
+		[Description("Print the localized message associated with msg_number.")]
+		private static void PrintMessage_OnCommand(CommandEventArgs arg)
 		{
 			Mobile from = arg.Mobile;
 
@@ -53,10 +53,10 @@ namespace Server.Scripts.Commands
 
 			// What message do we print
 			int message = arg.GetInt32(0);
-			from.SendLocalizedMessage( message ); 
+			from.SendLocalizedMessage(message);
 			from.SendMessage("Done.");
 		}
 
 	}
-	
+
 }

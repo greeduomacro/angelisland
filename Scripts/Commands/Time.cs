@@ -46,21 +46,21 @@ using System;
 using Server;
 using Server.Mobiles;
 using Server.Network;
- 
+
 namespace Server.Scripts.Commands
 {
 	public class TimeCommand
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "Time", AccessLevel.Player, new CommandEventHandler( Time_OnCommand ) );
+			Server.Commands.Register("Time", AccessLevel.Player, new CommandEventHandler(Time_OnCommand));
 		}
 
-		public static void Time_OnCommand( CommandEventArgs e )
+		public static void Time_OnCommand(CommandEventArgs e)
 		{
 			Mobile m = e.Mobile;
 
-			if( m is PlayerMobile )
+			if (m is PlayerMobile)
 			{
 				//m.SendMessage("Server time is: {0} PST.", DateTime.Now);
 
@@ -68,6 +68,6 @@ namespace Server.Scripts.Commands
 				m.SendMessage("Server time is: {0} {1}.", ddt.Value.ToShortTimeString(), ddt.TZName);
 			}
 		}
-		
+
 	}
 }

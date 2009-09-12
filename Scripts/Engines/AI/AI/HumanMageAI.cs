@@ -91,8 +91,9 @@ namespace Server.Mobiles
 		{
 			get { return true; }
 		}
-	
-		public HumanMageAI( BaseCreature m ) : base( m )
+
+		public HumanMageAI(BaseCreature m)
+			: base(m)
 		{
 			DmgSlowsMovement = false;
 			CanRun = true;
@@ -103,15 +104,15 @@ namespace Server.Mobiles
 		{
 			return true;
 		}
-		
+
 		public virtual Pouch FindPouch(Mobile from)
 		{
 			ArrayList list = GetPackItems(from);
 			Pouch pouch;
 
-			foreach ( Item item in list )
+			foreach (Item item in list)
 			{
-				if(item is Pouch)
+				if (item is Pouch)
 				{
 					pouch = (Pouch)item;
 					return pouch;
@@ -124,7 +125,7 @@ namespace Server.Mobiles
 		public virtual void UseTrapPouch(Mobile from)
 		{
 			Pouch pouch = FindPouch(from);
-			if(pouch != null && pouch.TrapType == TrapType.MagicTrap)
+			if (pouch != null && pouch.TrapType == TrapType.MagicTrap)
 				pouch.ExecuteTrap(from);
 		}
 
@@ -132,360 +133,360 @@ namespace Server.Mobiles
 		{
 			Spell spell = null;
 			Pouch pouch = FindPouch(from);
-			if(pouch != null && pouch.TrapType == TrapType.None)
+			if (pouch != null && pouch.TrapType == TrapType.None)
 			{
 				spell = new MagicTrapSpell(from, null);
 				spell.Cast();
 			}
 		}
-		
+
 		public virtual bool CheckCanPoison(Mobile m)
 		{
-			if(m is PlayerMobile)
+			if (m is PlayerMobile)
 				return true;
-			if(m != null && m is BaseCreature)
+			if (m != null && m is BaseCreature)
 			{
 				double total = m_Mobile.Skills[SkillName.Magery].Value + m_Mobile.Skills[SkillName.Poisoning].Value;
 				int level;
 
-				if ( total > 170.0) 
+				if (total > 170.0)
 					level = 2;
-				else if ( total > 130.0 )
+				else if (total > 130.0)
 					level = 1;
 				else
 					level = 0;
-			 
+
 
 				Poison p = ((BaseCreature)m).PoisonImmune;
 
-				if( p != null && p.Level >= level )
+				if (p != null && p.Level >= level)
 					return false;
 			}
 			return true;
-			
+
 		}
-		public override Spell ChooseSpell( Mobile c )
+		public override Spell ChooseSpell(Mobile c)
 		{
-		
-			if (c is PlayerMobile && SmartAI && (c.Spell is MagicTrapSpell || c.Spell is MagicArrowSpell ) ) 
+
+			if (c is PlayerMobile && SmartAI && (c.Spell is MagicTrapSpell || c.Spell is MagicArrowSpell))
 			{
 				m_EnemyCountersPara = true;
 			}
 
-			if(c.Int > 70 && m_Mobile.MagicDamageAbsorb <= 0 && m_Mobile.Mana > 20 && m_Mobile.Hits > 60 && m_Mobile.CanBeginAction( typeof( DefensiveSpell )))
+			if (c.Int > 70 && m_Mobile.MagicDamageAbsorb <= 0 && m_Mobile.Mana > 20 && m_Mobile.Hits > 60 && m_Mobile.CanBeginAction(typeof(DefensiveSpell)))
 			{
 				Spell temp = c.Spell as Spell;
 
-				if(temp == null || (temp != null && temp.IsCasting && (int)temp.Circle <= (int)SpellCircle.Fourth))
+				if (temp == null || (temp != null && temp.IsCasting && (int)temp.Circle <= (int)SpellCircle.Fourth))
 					return new MagicReflectSpell(m_Mobile, null);
 			}
 
-			if(c.Dex > 60 && m_Mobile.MeleeDamageAbsorb <= 0 && m_Mobile.Mana > 20 && m_Mobile.Hits > 30 && m_Mobile.CanBeginAction( typeof( DefensiveSpell )))
+			if (c.Dex > 60 && m_Mobile.MeleeDamageAbsorb <= 0 && m_Mobile.Mana > 20 && m_Mobile.Hits > 30 && m_Mobile.CanBeginAction(typeof(DefensiveSpell)))
 				return new ReactiveArmorSpell(m_Mobile, null);
 
 
 			Spell spell = null;
 
 			int healChance = (m_Mobile.Hits == 0 ? m_Mobile.HitsMax : (m_Mobile.HitsMax / m_Mobile.Hits));
-			
-			switch ( Utility.Random( 1 + healChance ) )
+
+			switch (Utility.Random(1 + healChance))
 			{
 				default:
 				case 0: // Heal ourself
-				{
-						if( HealPotCount >= 1 && m_Mobile.Hits < (m_Mobile.HitsMax - 30) )
+					{
+						if (HealPotCount >= 1 && m_Mobile.Hits < (m_Mobile.HitsMax - 30))
 							DrinkHeal(m_Mobile);
-						else if ( m_Mobile.Hits < (m_Mobile.HitsMax - 35) && m_Mobile.Hits >= 45 )
-							spell = new GreaterHealSpell( m_Mobile, null );
-						else if ( m_Mobile.Hits < (m_Mobile.HitsMax - 10) )
-							spell = new HealSpell( m_Mobile, null );
-					break;
-				}
-			
+						else if (m_Mobile.Hits < (m_Mobile.HitsMax - 35) && m_Mobile.Hits >= 45)
+							spell = new GreaterHealSpell(m_Mobile, null);
+						else if (m_Mobile.Hits < (m_Mobile.HitsMax - 10))
+							spell = new HealSpell(m_Mobile, null);
+						break;
+					}
+
 				case 1: // Set up a combo
-				{
-					//para them and med up until we have mana for a dump
-					if ( m_Mobile.Mana < 85 && m_Mobile.Mana > 2 )
 					{
-						m_RegainingMana = true;
-						//if there low on life and we have the mana try an finish them		
-						if(m_Mobile.Mana > 20 && c.Hits < 28)
-							spell = new EnergyBoltSpell(m_Mobile, null );
-
-						if(m_Mobile.Mana > 12 && c.Hits < 15)
-							spell = new LightningSpell(m_Mobile, null );
-
-						if ( c.Paralyzed && !c.Poisoned )
+						//para them and med up until we have mana for a dump
+						if (m_Mobile.Mana < 85 && m_Mobile.Mana > 2)
 						{
-							if(c.Hits < 45 && m_Mobile.Mana > 40)
-								spell = new ExplosionSpell( m_Mobile, null );
-	
-							if(c.Hits < 30)
-								spell = new EnergyBoltSpell(m_Mobile, null );
+							m_RegainingMana = true;
+							//if there low on life and we have the mana try an finish them		
+							if (m_Mobile.Mana > 20 && c.Hits < 28)
+								spell = new EnergyBoltSpell(m_Mobile, null);
 
-							m_Mobile.DebugSay( "I am going to meditate" );
+							if (m_Mobile.Mana > 12 && c.Hits < 15)
+								spell = new LightningSpell(m_Mobile, null);
 
-							m_Mobile.UseSkill( SkillName.Meditation );
+							if (c.Paralyzed && !c.Poisoned)
+							{
+								if (c.Hits < 45 && m_Mobile.Mana > 40)
+									spell = new ExplosionSpell(m_Mobile, null);
+
+								if (c.Hits < 30)
+									spell = new EnergyBoltSpell(m_Mobile, null);
+
+								m_Mobile.DebugSay("I am going to meditate");
+
+								m_Mobile.UseSkill(SkillName.Meditation);
+							}
+							else if (!c.Poisoned && m_EnemyCountersPara == false && m_Mobile.Mana > 40)
+							{
+								spell = new ParalyzeSpell(m_Mobile, null);
+							}
+							else
+							{
+								if (m_Mobile.InRange(c, 4))
+									RunFrom(c);
+								if (!m_Mobile.InRange(c, 6))
+									RunTo(c, CanRun);
+
+								//m_Mobile.UseSkill( SkillName.Meditation );
+
+							}
 						}
-						else if ( !c.Poisoned && m_EnemyCountersPara == false && m_Mobile.Mana > 40 )
+
+						if (m_Mobile.Mana > 85)
 						{
-							spell = new ParalyzeSpell( m_Mobile, null );
-						}
-						else
-						{
-							if ( m_Mobile.InRange( c, 4 ) )
-								RunFrom( c );
-							if( !m_Mobile.InRange(c, 6) )
-								RunTo( c , CanRun);
+							m_RegainingMana = false;
+							Combo = 0;
 
-							//m_Mobile.UseSkill( SkillName.Meditation );
-							
 						}
+
+						break;
 					}
-					
-					if ( m_Mobile.Mana > 85 )
-					{
-						m_RegainingMana = false;
-						Combo = 0;
-						
-					}
-
-					break;
-				}
 			}
 
 			return spell;
 		}
-				
-		public override Spell DoCombo( Mobile c )
+
+		public override Spell DoCombo(Mobile c)
 		{
 			//m_Mobile.Say("doing human AI combo");
-			if (c is PlayerMobile && SmartAI && (c.Spell is MagicTrapSpell || c.Spell is MagicArrowSpell ) )
+			if (c is PlayerMobile && SmartAI && (c.Spell is MagicTrapSpell || c.Spell is MagicArrowSpell))
 			{
 				m_EnemyCountersPara = true;
 			}
 
 			Spell spell = null;
-			
-			if ( Combo == 0 )
+
+			if (Combo == 0)
 			{
 				//m_Mobile.Say( "combo phase 1" );
-				spell = new ExplosionSpell( m_Mobile, null );
+				spell = new ExplosionSpell(m_Mobile, null);
 				++Combo; // Move to next spell
-			
+
 			}
 
-			if ( Combo == 1 )
+			if (Combo == 1)
 			{
 				//m_Mobile.Say( "combo phase 1" );
-				spell = new ExplosionSpell( m_Mobile, null );
+				spell = new ExplosionSpell(m_Mobile, null);
 				++Combo; // Move to next spell
-			
+
 			}
-			else if ( Combo == 2 )
+			else if (Combo == 2)
 			{
 				//m_Mobile.Say( "combo phase 2" );
-				if ( !c.Poisoned && (CheckCanPoison(c)) )
-					spell = new PoisonSpell( m_Mobile, null );
+				if (!c.Poisoned && (CheckCanPoison(c)))
+					spell = new PoisonSpell(m_Mobile, null);
 
 				++Combo; // Move to next spell
-			
+
 			}
 
 			else if (Combo == 3)
 			{
-			
+
 				//m_Mobile.Say( "combo phase 3" );
-				if ( c.Poisoned || !CheckCanPoison(c) )
-					spell = new WeakenSpell( m_Mobile, null );
-			
-				if( !c.Poisoned && (CheckCanPoison(c)))
-					spell = new PoisonSpell( m_Mobile, null );
+				if (c.Poisoned || !CheckCanPoison(c))
+					spell = new WeakenSpell(m_Mobile, null);
+
+				if (!c.Poisoned && (CheckCanPoison(c)))
+					spell = new PoisonSpell(m_Mobile, null);
 
 				++Combo; // Move to next spell
-			
+
 			}
 
 			else if (Combo == 4)
 			{
 				//	m_Mobile.Say( "combo phase 4 ebolt" );
 
-				if( !c.Poisoned && (CheckCanPoison(c)) )
+				if (!c.Poisoned && (CheckCanPoison(c)))
 				{
-					spell = new PoisonSpell( m_Mobile, null );
+					spell = new PoisonSpell(m_Mobile, null);
 					Combo = 4;
 				}
-				
+
 				else
-					spell = new EnergyBoltSpell( m_Mobile, null );
+					spell = new EnergyBoltSpell(m_Mobile, null);
 
 				++Combo; // Move to next spell
-			
+
 			}
-			else if ( Combo == 5 )
+			else if (Combo == 5)
 			{
 				//m_Mobile.Say( "combo phase 5" );
-				if(c.Poisoned)
+				if (c.Poisoned)
 				{
-					if(c.Hits < 20 && m_Mobile.Mana >= 20)
-						spell = new EnergyBoltSpell( m_Mobile, null );
+					if (c.Hits < 20 && m_Mobile.Mana >= 20)
+						spell = new EnergyBoltSpell(m_Mobile, null);
 
 					else
-						spell = new HarmSpell( m_Mobile, null );
-			
+						spell = new HarmSpell(m_Mobile, null);
+
 					Combo = 5; // Move to next spell
-				
+
 				}
 
-				if(!c.Poisoned )
+				if (!c.Poisoned)
 				{
-					if(m_Mobile.Mana > 20)
-						spell = new EnergyBoltSpell( m_Mobile, null );
+					if (m_Mobile.Mana > 20)
+						spell = new EnergyBoltSpell(m_Mobile, null);
 
-					if(m_Mobile.Mana < 19)
-						spell = new LightningSpell( m_Mobile, null );
+					if (m_Mobile.Mana < 19)
+						spell = new LightningSpell(m_Mobile, null);
 					Combo = -1; // Reset combo state
-				
+
 				}
-						
+
 			}
-		
+
 			return spell;
 		}
-	
+
 		public override bool DoActionCombat()
 		{
 			m_Mobile.DebugSay("doing Base HumanMageAI combataction");
 			Mobile c = m_Mobile.Combatant;
 			m_Mobile.Warmode = true;
 
-			
-			if ( c == null || c.Deleted || !c.Alive || c.IsDeadBondedPet || !m_Mobile.CanSee( c ) || !m_Mobile.CanBeHarmful( c, false ) || c.Map != m_Mobile.Map )
+
+			if (c == null || c.Deleted || !c.Alive || c.IsDeadBondedPet || !m_Mobile.CanSee(c) || !m_Mobile.CanBeHarmful(c, false) || c.Map != m_Mobile.Map)
 			{
 				// Our combatant is deleted, dead, hidden, or we cannot hurt them
 				// Try to find another combatant
 
-				if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 				{
-					if ( m_Mobile.Debug )
-						m_Mobile.DebugSay( "Something happened to my combatant, so I am going to fight {0}", m_Mobile.FocusMob.Name );
+					if (m_Mobile.Debug)
+						m_Mobile.DebugSay("Something happened to my combatant, so I am going to fight {0}", m_Mobile.FocusMob.Name);
 
 					m_Mobile.Combatant = c = m_Mobile.FocusMob;
 					m_Mobile.FocusMob = null;
 				}
 				else
 				{
-					m_Mobile.DebugSay( "Something happened to my combatant, and nothing is around. I am on guard." );
+					m_Mobile.DebugSay("Something happened to my combatant, and nothing is around. I am on guard.");
 					Action = ActionType.Guard;
 					return true;
 				}
 			}
 
-			if ( !m_Mobile.InLOS( c ) )
+			if (!m_Mobile.InLOS(c))
 			{
-				if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 				{
 					m_Mobile.Combatant = c = m_Mobile.FocusMob;
 					m_Mobile.FocusMob = null;
 				}
 			}
 
-			if (c is PlayerMobile && SmartAI && (c.Spell is MagicTrapSpell || c.Spell is MagicArrowSpell ) )
+			if (c is PlayerMobile && SmartAI && (c.Spell is MagicTrapSpell || c.Spell is MagicArrowSpell))
 			{
 				m_EnemyCountersPara = true;
 			}
 
-			if ( c.Paralyzed || c.Frozen )
+			if (c.Paralyzed || c.Frozen)
 			{
-				if ( m_Mobile.InRange( c, 1 ) )
-					RunFrom( c );
+				if (m_Mobile.InRange(c, 1))
+					RunFrom(c);
 			}
 
 			if (m_Mobile.Paralyzed)
 			{
 				UseTrapPouch(m_Mobile);
-				
+
 			}
 			TrapPouch(m_Mobile);
 
-			if ( SmartAI && !m_Mobile.StunReady && m_Mobile.Skills[SkillName.Wrestling].Value >= 80.0 && m_Mobile.Skills[SkillName.Anatomy].Value >= 80.0 )
-				EventSink.InvokeStunRequest( new StunRequestEventArgs( m_Mobile ) );
+			if (SmartAI && !m_Mobile.StunReady && m_Mobile.Skills[SkillName.Wrestling].Value >= 80.0 && m_Mobile.Skills[SkillName.Anatomy].Value >= 80.0)
+				EventSink.InvokeStunRequest(new StunRequestEventArgs(m_Mobile));
 
-			if ( !m_Mobile.InRange( c, m_Mobile.RangePerception ) )
+			if (!m_Mobile.InRange(c, m_Mobile.RangePerception))
 			{
 				// They are somewhat far away, can we find something else?
 
-				if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+				if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 				{
 					m_Mobile.Combatant = m_Mobile.FocusMob;
 					m_Mobile.FocusMob = null;
 				}
-				else if ( !m_Mobile.InRange( c, m_Mobile.RangePerception * 3 ) )
+				else if (!m_Mobile.InRange(c, m_Mobile.RangePerception * 3))
 				{
 					m_Mobile.Combatant = null;
 				}
 
 				c = m_Mobile.Combatant;
 
-				if ( c == null )
+				if (c == null)
 				{
-					m_Mobile.DebugSay( "My combatant has fled, so I am on guard" );
+					m_Mobile.DebugSay("My combatant has fled, so I am on guard");
 					Action = ActionType.Guard;
 
 					return true;
 				}
 			}
 
-				if ( m_Mobile.Hits < m_Mobile.HitsMax * 20/100 )
+			if (m_Mobile.Hits < m_Mobile.HitsMax * 20 / 100)
+			{
+				// We are low on health, should we flee?
+
+				bool flee = false;
+
+				if (m_Mobile.Hits < c.Hits)
 				{
-					// We are low on health, should we flee?
+					// We are more hurt than them
 
-					bool flee = false;
+					int diff = c.Hits - m_Mobile.Hits;
 
-					if ( m_Mobile.Hits < c.Hits )
-					{
-						// We are more hurt than them
-
-						int diff = c.Hits - m_Mobile.Hits;
-
-						flee = ( Utility.Random( 0, 100 ) > (10 + diff) ); // (10 + diff)% chance to flee
-					}
-					else
-					{
-						flee = Utility.Random( 0, 100 ) > 10; // 10% chance to flee
-					}
-
-					if ( flee )
-					{
-						if ( m_Mobile.Debug )
-							m_Mobile.DebugSay( "I am going to flee from {0}", c.Name );
-
-						Action = ActionType.Flee;
-						return true;
-					}
+					flee = (Utility.Random(0, 100) > (10 + diff)); // (10 + diff)% chance to flee
 				}
-			
+				else
+				{
+					flee = Utility.Random(0, 100) > 10; // 10% chance to flee
+				}
 
-			if ( m_Mobile.Spell == null && DateTime.Now > m_NextCastTime && m_Mobile.InRange( c, 12 ) )
+				if (flee)
+				{
+					if (m_Mobile.Debug)
+						m_Mobile.DebugSay("I am going to flee from {0}", c.Name);
+
+					Action = ActionType.Flee;
+					return true;
+				}
+			}
+
+
+			if (m_Mobile.Spell == null && DateTime.Now > m_NextCastTime && m_Mobile.InRange(c, 12))
 			{
 				// We are ready to cast a spell
 				Spell spell = null;
-				Mobile toDispel = FindDispelTarget( true );
-					
+				Mobile toDispel = FindDispelTarget(true);
+
 				//try an cure with a pot first if the poison is serious or where in the middle of dumping
-				if ( UsesPotions && (m_Mobile.Poisoned && m_Mobile.Poison.Level >= 3) || m_Mobile.Poisoned && Combo != -1)
+				if (UsesPotions && (m_Mobile.Poisoned && m_Mobile.Poison.Level >= 3) || m_Mobile.Poisoned && Combo != -1)
 				{
 					DrinkCure(m_Mobile);
 				}
 
-				if ( m_Mobile.Poisoned ) // Top cast priority is cure
+				if (m_Mobile.Poisoned) // Top cast priority is cure
 				{
-					spell = new CureSpell( m_Mobile, null );
+					spell = new CureSpell(m_Mobile, null);
 					try
 					{
-						if((((m_Mobile.Skills[SkillName.Magery].Value / (m_Mobile.Poison.Level+1) ) - 20 ) * 7.5 ) > 50 )
+						if ((((m_Mobile.Skills[SkillName.Magery].Value / (m_Mobile.Poison.Level + 1)) - 20) * 7.5) > 50)
 						{
-							spell = new CureSpell( m_Mobile, null );
+							spell = new CureSpell(m_Mobile, null);
 						}
 						else
 						{
@@ -494,114 +495,114 @@ namespace Server.Mobiles
 					}
 					catch
 					{
-						spell = new CureSpell( m_Mobile, null );
+						spell = new CureSpell(m_Mobile, null);
 					}
 				}
 
 				//were hurt they have atleast half life and were to low on mana to finish them start healing
-				else if ( m_Mobile.Hits < 70 && c.Hits > 50 && m_Mobile.Mana < 30)
-					spell = new HealSpell( m_Mobile, null);
+				else if (m_Mobile.Hits < 70 && c.Hits > 50 && m_Mobile.Mana < 30)
+					spell = new HealSpell(m_Mobile, null);
 
-				else if ( toDispel != null ) // Something dispellable is attacking us
+				else if (toDispel != null) // Something dispellable is attacking us
 				{
-					spell = DoDispel( toDispel );
+					spell = DoDispel(toDispel);
 				}
 				//take down reflect on are enemy if its up
 				else if (c.MagicDamageAbsorb > 5)
 				{
 					m_Mobile.DebugSay("Takeing Down Reflect");
-					spell = new FireballSpell( m_Mobile, null);
+					spell = new FireballSpell(m_Mobile, null);
 				}
-				else if (Combo != -1 ) // We are doing a spell combo
+				else if (Combo != -1) // We are doing a spell combo
 				{
-					spell = DoCombo( c );
+					spell = DoCombo(c);
 				}
 				else
 				{
-					spell = ChooseSpell( c );
-				}
-				
-				if ( SmartAI && toDispel != null )
-				{
-					if ( m_Mobile.InRange( toDispel, 10 ) )
-						RunFrom( toDispel );
-					else if ( !m_Mobile.InRange( toDispel, 12 ) )
-						RunTo( toDispel, CanRun );
-				}
-				else 
-				{
-					if(m_RegainingMana == false)
-						RunTo( c, CanRun );
+					spell = ChooseSpell(c);
 				}
 
-				if ( spell != null && spell.Cast() )
+				if (SmartAI && toDispel != null)
+				{
+					if (m_Mobile.InRange(toDispel, 10))
+						RunFrom(toDispel);
+					else if (!m_Mobile.InRange(toDispel, 12))
+						RunTo(toDispel, CanRun);
+				}
+				else
+				{
+					if (m_RegainingMana == false)
+						RunTo(c, CanRun);
+				}
+
+				if (spell != null && spell.Cast())
 				{
 					TimeSpan delay;
 					//spell cast time is equal to the delay for the spells.
 					delay = spell.GetCastDelay() + spell.GetCastRecovery();
-				
+
 					m_NextCastTime = DateTime.Now + delay;
 				}
 			}
-			else if ( ( m_Mobile.Spell == null || !m_Mobile.Spell.IsCasting ) && m_RegainingMana == false )
+			else if ((m_Mobile.Spell == null || !m_Mobile.Spell.IsCasting) && m_RegainingMana == false)
 			{
-				RunTo( c, CanRun);
+				RunTo(c, CanRun);
 			}
 
 			return true;
 		}
 
-		public override void ProcessTarget( Target targ )
+		public override void ProcessTarget(Target targ)
 		{
-			bool isDispel = ( targ is DispelSpell.InternalTarget );
-			bool isParalyze = ( targ is ParalyzeSpell.InternalTarget );
-			bool isTeleport = ( targ is TeleportSpell.InternalTarget );
+			bool isDispel = (targ is DispelSpell.InternalTarget);
+			bool isParalyze = (targ is ParalyzeSpell.InternalTarget);
+			bool isTeleport = (targ is TeleportSpell.InternalTarget);
 			bool isReveal = (targ is RevealSpell.InternalTarget);
 			bool isTrap = (targ is MagicTrapSpell.InternalTarget);
 			bool teleportAway = false;
 
 			Mobile toTarget = null;
-			
-			if ( isTrap )
+
+			if (isTrap)
 			{
 				Pouch p = FindPouch(m_Mobile);
-				if(p != null)
+				if (p != null)
 				{
-					targ.Invoke(m_Mobile,p);
+					targ.Invoke(m_Mobile, p);
 				}
 				else
 					targ.Cancel(m_Mobile, TargetCancelType.Canceled);
 			}
 
 
-			if ( isReveal )
+			if (isReveal)
 			{
-				targ.Invoke( m_Mobile, m_Mobile );
+				targ.Invoke(m_Mobile, m_Mobile);
 			}
-			if ( isDispel )
+			if (isDispel)
 			{
-				toTarget = FindDispelTarget( false );
+				toTarget = FindDispelTarget(false);
 
-				if ( !SmartAI && toTarget != null )
-					RunTo( toTarget, CanRun );
-				else if ( toTarget != null && m_Mobile.InRange( toTarget, 10 ) )
-					RunFrom( toTarget );
+				if (!SmartAI && toTarget != null)
+					RunTo(toTarget, CanRun);
+				else if (toTarget != null && m_Mobile.InRange(toTarget, 10))
+					RunFrom(toTarget);
 			}
-			
-			else if ( SmartAI && (isParalyze || isTeleport) )
-			{
-				toTarget = FindDispelTarget( true );
 
-				if ( toTarget == null )
+			else if (SmartAI && (isParalyze || isTeleport))
+			{
+				toTarget = FindDispelTarget(true);
+
+				if (toTarget == null)
 				{
 					toTarget = m_Mobile.Combatant;
 
-					if ( toTarget != null )
-						RunTo( toTarget, CanRun );
+					if (toTarget != null)
+						RunTo(toTarget, CanRun);
 				}
-				else if ( m_Mobile.InRange( toTarget, 10 ) )
+				else if (m_Mobile.InRange(toTarget, 10))
 				{
-					RunFrom( toTarget );
+					RunFrom(toTarget);
 					teleportAway = true;
 				}
 				else
@@ -612,7 +613,7 @@ namespace Server.Mobiles
 
 			else
 			{
-				if( m_Mobile.ControlOrder == OrderType.Come && isTeleport )
+				if (m_Mobile.ControlOrder == OrderType.Come && isTeleport)
 				{
 					toTarget = m_Mobile.ControlMaster;
 				}
@@ -621,43 +622,43 @@ namespace Server.Mobiles
 					toTarget = m_Mobile.Combatant;
 				}
 
-				if ( toTarget != null )
-					RunTo( toTarget, CanRun );
+				if (toTarget != null)
+					RunTo(toTarget, CanRun);
 			}
 
-			if ( (targ.Flags & TargetFlags.Harmful) != 0 && toTarget != null )
+			if ((targ.Flags & TargetFlags.Harmful) != 0 && toTarget != null)
 			{
-				if ( (targ.Range == -1 || m_Mobile.InRange( toTarget, targ.Range )) && m_Mobile.CanSee( toTarget ) && m_Mobile.InLOS( toTarget ) )
+				if ((targ.Range == -1 || m_Mobile.InRange(toTarget, targ.Range)) && m_Mobile.CanSee(toTarget) && m_Mobile.InLOS(toTarget))
 				{
-					targ.Invoke( m_Mobile, toTarget );
+					targ.Invoke(m_Mobile, toTarget);
 				}
-				else if ( isDispel )
+				else if (isDispel)
 				{
-					targ.Cancel( m_Mobile, TargetCancelType.Canceled );
+					targ.Cancel(m_Mobile, TargetCancelType.Canceled);
 				}
 			}
-			else if ( (targ.Flags & TargetFlags.Beneficial) != 0 )
+			else if ((targ.Flags & TargetFlags.Beneficial) != 0)
 			{
-				targ.Invoke( m_Mobile, m_Mobile );
+				targ.Invoke(m_Mobile, m_Mobile);
 			}
-			else if ( isTeleport && toTarget != null )
+			else if (isTeleport && toTarget != null)
 			{
 				Map map = m_Mobile.Map;
 
-				if ( map == null )
+				if (map == null)
 				{
-					targ.Cancel( m_Mobile, TargetCancelType.Canceled );
+					targ.Cancel(m_Mobile, TargetCancelType.Canceled);
 					return;
 				}
 
 				int px, py;
 
-				if ( teleportAway )
+				if (teleportAway)
 				{
 					int rx = m_Mobile.X - toTarget.X;
 					int ry = m_Mobile.Y - toTarget.Y;
 
-					double d = m_Mobile.GetDistanceToSqrt( toTarget );
+					double d = m_Mobile.GetDistanceToSqrt(toTarget);
 
 					px = toTarget.X + (int)(rx * (10 / d));
 					py = toTarget.Y + (int)(ry * (10 / d));
@@ -668,44 +669,44 @@ namespace Server.Mobiles
 					py = toTarget.Y;
 				}
 
-				for ( int i = 0; i < m_Offsets.Length; i += 2 )
+				for (int i = 0; i < m_Offsets.Length; i += 2)
 				{
 					int x = m_Offsets[i], y = m_Offsets[i + 1];
 
-					Point3D p = new Point3D( px + x, py + y, 0 );
+					Point3D p = new Point3D(px + x, py + y, 0);
 
-					LandTarget lt = new LandTarget( p, map );
+					LandTarget lt = new LandTarget(p, map);
 
-					if ( (targ.Range == -1 || m_Mobile.InRange( p, targ.Range )) && m_Mobile.InLOS( lt ) && map.CanSpawnMobile( px + x, py + y, lt.Z ) && !SpellHelper.CheckMulti( p, map ) )
+					if ((targ.Range == -1 || m_Mobile.InRange(p, targ.Range)) && m_Mobile.InLOS(lt) && map.CanSpawnMobile(px + x, py + y, lt.Z) && !SpellHelper.CheckMulti(p, map))
 					{
-						targ.Invoke( m_Mobile, lt );
+						targ.Invoke(m_Mobile, lt);
 						return;
 					}
 				}
 
 				int teleRange = targ.Range;
 
-				if ( teleRange < 0 )
+				if (teleRange < 0)
 					teleRange = 12;
 
-				for ( int i = 0; i < 10; ++i )
+				for (int i = 0; i < 10; ++i)
 				{
-					Point3D randomPoint = new Point3D( m_Mobile.X - teleRange + Utility.Random( teleRange * 2 + 1 ), m_Mobile.Y - teleRange + Utility.Random( teleRange * 2 + 1 ), 0 );
+					Point3D randomPoint = new Point3D(m_Mobile.X - teleRange + Utility.Random(teleRange * 2 + 1), m_Mobile.Y - teleRange + Utility.Random(teleRange * 2 + 1), 0);
 
-					LandTarget lt = new LandTarget( randomPoint, map );
+					LandTarget lt = new LandTarget(randomPoint, map);
 
-					if ( m_Mobile.InLOS( lt ) && map.CanSpawnMobile( lt.X, lt.Y, lt.Z ) && !SpellHelper.CheckMulti( randomPoint, map ) )
+					if (m_Mobile.InLOS(lt) && map.CanSpawnMobile(lt.X, lt.Y, lt.Z) && !SpellHelper.CheckMulti(randomPoint, map))
 					{
-						targ.Invoke( m_Mobile, new LandTarget( randomPoint, map ) );
+						targ.Invoke(m_Mobile, new LandTarget(randomPoint, map));
 						return;
 					}
 				}
 
-				targ.Cancel( m_Mobile, TargetCancelType.Canceled );
+				targ.Cancel(m_Mobile, TargetCancelType.Canceled);
 			}
 			else
 			{
-				targ.Cancel( m_Mobile, TargetCancelType.Canceled );
+				targ.Cancel(m_Mobile, TargetCancelType.Canceled);
 			}
 		}
 

@@ -75,10 +75,10 @@ using Server;
 using Server.Multis;
 using Server.Items;
 using Server.Targeting;
-using Server.Accounting;				
+using Server.Accounting;
 using Server.Network;
 using Server.Mobiles;
-using Server.Misc; 
+using Server.Misc;
 
 namespace Server.Scripts.Commands
 {
@@ -114,7 +114,7 @@ namespace Server.Scripts.Commands
 					e.Mobile.SendMessage("Where: -ma ... total multi accounts");
 					e.Mobile.SendMessage("Where: -mc ... total multi clients");
 					e.Mobile.SendMessage("Where: -hi ... clients that have hardware info");
-                    e.Mobile.SendMessage("Where: -ho ... HIGH only. use with -mc");
+					e.Mobile.SendMessage("Where: -ho ... HIGH only. use with -mc");
 					return;
 				}
 
@@ -168,9 +168,9 @@ namespace Server.Scripts.Commands
 
 				if (e.ArgString.Contains("-mc"))
 				{
-                    bool highOnly = false;
-                    if (e.ArgString.Contains("-ho"))
-                        highOnly = true;
+					bool highOnly = false;
+					if (e.ArgString.Contains("-ho"))
+						highOnly = true;
 
 					foreach (DictionaryEntry de in ClientMon.list)
 					{
@@ -242,7 +242,7 @@ namespace Server.Scripts.Commands
 					if (clients == 0)
 						e.Mobile.SendMessage("There are no shared IP addresses");
 					else
-						e.Mobile.SendMessage(String.Format("There {2} {0} client{3} sharing {1} IP address{4}", 
+						e.Mobile.SendMessage(String.Format("There {2} {0} client{3} sharing {1} IP address{4}",
 							clients, ipaddresses,
 							clients == 1 ? "is" : "are",
 							clients == 1 ? "" : "s",
@@ -270,77 +270,77 @@ namespace Server.Scripts.Commands
 		enum alert { LOW, MEDIUM, HIGH };
 		private static void ProcessMatch(Mobile from, bool highOnly, PlayerMobile pm1, PlayerMobile pm2)
 		{
-            try
-            {   // sanity
-                if (from == null || pm1 == null || pm2 == null)
-                    return; // wtf
+			try
+			{   // sanity
+				if (from == null || pm1 == null || pm2 == null)
+					return; // wtf
 
-                NetState ns1 = pm1.NetState;
-                NetState ns2 = pm2.NetState;
+				NetState ns1 = pm1.NetState;
+				NetState ns2 = pm2.NetState;
 
-                if (ns1 == null || ns2 == null)
-                    return; // logged out / disconnected
+				if (ns1 == null || ns2 == null)
+					return; // logged out / disconnected
 
-                if (ns1.Address == null || ns1.Mobile == null || ns2.Address == null || ns2.Mobile == null)
-                    return; // still logging in?
+				if (ns1.Address == null || ns1.Mobile == null || ns2.Address == null || ns2.Mobile == null)
+					return; // still logging in?
 
-                if (ns1.Account == null || ns2.Account == null)
-                    return; // error state .. ignore this account
+				if (ns1.Account == null || ns2.Account == null)
+					return; // error state .. ignore this account
 
-                if (ns1.Account as Server.Accounting.Account == null || ns2.Account as Server.Accounting.Account == null)
-                    return; // error state .. ignore this account
+				if (ns1.Account as Server.Accounting.Account == null || ns2.Account as Server.Accounting.Account == null)
+					return; // error state .. ignore this account
 
-                Server.Accounting.Account pm1Account = (Server.Accounting.Account)ns1.Account;
-                HardwareInfo pm1HWInfo = pm1Account.HardwareInfo;
-                string pm1Name = string.Format("{0}/{1}", pm1Account.Username, ns1.Mobile.Name);
+				Server.Accounting.Account pm1Account = (Server.Accounting.Account)ns1.Account;
+				HardwareInfo pm1HWInfo = pm1Account.HardwareInfo;
+				string pm1Name = string.Format("{0}/{1}", pm1Account.Username, ns1.Mobile.Name);
 
-                Server.Accounting.Account pm2Account = (Server.Accounting.Account)ns2.Account;
-                HardwareInfo pm2HWInfo = pm2Account.HardwareInfo;
-                string pm2Name = string.Format("{0}/{1}", pm2Account.Username, ns2.Mobile.Name);
+				Server.Accounting.Account pm2Account = (Server.Accounting.Account)ns2.Account;
+				HardwareInfo pm2HWInfo = pm2Account.HardwareInfo;
+				string pm2Name = string.Format("{0}/{1}", pm2Account.Username, ns2.Mobile.Name);
 
-                alert alarm = alert.LOW;
-                if (pm1HWInfo == null && pm2HWInfo == null && ns1.Version == ns2.Version)
-                {
-                    // unknown hardware
-                    if (LineOfSight(pm1, pm2))
-                        alarm = alert.MEDIUM;
-                }
-                else if (pm1HWInfo == null || pm2HWInfo == null && ns1.Version == ns2.Version)
-                {
-                    // unknown hardware
-                    if (LineOfSight(pm1, pm2))
-                        alarm = alert.MEDIUM;
-                }
-                else if ((pm1HWInfo != null && pm2HWInfo != null) && (pm1HWInfo.CpuClockSpeed == 0 || pm1HWInfo.OSMajor == 0 || pm2HWInfo.CpuClockSpeed == 0 || pm2HWInfo.OSMajor == 0))
-                {
-                    // unknown hardware
-                    if (LineOfSight(pm1, pm2))
-                        alarm = alert.MEDIUM;
-                }
-                else if ((pm1HWInfo != null && pm2HWInfo != null) && Server.Scripts.Commands.MultiClientCommand.IsSameHWInfo(pm1HWInfo, pm2HWInfo))
-                {
-                    // same hardware
-                    alarm = alert.MEDIUM;
-                    if (LineOfSight(pm1, pm2) && ns1.Version == ns2.Version)
-                        alarm = alert.HIGH;
-                }
-                else
-                {
-                    // different hardware
-                    if (LineOfSight(pm1, pm2) && ns1.Version == ns2.Version)
-                        alarm = alert.MEDIUM;
-                }
+				alert alarm = alert.LOW;
+				if (pm1HWInfo == null && pm2HWInfo == null && ns1.Version == ns2.Version)
+				{
+					// unknown hardware
+					if (LineOfSight(pm1, pm2))
+						alarm = alert.MEDIUM;
+				}
+				else if (pm1HWInfo == null || pm2HWInfo == null && ns1.Version == ns2.Version)
+				{
+					// unknown hardware
+					if (LineOfSight(pm1, pm2))
+						alarm = alert.MEDIUM;
+				}
+				else if ((pm1HWInfo != null && pm2HWInfo != null) && (pm1HWInfo.CpuClockSpeed == 0 || pm1HWInfo.OSMajor == 0 || pm2HWInfo.CpuClockSpeed == 0 || pm2HWInfo.OSMajor == 0))
+				{
+					// unknown hardware
+					if (LineOfSight(pm1, pm2))
+						alarm = alert.MEDIUM;
+				}
+				else if ((pm1HWInfo != null && pm2HWInfo != null) && Server.Scripts.Commands.MultiClientCommand.IsSameHWInfo(pm1HWInfo, pm2HWInfo))
+				{
+					// same hardware
+					alarm = alert.MEDIUM;
+					if (LineOfSight(pm1, pm2) && ns1.Version == ns2.Version)
+						alarm = alert.HIGH;
+				}
+				else
+				{
+					// different hardware
+					if (LineOfSight(pm1, pm2) && ns1.Version == ns2.Version)
+						alarm = alert.MEDIUM;
+				}
 
-                // caller wants to filter to HIGH alarms only
-                if (highOnly == true && alarm != alert.HIGH)
-                    return;
+				// caller wants to filter to HIGH alarms only
+				if (highOnly == true && alarm != alert.HIGH)
+					return;
 
-                from.SendMessage(String.Format("{0}, {1}, Alarm({2})", pm1Name, pm2Name, alarm.ToString()));
-            }
-            catch (Exception ex) 
-            { 
-                LogHelper.LogException(ex); 
-            }
+				from.SendMessage(String.Format("{0}, {1}, Alarm({2})", pm1Name, pm2Name, alarm.ToString()));
+			}
+			catch (Exception ex)
+			{
+				LogHelper.LogException(ex);
+			}
 		}
 
 		public static bool LineOfSight(Mobile from, Mobile to)
@@ -378,8 +378,8 @@ namespace Server.Scripts.Commands
 		static public class ClientMon
 		{
 			static Hashtable m_list = new Hashtable();
-			static public Hashtable list	{ get { return m_list; } }
-			
+			static public Hashtable list { get { return m_list; } }
+
 			static public void AddAccount(Mobile m)
 			{
 				NetState state = m.NetState;
@@ -389,7 +389,7 @@ namespace Server.Scripts.Commands
 					ArrayList al = m_list[iphc] as ArrayList;		// get the list of clients at this IP address
 					if (al.Contains(m.Account) == false)
 						al.Add(m.Account);							// add another client at this IP
-				}	
+				}
 				else
 				{
 					m_list[iphc] = new ArrayList();					// start a new list of clients at this IP address
@@ -403,7 +403,7 @@ namespace Server.Scripts.Commands
 				foreach (DictionaryEntry de in list)
 				{
 					ArrayList al = de.Value as ArrayList;
-					
+
 					if (al == null)
 						continue;
 
@@ -412,7 +412,7 @@ namespace Server.Scripts.Commands
 					{
 						if (acct == null)
 							continue;
-						
+
 						for (int i = 0; i < 5; ++i)
 						{
 							if (acct[i] == null)
@@ -426,7 +426,7 @@ namespace Server.Scripts.Commands
 								if (al.Count == 0)
 									if (list.Contains(de.Key))
 										list.Remove(de.Key);		// remove this IP if there are no more clients
-								
+
 								return;
 							}
 						}
@@ -473,7 +473,7 @@ namespace Server.Scripts.Commands
 			try
 			{
 				foreach (Account acct in Accounts.Table.Values)
-				{	
+				{
 					// down patching staff accounts to Player access
 					if ((e.Arguments.Length == 1 && e.Arguments[0] == "-u") == false)
 						if (acct == null || acct.AccessLevel > AccessLevel.Player)
@@ -560,18 +560,18 @@ namespace Server.Scripts.Commands
 						if (ax == null)
 							continue;
 
-                        // have they logged in within the last 90 days?
+						// have they logged in within the last 90 days?
 						TimeSpan delta = DateTime.Now - ax.LastLogin;
 						if (delta.TotalDays > 90)
 							continue;
 
-                        // filter for dexxers - get highest weapon skill
-                        double sk1 = Math.Max(m.Skills[SkillName.Archery].Base, m.Skills[SkillName.Fencing].Base);
-                        double sk2 = Math.Max(m.Skills[SkillName.Macing].Base, m.Skills[SkillName.Swords].Base);
-                        double skill = Math.Max(sk1, sk2);
-                        if (skill < 100) continue;
+						// filter for dexxers - get highest weapon skill
+						double sk1 = Math.Max(m.Skills[SkillName.Archery].Base, m.Skills[SkillName.Fencing].Base);
+						double sk2 = Math.Max(m.Skills[SkillName.Macing].Base, m.Skills[SkillName.Swords].Base);
+						double skill = Math.Max(sk1, sk2);
+						if (skill < 100) continue;
 
-                        // record all players that have a weapon on them
+						// record all players that have a weapon on them
 						players++;
 						ArrayList stuff = backpack.FindAllItems();
 						Item oneHanded = m.FindItemOnLayer(Layer.OneHanded);
@@ -581,7 +581,7 @@ namespace Server.Scripts.Commands
 						if (twoHanded is BaseWeapon && (twoHanded as BaseWeapon).DamageLevel > WeaponDamageLevel.Force)
 							stuff.Add(twoHanded);
 
-                        // record all the players that have a high end magic weapon on them
+						// record all the players that have a high end magic weapon on them
 						foreach (Item ix in stuff)
 							if (ix is BaseWeapon && (ix as BaseWeapon).DamageLevel > WeaponDamageLevel.Force)
 							{	// we only count one high end weapon per player
@@ -592,7 +592,7 @@ namespace Server.Scripts.Commands
 				}
 
 				if (players > 0)
-                    s1 = String.Format("Of {0} GM dexxers, {1}% are equipping Power or higher.", (int)players, (int)((players_magic / players) * 100));
+					s1 = String.Format("Of {0} GM dexxers, {1}% are equipping Power or higher.", (int)players, (int)((players_magic / players) * 100));
 
 				//////////////////////////////////////////////
 				// Calculate the average cost of > force weapons
@@ -625,7 +625,7 @@ namespace Server.Scripts.Commands
 				}
 
 				if (total_magic > 0)
-                    s2 = String.Format("Of {0} high end magic weapons, {1} is the average vendor cost.", total_magic, total_value / total_magic);
+					s2 = String.Format("Of {0} high end magic weapons, {1} is the average vendor cost.", total_magic, total_value / total_magic);
 
 			}
 			catch (Exception err)
@@ -819,7 +819,7 @@ namespace Server.Scripts.Commands
 									location.Z + house.Components.List[i].m_OffsetZ
 									);
 
-							if ((house.Components.List[i].m_ItemID & 0x3FFF) == (item.ItemID & 0x3FFF) && RealTileloc == item.Location )
+							if ((house.Components.List[i].m_ItemID & 0x3FFF) == (item.ItemID & 0x3FFF) && RealTileloc == item.Location)
 							{
 								Point3D itemloc = new Point3D(
 									house.Components.List[i].m_OffsetX,

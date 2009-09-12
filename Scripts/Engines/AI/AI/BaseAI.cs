@@ -3735,7 +3735,7 @@ namespace Server.Mobiles
 								return (this.m_direction == SortDirection.Ascending) ?
 									mobileX.GetDistanceToSqrt(m).CompareTo(mobileY.GetDistanceToSqrt(m)) :
 									mobileY.GetDistanceToSqrt(m).CompareTo(mobileX.GetDistanceToSqrt(m));
-							}						
+							}
 						default:
 							{	// do not move list items unless you need to since this sort is called multiple times
 								//	to provide a compound sort
@@ -3768,7 +3768,7 @@ namespace Server.Mobiles
 
 			//Use a redefined priority list if one is present
 			IList sourcePriority = m_FightModeValues;
-			if( m_Mobile != null && m_Mobile is BaseCreature && !m_Mobile.Deleted && ((BaseCreature)m_Mobile).FightModePriority != null)
+			if (m_Mobile != null && m_Mobile is BaseCreature && !m_Mobile.Deleted && ((BaseCreature)m_Mobile).FightModePriority != null)
 				sourcePriority = ((BaseCreature)m_Mobile).FightModePriority;
 
 			try
@@ -3840,8 +3840,8 @@ namespace Server.Mobiles
 				}
 			}
 
-			if (m_Mobile.ConstantFocus != null && m_Mobile.ConstantFocus.Alive && !m_Mobile.ConstantFocus.Deleted && (!m_Mobile.ConstantFocus.Hidden || (m_Mobile.ConstantFocus.Hidden && CanReveal) ) && m_Mobile.ConstantFocus.GetDistanceToSqrt(m_Mobile) < 20)
-			{	
+			if (m_Mobile.ConstantFocus != null && m_Mobile.ConstantFocus.Alive && !m_Mobile.ConstantFocus.Deleted && (!m_Mobile.ConstantFocus.Hidden || (m_Mobile.ConstantFocus.Hidden && CanReveal)) && m_Mobile.ConstantFocus.GetDistanceToSqrt(m_Mobile) < 20)
+			{
 				m_Mobile.DebugSay("Acquired my constant focus");
 				if (m_Mobile.ConstantFocus.Hidden)
 				{

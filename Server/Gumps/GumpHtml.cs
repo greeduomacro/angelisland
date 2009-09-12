@@ -41,7 +41,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_X, value );
+				Delta(ref m_X, value);
 			}
 		}
 
@@ -53,7 +53,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Y, value );
+				Delta(ref m_Y, value);
 			}
 		}
 
@@ -65,7 +65,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Width, value );
+				Delta(ref m_Width, value);
 			}
 		}
 
@@ -77,7 +77,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Height, value );
+				Delta(ref m_Height, value);
 			}
 		}
 
@@ -89,7 +89,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Text, value );
+				Delta(ref m_Text, value);
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Background, value );
+				Delta(ref m_Background, value);
 			}
 		}
 
@@ -113,11 +113,11 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Scrollbar, value );
+				Delta(ref m_Scrollbar, value);
 			}
 		}
 
-		public GumpHtml( int x, int y, int width, int height, string text, bool background, bool scrollbar )
+		public GumpHtml(int x, int y, int width, int height, string text, bool background, bool scrollbar)
 		{
 			m_X = x;
 			m_Y = y;
@@ -130,21 +130,21 @@ namespace Server.Gumps
 
 		public override string Compile()
 		{
-			return String.Format( "{{ htmlgump {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, Parent.Intern( m_Text ), m_Background ? 1 : 0, m_Scrollbar ? 1 : 0 );
+			return String.Format("{{ htmlgump {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, Parent.Intern(m_Text), m_Background ? 1 : 0, m_Scrollbar ? 1 : 0);
 		}
 
-		private static byte[] m_LayoutName = Gump.StringToBuffer( "htmlgump" );
+		private static byte[] m_LayoutName = Gump.StringToBuffer("htmlgump");
 
-		public override void AppendTo( DisplayGumpFast disp )
+		public override void AppendTo(DisplayGumpFast disp)
 		{
-			disp.AppendLayout( m_LayoutName );
-			disp.AppendLayout( m_X );
-			disp.AppendLayout( m_Y );
-			disp.AppendLayout( m_Width );
-			disp.AppendLayout( m_Height );
-			disp.AppendLayout( Parent.Intern( m_Text ) );
-			disp.AppendLayout( m_Background );
-			disp.AppendLayout( m_Scrollbar );
+			disp.AppendLayout(m_LayoutName);
+			disp.AppendLayout(m_X);
+			disp.AppendLayout(m_Y);
+			disp.AppendLayout(m_Width);
+			disp.AppendLayout(m_Height);
+			disp.AppendLayout(Parent.Intern(m_Text));
+			disp.AppendLayout(m_Background);
+			disp.AppendLayout(m_Scrollbar);
 		}
 	}
 }

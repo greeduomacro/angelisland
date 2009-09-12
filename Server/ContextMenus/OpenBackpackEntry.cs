@@ -30,14 +30,15 @@ namespace Server.ContextMenus
 	{
 		private Mobile m_Mobile;
 
-		public OpenBackpackEntry( Mobile m ) : base( 6145 )
+		public OpenBackpackEntry(Mobile m)
+			: base(6145)
 		{
 			m_Mobile = m;
 		}
 
 		public override void OnClick()
 		{
-			m_Mobile.Use( m_Mobile.Backpack );
+			m_Mobile.Use(m_Mobile.Backpack);
 		}
 	}
 }

@@ -56,11 +56,12 @@ namespace Server.Menus.ItemLists
 			}
 		}
 
-		public ItemListEntry( string name, int itemID ) : this( name, itemID, 0 )
+		public ItemListEntry(string name, int itemID)
+			: this(name, itemID, 0)
 		{
 		}
 
-		public ItemListEntry( string name, int itemID, int hue )
+		public ItemListEntry(string name, int itemID, int hue)
 		{
 			m_Name = name;
 			m_ItemID = itemID;
@@ -112,7 +113,7 @@ namespace Server.Menus.ItemLists
 			}
 		}
 
-		public ItemListMenu( string question, ItemListEntry[] entries )
+		public ItemListMenu(string question, ItemListEntry[] entries)
 		{
 			m_Question = question;
 			m_Entries = entries;
@@ -121,23 +122,23 @@ namespace Server.Menus.ItemLists
 			{
 				m_Serial = m_NextSerial++;
 				m_Serial &= 0x7FFFFFFF;
-			} while ( m_Serial == 0 );
+			} while (m_Serial == 0);
 
 			m_Serial = (int)((uint)m_Serial | 0x80000000);
 		}
 
-		public virtual void OnCancel( NetState state )
+		public virtual void OnCancel(NetState state)
 		{
 		}
 
-		public virtual void OnResponse( NetState state, int index )
+		public virtual void OnResponse(NetState state, int index)
 		{
 		}
 
-		public void SendTo( NetState state )
+		public void SendTo(NetState state)
 		{
-			state.AddMenu( this );
-			state.Send( new DisplayItemListMenu( this ) );
+			state.AddMenu(this);
+			state.Send(new DisplayItemListMenu(this));
 		}
 	}
 }

@@ -70,7 +70,7 @@ namespace Server.Menus.Questions
 			}
 		}
 
-		public QuestionMenu( string question, string[] answers )
+		public QuestionMenu(string question, string[] answers)
 		{
 			m_Question = question;
 			m_Answers = answers;
@@ -79,21 +79,21 @@ namespace Server.Menus.Questions
 			{
 				m_Serial = ++m_NextSerial;
 				m_Serial &= 0x7FFFFFFF;
-			} while ( m_Serial == 0 );
+			} while (m_Serial == 0);
 		}
 
-		public virtual void OnCancel( NetState state )
+		public virtual void OnCancel(NetState state)
 		{
 		}
 
-		public virtual void OnResponse( NetState state, int index )
+		public virtual void OnResponse(NetState state, int index)
 		{
 		}
 
-		public void SendTo( NetState state )
+		public void SendTo(NetState state)
 		{
-			state.AddMenu( this );
-			state.Send( new DisplayQuestionMenu( this ) );
+			state.AddMenu(this);
+			state.Send(new DisplayQuestionMenu(this));
 		}
 	}
 }

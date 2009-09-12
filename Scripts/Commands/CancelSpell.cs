@@ -49,34 +49,34 @@ namespace Server.Scripts.Commands
 {
 	public class CancelSpell
 	{
-	
+
 		public static void Initialize()
 		{
-			Server.Commands.Register( "CancelSpell", AccessLevel.Player, new CommandEventHandler( CancelSpell_OnCommand ) );
+			Server.Commands.Register("CancelSpell", AccessLevel.Player, new CommandEventHandler(CancelSpell_OnCommand));
 		}
 
-		[Usage( "CancelSpell" )]
-		[Description( "Cancels the spell currently being cast." )]
-		private static void CancelSpell_OnCommand( CommandEventArgs e )
+		[Usage("CancelSpell")]
+		[Description("Cancels the spell currently being cast.")]
+		private static void CancelSpell_OnCommand(CommandEventArgs e)
 		{
 			Mobile m = e.Mobile;
 			ISpell i = m.Spell;
-			
-			if ( i != null && i.IsCasting )
+
+			if (i != null && i.IsCasting)
 			{
 				Spell s = (Spell)i;
-				s.Disturb( DisturbType.EquipRequest, true, false );
-				m.SendMessage( "You snap yourself out of concentration." );
-				m.FixedEffect( 0x3735, 6, 30 );		
-				return;			
+				s.Disturb(DisturbType.EquipRequest, true, false);
+				m.SendMessage("You snap yourself out of concentration.");
+				m.FixedEffect(0x3735, 6, 30);
+				return;
 			}
 
 			else
 			{
-				m.SendMessage( "You must be casting a spell to use this feature." );
+				m.SendMessage("You must be casting a spell to use this feature.");
 				return;
 			}
-		
+
 		}
 	}
 }

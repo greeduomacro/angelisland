@@ -68,107 +68,108 @@ namespace Server.Mobiles
 {
 	public class CouncilMemberAI : HumanMageAI
 	{
-		
+
 		private TimeSpan TimeBetweenCouncilSpell
 		{
 			get
 			{
-				return TimeSpan.FromSeconds( Utility.Random( 5, 7 ) );
+				return TimeSpan.FromSeconds(Utility.Random(5, 7));
 			}
 		}
 
 		private DateTime m_NextCouncilSpell = DateTime.Now;
 
-		public CouncilMemberAI( BaseCreature m ) : base( m )
+		public CouncilMemberAI(BaseCreature m)
+			: base(m)
 		{
 			DmgSlowsMovement = false;
 			CanRun = false;
 			UsesPotions = false; //CanDrinkPots = false;
 		}
-		
+
 		public override bool SmartAI
 		{
-			get{ return false; }
+			get { return false; }
 		}
 
 		public bool CastPoisonWave()
 		{
-			IPooledEnumerable eable = m_Mobile.GetMobilesInRange( 4 );
-			foreach ( Mobile m in eable)
+			IPooledEnumerable eable = m_Mobile.GetMobilesInRange(4);
+			foreach (Mobile m in eable)
 			{
-				if ( m != null && m is PlayerMobile && m.Alive && m.AccessLevel == AccessLevel.Player && !m.Hidden && m.Poison == null )
+				if (m != null && m is PlayerMobile && m.Alive && m.AccessLevel == AccessLevel.Player && !m.Hidden && m.Poison == null)
 				{
 					PlayerMobile pm = (PlayerMobile)m;
 					if (pm.IOBEquipped && pm.IOBAlignment == IOBAlignment.Council)
 						return false;
-				
+
 					return true;
 				}
 			}
 			eable.Free();
-				
-				return false;
+
+			return false;
 		}
 
 		public bool CastRevelationWave()
 		{
-			IPooledEnumerable eable = m_Mobile.GetMobilesInRange( 4 );
-			foreach ( Mobile m in eable)
+			IPooledEnumerable eable = m_Mobile.GetMobilesInRange(4);
+			foreach (Mobile m in eable)
 			{
-				if ( m != null && m is PlayerMobile && m.Alive && m.AccessLevel == AccessLevel.Player && m.Hidden )
+				if (m != null && m is PlayerMobile && m.Alive && m.AccessLevel == AccessLevel.Player && m.Hidden)
 				{
 					PlayerMobile pm = (PlayerMobile)m;
 					if (pm.IOBEquipped && pm.IOBAlignment == IOBAlignment.Council)
 						return false;
-						
+
 					return true;
 				}
 			}
 			eable.Free();
-				
-				return false;
+
+			return false;
 		}
 
 
-		public override Spell ChooseSpell( Mobile c )
+		public override Spell ChooseSpell(Mobile c)
 		{
 			// tamable solution ---------------
 			Mobile com = m_Mobile.Combatant;
 			Spell spell = null;
-			
-			if ( com != null && com is BaseCreature && DateTime.Now >= m_NextCouncilSpell )
+
+			if (com != null && com is BaseCreature && DateTime.Now >= m_NextCouncilSpell)
 			{
-				if ( CastRevelationWave() )
+				if (CastRevelationWave())
 				{
-					m_Mobile.DebugSay( "I'm gunna cast Revelation Wave!" );
+					m_Mobile.DebugSay("I'm gunna cast Revelation Wave!");
 					m_NextCouncilSpell = DateTime.Now + TimeBetweenCouncilSpell;
-					return new RevelationWaveSpell( m_Mobile, null );
-				}				
-				
-				if ( CastPoisonWave() )
+					return new RevelationWaveSpell(m_Mobile, null);
+				}
+
+				if (CastPoisonWave())
 				{
-					m_Mobile.DebugSay( "I'm gunna cast Poison Wave!" );
+					m_Mobile.DebugSay("I'm gunna cast Poison Wave!");
 					m_NextCouncilSpell = DateTime.Now + TimeBetweenCouncilSpell;
-					return new PoisonWaveSpell( m_Mobile, null );
+					return new PoisonWaveSpell(m_Mobile, null);
 				}
 			}
 			// end tamable solution ---------------		
 
-			if ( !SmartAI )
+			if (!SmartAI)
 			{
-				if ( !m_Mobile.Summoned && ScaleByMagery( HealChance ) > Utility.RandomDouble() )
+				if (!m_Mobile.Summoned && ScaleByMagery(HealChance) > Utility.RandomDouble())
 				{
-					if ( m_Mobile.Hits < (m_Mobile.HitsMax - 50) )
-						return new GreaterHealSpell( m_Mobile, null );
-					else if ( m_Mobile.Hits < (m_Mobile.HitsMax - 10) )
-						return new HealSpell( m_Mobile, null );
+					if (m_Mobile.Hits < (m_Mobile.HitsMax - 50))
+						return new GreaterHealSpell(m_Mobile, null);
+					else if (m_Mobile.Hits < (m_Mobile.HitsMax - 10))
+						return new HealSpell(m_Mobile, null);
 				}
 
 				return GetRandomDamageSpell();
 			}
 
 			return spell;
-		}	
+		}
 
 		public override bool DoActionCombat()
 		{

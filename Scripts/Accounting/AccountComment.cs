@@ -46,7 +46,7 @@ namespace Server.Accounting
 		/// </summary>
 		public string AddedBy
 		{
-			get{ return m_AddedBy; }
+			get { return m_AddedBy; }
 		}
 
 		/// <summary>
@@ -54,8 +54,8 @@ namespace Server.Accounting
 		/// </summary>
 		public string Content
 		{
-			get{ return m_Content; }
-			set{ m_Content = value; m_LastModified = DateTime.Now; }
+			get { return m_Content; }
+			set { m_Content = value; m_LastModified = DateTime.Now; }
 		}
 
 		/// <summary>
@@ -63,7 +63,7 @@ namespace Server.Accounting
 		/// </summary>
 		public DateTime LastModified
 		{
-			get{ return m_LastModified; }
+			get { return m_LastModified; }
 		}
 
 		/// <summary>
@@ -71,7 +71,7 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="addedBy">Initial AddedBy value.</param>
 		/// <param name="content">Initial Content value.</param>
-		public AccountComment( string addedBy, string content )
+		public AccountComment(string addedBy, string content)
 		{
 			m_AddedBy = addedBy;
 			m_Content = content;
@@ -82,27 +82,27 @@ namespace Server.Accounting
 		/// Deserializes an AccountComment instance from an xml element.
 		/// </summary>
 		/// <param name="node">The XmlElement instance from which to deserialize.</param>
-		public AccountComment( XmlElement node )
+		public AccountComment(XmlElement node)
 		{
-			m_AddedBy = Accounts.GetAttribute( node, "addedBy", "empty" );
-			m_LastModified = Accounts.GetDateTime( Accounts.GetAttribute( node, "lastModified" ), DateTime.Now );
-			m_Content = Accounts.GetText( node, "" );
+			m_AddedBy = Accounts.GetAttribute(node, "addedBy", "empty");
+			m_LastModified = Accounts.GetDateTime(Accounts.GetAttribute(node, "lastModified"), DateTime.Now);
+			m_Content = Accounts.GetText(node, "");
 		}
 
 		/// <summary>
 		/// Serializes this AccountComment instance to an XmlTextWriter.
 		/// </summary>
 		/// <param name="xml">The XmlTextWriter instance from which to serialize.</param>
-		public void Save( XmlTextWriter xml )
+		public void Save(XmlTextWriter xml)
 		{
-			xml.WriteStartElement( "comment" );
+			xml.WriteStartElement("comment");
 
-			xml.WriteAttributeString( "addedBy", m_AddedBy );
-			xml.WriteAttributeString( "lastModified", XmlConvert.ToString( m_LastModified ) );
+			xml.WriteAttributeString("addedBy", m_AddedBy);
+			xml.WriteAttributeString("lastModified", XmlConvert.ToString(m_LastModified));
 
-			xml.WriteString( m_Content );
+			xml.WriteString(m_Content);
 
 			xml.WriteEndElement();
 		}
 	}
-} 
+}
