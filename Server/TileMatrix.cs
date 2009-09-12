@@ -53,8 +53,8 @@ namespace Server
 		private int[][] m_LandPatches;
 
 #if !MONO
-		[System.Runtime.InteropServices.DllImport( "Kernel32" )]
-		private unsafe static extern int _lread( IntPtr hFile, void *lpBuffer, int wBytes );
+		[System.Runtime.InteropServices.DllImport("Kernel32")]
+		private unsafe static extern int _lread(IntPtr hFile, void* lpBuffer, int wBytes);
 #endif
 
 		public Map Owner
@@ -107,52 +107,52 @@ namespace Server
 
 		public FileStream MapStream
 		{
-			get{ return m_Map; }
-			set{ m_Map = value; }
+			get { return m_Map; }
+			set { m_Map = value; }
 		}
 
 		public FileStream IndexStream
 		{
-			get{ return m_Index; }
-			set{ m_Index = value; }
+			get { return m_Index; }
+			set { m_Index = value; }
 		}
 
 		public FileStream DataStream
 		{
-			get{ return m_Statics; }
-			set{ m_Statics = value; }
+			get { return m_Statics; }
+			set { m_Statics = value; }
 		}
 
 		public BinaryReader IndexReader
 		{
-			get{ return m_IndexReader; }
-			set{ m_IndexReader = value; }
+			get { return m_IndexReader; }
+			set { m_IndexReader = value; }
 		}
 
 		public bool Exists
 		{
-			get{ return ( m_Map != null && m_Index != null && m_Statics != null ); }
+			get { return (m_Map != null && m_Index != null && m_Statics != null); }
 		}
 
 		private static ArrayList m_Instances = new ArrayList();
 		private ArrayList m_FileShare;
 
-		public TileMatrix( Map owner, int fileIndex, int mapID, int width, int height )
+		public TileMatrix(Map owner, int fileIndex, int mapID, int width, int height)
 		{
 			m_FileShare = new ArrayList();
 
-			for ( int i = 0; i < m_Instances.Count; ++i )
+			for (int i = 0; i < m_Instances.Count; ++i)
 			{
 				TileMatrix tm = (TileMatrix)m_Instances[i];
 
-				if ( tm.m_FileIndex == fileIndex )
+				if (tm.m_FileIndex == fileIndex)
 				{
-					tm.m_FileShare.Add( this );
-					m_FileShare.Add( tm );
+					tm.m_FileShare.Add(this);
+					m_FileShare.Add(tm);
 				}
 			}
 
-			m_Instances.Add( this );
+			m_Instances.Add(this);
 			m_FileIndex = fileIndex;
 			m_Width = width;
 			m_Height = height;
@@ -161,34 +161,34 @@ namespace Server
 
 			m_Owner = owner;
 
-			if ( fileIndex != 0x7F )
+			if (fileIndex != 0x7F)
 			{
-				string mapPath = Core.FindDataFile( "map{0}.mul", fileIndex );
+				string mapPath = Core.FindDataFile("map{0}.mul", fileIndex);
 
-				if ( File.Exists( mapPath ) )
-					m_Map = new FileStream( mapPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite );
+				if (File.Exists(mapPath))
+					m_Map = new FileStream(mapPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
-				string indexPath = Core.FindDataFile( "staidx{0}.mul", fileIndex );
+				string indexPath = Core.FindDataFile("staidx{0}.mul", fileIndex);
 
-				if ( File.Exists( indexPath ) )
+				if (File.Exists(indexPath))
 				{
-					m_Index = new FileStream( indexPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite );
-					m_IndexReader = new BinaryReader( m_Index );
+					m_Index = new FileStream(indexPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+					m_IndexReader = new BinaryReader(m_Index);
 				}
 
-				string staticsPath = Core.FindDataFile( "statics{0}.mul", fileIndex );
+				string staticsPath = Core.FindDataFile("statics{0}.mul", fileIndex);
 
-				if ( File.Exists( staticsPath ) )
-					m_Statics = new FileStream( staticsPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite );
+				if (File.Exists(staticsPath))
+					m_Statics = new FileStream(staticsPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 			}
 
 			m_EmptyStaticBlock = new Tile[8][][];
 
-			for ( int i = 0; i < 8; ++i )
+			for (int i = 0; i < 8; ++i)
 			{
 				m_EmptyStaticBlock[i] = new Tile[8][];
 
-				for ( int j = 0; j < 8; ++j )
+				for (int j = 0; j < 8; ++j)
 					m_EmptyStaticBlock[i][j] = new Tile[0];
 			}
 
@@ -199,7 +199,7 @@ namespace Server
 			m_StaticPatches = new int[m_BlockWidth][];
 			m_LandPatches = new int[m_BlockWidth][];
 
-			m_Patch = new TileMatrixPatch( this, mapID );
+			m_Patch = new TileMatrixPatch(this, mapID);
 		}
 
 		public Tile[][][] EmptyStaticBlock
@@ -210,57 +210,57 @@ namespace Server
 			}
 		}
 
-		public void SetStaticBlock( int x, int y, Tile[][][] value )
+		public void SetStaticBlock(int x, int y, Tile[][][] value)
 		{
-			if ( x < 0 || y < 0 || x >= m_BlockWidth || y >= m_BlockHeight )
+			if (x < 0 || y < 0 || x >= m_BlockWidth || y >= m_BlockHeight)
 				return;
 
-			if ( m_StaticTiles[x] == null )
+			if (m_StaticTiles[x] == null)
 				m_StaticTiles[x] = new Tile[m_BlockHeight][][][];
 
 			m_StaticTiles[x][y] = value;
 
-			if ( m_StaticPatches[x] == null )
+			if (m_StaticPatches[x] == null)
 				m_StaticPatches[x] = new int[(m_BlockHeight + 31) >> 5];
 
 			m_StaticPatches[x][y >> 5] |= 1 << (y & 0x1F);
 		}
 
-		public Tile[][][] GetStaticBlock( int x, int y )
+		public Tile[][][] GetStaticBlock(int x, int y)
 		{
-			if ( x < 0 || y < 0 || x >= m_BlockWidth || y >= m_BlockHeight || m_Statics == null || m_Index == null )
+			if (x < 0 || y < 0 || x >= m_BlockWidth || y >= m_BlockHeight || m_Statics == null || m_Index == null)
 				return m_EmptyStaticBlock;
 
-			if ( m_StaticTiles[x] == null )
+			if (m_StaticTiles[x] == null)
 				m_StaticTiles[x] = new Tile[m_BlockHeight][][][];
 
 			Tile[][][] tiles = m_StaticTiles[x][y];
 
-			if ( tiles == null )
+			if (tiles == null)
 			{
-				for ( int i = 0; tiles == null && i < m_FileShare.Count; ++i )
+				for (int i = 0; tiles == null && i < m_FileShare.Count; ++i)
 				{
 					TileMatrix shared = (TileMatrix)m_FileShare[i];
 
-					if ( x >= 0 && x < shared.m_BlockWidth && y >= 0 && y < shared.m_BlockHeight )
+					if (x >= 0 && x < shared.m_BlockWidth && y >= 0 && y < shared.m_BlockHeight)
 					{
 						Tile[][][][] theirTiles = shared.m_StaticTiles[x];
 
-						if ( theirTiles != null )
+						if (theirTiles != null)
 							tiles = theirTiles[y];
 
-						if ( tiles != null )
+						if (tiles != null)
 						{
 							int[] theirBits = shared.m_StaticPatches[x];
 
-							if ( theirBits != null && (theirBits[y >> 5] & (1 << (y & 0x1F))) != 0 )
+							if (theirBits != null && (theirBits[y >> 5] & (1 << (y & 0x1F))) != 0)
 								tiles = null;
 						}
 					}
 				}
 
-				if ( tiles == null )
-					tiles = ReadStaticBlock( x, y );
+				if (tiles == null)
+					tiles = ReadStaticBlock(x, y);
 
 				m_StaticTiles[x][y] = tiles;
 			}
@@ -268,42 +268,42 @@ namespace Server
 			return tiles;
 		}
 
-		public Tile[] GetStaticTiles( int x, int y )
+		public Tile[] GetStaticTiles(int x, int y)
 		{
-			Tile[][][] tiles = GetStaticBlock( x >> 3, y >> 3 );
+			Tile[][][] tiles = GetStaticBlock(x >> 3, y >> 3);
 
 			return tiles[x & 0x7][y & 0x7];
 		}
 
 		private static TileList m_TilesList = new TileList();
 
-		public Tile[] GetStaticTiles( int x, int y, bool multis )
+		public Tile[] GetStaticTiles(int x, int y, bool multis)
 		{
-			Tile[][][] tiles = GetStaticBlock( x >> 3, y >> 3 );
+			Tile[][][] tiles = GetStaticBlock(x >> 3, y >> 3);
 
-			if ( multis )
+			if (multis)
 			{
-				IPooledEnumerable eable = m_Owner.GetMultiTilesAt( x, y );
+				IPooledEnumerable eable = m_Owner.GetMultiTilesAt(x, y);
 
-				if ( eable == Map.NullEnumerable.Instance )
+				if (eable == Map.NullEnumerable.Instance)
 					return tiles[x & 0x7][y & 0x7];
 
 				bool any = false;
 
-				foreach ( Tile[] multiTiles in eable )
+				foreach (Tile[] multiTiles in eable)
 				{
-					if ( !any )
+					if (!any)
 						any = true;
 
-					m_TilesList.AddRange( multiTiles );
+					m_TilesList.AddRange(multiTiles);
 				}
 
 				eable.Free();
 
-				if ( !any )
+				if (!any)
 					return tiles[x & 0x7][y & 0x7];
 
-				m_TilesList.AddRange( tiles[x & 0x7][y & 0x7] );
+				m_TilesList.AddRange(tiles[x & 0x7][y & 0x7]);
 
 				return m_TilesList.ToArray();
 			}
@@ -313,57 +313,57 @@ namespace Server
 			}
 		}
 
-		public void SetLandBlock( int x, int y, Tile[] value )
+		public void SetLandBlock(int x, int y, Tile[] value)
 		{
-			if ( x < 0 || y < 0 || x >= m_BlockWidth || y >= m_BlockHeight )
+			if (x < 0 || y < 0 || x >= m_BlockWidth || y >= m_BlockHeight)
 				return;
 
-			if ( m_LandTiles[x] == null )
+			if (m_LandTiles[x] == null)
 				m_LandTiles[x] = new Tile[m_BlockHeight][];
 
 			m_LandTiles[x][y] = value;
 
-			if ( m_LandPatches[x] == null )
+			if (m_LandPatches[x] == null)
 				m_LandPatches[x] = new int[(m_BlockHeight + 31) >> 5];
 
 			m_LandPatches[x][y >> 5] |= 1 << (y & 0x1F);
 		}
 
-		public Tile[] GetLandBlock( int x, int y )
+		public Tile[] GetLandBlock(int x, int y)
 		{
-			if ( x < 0 || y < 0 || x >= m_BlockWidth || y >= m_BlockHeight || m_Map == null )
+			if (x < 0 || y < 0 || x >= m_BlockWidth || y >= m_BlockHeight || m_Map == null)
 				return m_InvalidLandBlock;
 
-			if ( m_LandTiles[x] == null )
+			if (m_LandTiles[x] == null)
 				m_LandTiles[x] = new Tile[m_BlockHeight][];
 
 			Tile[] tiles = m_LandTiles[x][y];
 
-			if ( tiles == null )
+			if (tiles == null)
 			{
-				for ( int i = 0; tiles == null && i < m_FileShare.Count; ++i )
+				for (int i = 0; tiles == null && i < m_FileShare.Count; ++i)
 				{
 					TileMatrix shared = (TileMatrix)m_FileShare[i];
 
-					if ( x >= 0 && x < shared.m_BlockWidth && y >= 0 && y < shared.m_BlockHeight )
+					if (x >= 0 && x < shared.m_BlockWidth && y >= 0 && y < shared.m_BlockHeight)
 					{
 						Tile[][] theirTiles = shared.m_LandTiles[x];
 
-						if ( theirTiles != null )
+						if (theirTiles != null)
 							tiles = theirTiles[y];
 
-						if ( tiles != null )
+						if (tiles != null)
 						{
 							int[] theirBits = shared.m_LandPatches[x];
 
-							if ( theirBits != null && (theirBits[y >> 5] & (1 << (y & 0x1F))) != 0 )
+							if (theirBits != null && (theirBits[y >> 5] & (1 << (y & 0x1F))) != 0)
 								tiles = null;
 						}
 					}
 				}
 
-				if ( tiles == null )
-					tiles = ReadLandBlock( x, y );
+				if (tiles == null)
+					tiles = ReadLandBlock(x, y);
 
 				m_LandTiles[x][y] = tiles;
 			}
@@ -371,9 +371,9 @@ namespace Server
 			return tiles;
 		}
 
-		public Tile GetLandTile( int x, int y )
+		public Tile GetLandTile(int x, int y)
 		{
-			Tile[] tiles = GetLandBlock( x >> 3, y >> 3 );
+			Tile[] tiles = GetLandBlock(x >> 3, y >> 3);
 
 			return tiles[((y & 0x7) << 3) + (x & 0x7)];
 		}
@@ -386,16 +386,16 @@ namespace Server
 
 		private static StaticTile[] m_TileBuffer = new StaticTile[128];
 
-		private unsafe Tile[][][] ReadStaticBlock( int x, int y )
+		private unsafe Tile[][][] ReadStaticBlock(int x, int y)
 		{
 			try
 			{
-				m_IndexReader.BaseStream.Seek( ((x * m_BlockHeight) + y) * 12, SeekOrigin.Begin );
+				m_IndexReader.BaseStream.Seek(((x * m_BlockHeight) + y) * 12, SeekOrigin.Begin);
 
 				int lookup = m_IndexReader.ReadInt32();
 				int length = m_IndexReader.ReadInt32();
 
-				if ( lookup < 0 || length <= 0 )
+				if (lookup < 0 || length <= 0)
 				{
 					return m_EmptyStaticBlock;
 				}
@@ -403,17 +403,17 @@ namespace Server
 				{
 					int count = length / 7;
 
-					m_Statics.Seek( lookup, SeekOrigin.Begin );
+					m_Statics.Seek(lookup, SeekOrigin.Begin);
 
-					if ( m_TileBuffer.Length < count )
+					if (m_TileBuffer.Length < count)
 						m_TileBuffer = new StaticTile[count];
 
 					StaticTile[] staTiles = m_TileBuffer;//new StaticTile[tileCount];
 
-					fixed ( StaticTile *pTiles = staTiles )
+					fixed (StaticTile* pTiles = staTiles)
 					{
 #if !MONO
-						_lread( m_Statics.Handle, pTiles, length );
+						_lread(m_Statics.Handle, pTiles, length);
 #else
 						if ( m_Buffer == null || length > m_Buffer.Length )
 							m_Buffer = new byte[length];
@@ -431,36 +431,36 @@ namespace Server
 						}
 #endif
 
-						if ( m_Lists == null )
+						if (m_Lists == null)
 						{
 							m_Lists = new TileList[8][];
 
-							for ( int i = 0; i < 8; ++i )
+							for (int i = 0; i < 8; ++i)
 							{
 								m_Lists[i] = new TileList[8];
 
-								for ( int j = 0; j < 8; ++j )
+								for (int j = 0; j < 8; ++j)
 									m_Lists[i][j] = new TileList();
 							}
 						}
 
 						TileList[][] lists = m_Lists;
 
-						StaticTile *pCur = pTiles, pEnd = pTiles + count;
+						StaticTile* pCur = pTiles, pEnd = pTiles + count;
 
-						while ( pCur < pEnd )
+						while (pCur < pEnd)
 						{
-							lists[pCur->m_X & 0x7][pCur->m_Y & 0x7].Add( (short)((pCur->m_ID & 0x3FFF) + 0x4000), pCur->m_Z );
+							lists[pCur->m_X & 0x7][pCur->m_Y & 0x7].Add((short)((pCur->m_ID & 0x3FFF) + 0x4000), pCur->m_Z);
 							++pCur;
 						}
 
 						Tile[][][] tiles = new Tile[8][][];
 
-						for ( int i = 0; i < 8; ++i )
+						for (int i = 0; i < 8; ++i)
 						{
 							tiles[i] = new Tile[8][];
 
-							for ( int j = 0; j < 8; ++j )
+							for (int j = 0; j < 8; ++j)
 								tiles[i][j] = lists[i][j].ToArray();
 						}
 
@@ -468,12 +468,12 @@ namespace Server
 					}
 				}
 			}
-			catch ( EndOfStreamException )
+			catch (EndOfStreamException)
 			{
-				if ( DateTime.Now >= m_NextStaticWarning )
+				if (DateTime.Now >= m_NextStaticWarning)
 				{
-					Console.WriteLine( "Warning: Static EOS for {0} ({1}, {2})", m_Owner, x, y );
-					m_NextStaticWarning = DateTime.Now + TimeSpan.FromMinutes( 1.0 );
+					Console.WriteLine("Warning: Static EOS for {0} ({1}, {2})", m_Owner, x, y);
+					m_NextStaticWarning = DateTime.Now + TimeSpan.FromMinutes(1.0);
 				}
 
 				return m_EmptyStaticBlock;
@@ -485,22 +485,22 @@ namespace Server
 
 		public void Force()
 		{
-			if ( ScriptCompiler.Assemblies == null || ScriptCompiler.Assemblies.Length == 0 )
+			if (ScriptCompiler.Assemblies == null || ScriptCompiler.Assemblies.Length == 0)
 				throw new Exception();
 		}
 
-		private unsafe Tile[] ReadLandBlock( int x, int y )
+		private unsafe Tile[] ReadLandBlock(int x, int y)
 		{
 			try
 			{
-				m_Map.Seek( ((x * m_BlockHeight) + y) * 196 + 4, SeekOrigin.Begin );
+				m_Map.Seek(((x * m_BlockHeight) + y) * 196 + 4, SeekOrigin.Begin);
 
 				Tile[] tiles = new Tile[64];
 
-				fixed ( Tile *pTiles = tiles )
+				fixed (Tile* pTiles = tiles)
 				{
 #if !MONO
-					_lread( m_Map.Handle, pTiles, 192 );
+					_lread(m_Map.Handle, pTiles, 192);
 #else
 					if ( m_Buffer == null || 192 > m_Buffer.Length )
 						m_Buffer = new byte[192];
@@ -523,10 +523,10 @@ namespace Server
 			}
 			catch
 			{
-				if ( DateTime.Now >= m_NextLandWarning )
+				if (DateTime.Now >= m_NextLandWarning)
 				{
-					Console.WriteLine( "Warning: Land EOS for {0} ({1}, {2})", m_Owner, x, y );
-					m_NextLandWarning = DateTime.Now + TimeSpan.FromMinutes( 1.0 );
+					Console.WriteLine("Warning: Land EOS for {0} ({1}, {2})", m_Owner, x, y);
+					m_NextLandWarning = DateTime.Now + TimeSpan.FromMinutes(1.0);
 				}
 
 				return m_InvalidLandBlock;
@@ -535,18 +535,18 @@ namespace Server
 
 		public void Dispose()
 		{
-			if ( m_Map != null )
+			if (m_Map != null)
 				m_Map.Close();
 
-			if ( m_Statics != null )
+			if (m_Statics != null)
 				m_Statics.Close();
 
-			if ( m_IndexReader != null )
+			if (m_IndexReader != null)
 				m_IndexReader.Close();
 		}
 	}
 
-	[System.Runtime.InteropServices.StructLayout( System.Runtime.InteropServices.LayoutKind.Sequential, Pack=1 )]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
 	public struct StaticTile
 	{
 		public short m_ID;
@@ -556,7 +556,7 @@ namespace Server
 		public short m_Hue;
 	}
 
-	[System.Runtime.InteropServices.StructLayout( System.Runtime.InteropServices.LayoutKind.Sequential, Pack=1 )]
+	[System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential, Pack = 1)]
 	public struct Tile
 	{
 		internal short m_ID;
@@ -586,7 +586,7 @@ namespace Server
 		{
 			get
 			{
-				if ( m_ID < 0x4000 )
+				if (m_ID < 0x4000)
 				{
 					return 0;
 				}
@@ -601,17 +601,17 @@ namespace Server
 		{
 			get
 			{
-				return ( m_ID == 2 || m_ID == 0x1DB || ( m_ID >= 0x1AE && m_ID <= 0x1B5 ) );
+				return (m_ID == 2 || m_ID == 0x1DB || (m_ID >= 0x1AE && m_ID <= 0x1B5));
 			}
 		}
 
-		public Tile( short id, sbyte z )
+		public Tile(short id, sbyte z)
 		{
 			m_ID = id;
 			m_Z = z;
 		}
 
-		public void Set( short id, sbyte z )
+		public void Set(short id, sbyte z)
 		{
 			m_ID = id;
 			m_Z = z;

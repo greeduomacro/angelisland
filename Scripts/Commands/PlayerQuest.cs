@@ -60,16 +60,17 @@ namespace Server.Scripts.Commands
 
 		public static void Register()
 		{
-			Server.Commands.Register( "Quest", AccessLevel.Player, new CommandEventHandler( PlayerQuest_OnCommand ) );
+			Server.Commands.Register("Quest", AccessLevel.Player, new CommandEventHandler(PlayerQuest_OnCommand));
 		}
 
 		private class PlayerQuestTarget : Target
 		{
-			public PlayerQuestTarget( ) : base( -1, true, TargetFlags.None )
+			public PlayerQuestTarget()
+				: base(-1, true, TargetFlags.None)
 			{
 			}
 
-			protected override void OnTarget( Mobile from, object o )
+			protected override void OnTarget(Mobile from, object o)
 			{
 				try
 				{
@@ -93,18 +94,18 @@ namespace Server.Scripts.Commands
 
 					BaseContainer bc = o as BaseContainer;
 
-                    if (Misc.Diagnostics.Assert(from.Backpack != null, "from.Backpack == null") == false)
-                    {
-                        from.SendMessage("You cannot use this deed without a backpack.");
-                        return;
-                    }
+					if (Misc.Diagnostics.Assert(from.Backpack != null, "from.Backpack == null") == false)
+					{
+						from.SendMessage("You cannot use this deed without a backpack.");
+						return;
+					}
 
-                    // mobile backpacks may not be used
-                    if (bc == from.Backpack || bc.Parent is Mobile)
-                    {
-                        from.SendMessage("You may not use that container.");
-                        return;
-                    }
+					// mobile backpacks may not be used
+					if (bc == from.Backpack || bc.Parent is Mobile)
+					{
+						from.SendMessage("You may not use that container.");
+						return;
+					}
 
 					// must not be locked down
 					if (bc.IsLockedDown == true || bc.IsSecure == true)
@@ -156,21 +157,21 @@ namespace Server.Scripts.Commands
 				}
 			}
 
-			public bool CheckAccess( Mobile m )
+			public bool CheckAccess(Mobile m)
 			{	// Allow access if the player is owner of the house.
-				BaseHouse house = BaseHouse.FindHouseAt( m );
-				return ( house != null && house.IsOwner( m ) );
+				BaseHouse house = BaseHouse.FindHouseAt(m);
+				return (house != null && house.IsOwner(m));
 			}
 		}
 
-		[Usage( "PlayerQuest" )]
-		[Description( "Allows a player to convert a container of items into a quest ticket." )]
-		private static void PlayerQuest_OnCommand( CommandEventArgs e )
+		[Usage("PlayerQuest")]
+		[Description("Allows a player to convert a container of items into a quest ticket.")]
+		private static void PlayerQuest_OnCommand(CommandEventArgs e)
 		{
 			Mobile from = e.Mobile;
-			if ( from.Alive == false )
+			if (from.Alive == false)
 			{
-				e.Mobile.SendMessage( "You are dead and cannot do that." );
+				e.Mobile.SendMessage("You are dead and cannot do that.");
 				return;
 			}
 

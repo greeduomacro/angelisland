@@ -52,16 +52,16 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			EventSink.Login += new LoginEventHandler( OnLogin );
-			Server.Commands.Register( "Vis", AccessLevel.Reporter, new CommandEventHandler( Vis_OnCommand ) );
-			Server.Commands.Register( "VisList", AccessLevel.Reporter, new CommandEventHandler( VisList_OnCommand ) );
-			Server.Commands.Register( "VisClear", AccessLevel.Reporter, new CommandEventHandler( VisClear_OnCommand ) );
-			Server.Commands.Register( "VisRemove", AccessLevel.Reporter, new CommandEventHandler( VisRemove_OnCommand ) );
+			EventSink.Login += new LoginEventHandler(OnLogin);
+			Server.Commands.Register("Vis", AccessLevel.Reporter, new CommandEventHandler(Vis_OnCommand));
+			Server.Commands.Register("VisList", AccessLevel.Reporter, new CommandEventHandler(VisList_OnCommand));
+			Server.Commands.Register("VisClear", AccessLevel.Reporter, new CommandEventHandler(VisClear_OnCommand));
+			Server.Commands.Register("VisRemove", AccessLevel.Reporter, new CommandEventHandler(VisRemove_OnCommand));
 		}
 
-		public static void OnLogin( LoginEventArgs e )
+		public static void OnLogin(LoginEventArgs e)
 		{
-			if ( e.Mobile is PlayerMobile )
+			if (e.Mobile is PlayerMobile)
 			{
 				PlayerMobile pm = (PlayerMobile)e.Mobile;
 
@@ -69,139 +69,140 @@ namespace Server.Scripts.Commands
 			}
 		}
 
-		[Usage( "Vis" )]
-		[Description( "Adds or removes a targeted player from your visibility list.  Anyone on your visibility list will be able to see you at all times, even when you're hidden." )]
-		public static void Vis_OnCommand( CommandEventArgs e )
+		[Usage("Vis")]
+		[Description("Adds or removes a targeted player from your visibility list.  Anyone on your visibility list will be able to see you at all times, even when you're hidden.")]
+		public static void Vis_OnCommand(CommandEventArgs e)
 		{
-			if ( e.Mobile is PlayerMobile )
+			if (e.Mobile is PlayerMobile)
 			{
 				e.Mobile.Target = new VisTarget();
-				e.Mobile.SendMessage( "Select person to add or remove from your visibility list." );
+				e.Mobile.SendMessage("Select person to add or remove from your visibility list.");
 			}
 		}
 
-		[Usage( "VisList" )]
-		[Description( "Shows the names of everyone in your visibility list." )]
-		public static void VisList_OnCommand( CommandEventArgs e )
+		[Usage("VisList")]
+		[Description("Shows the names of everyone in your visibility list.")]
+		public static void VisList_OnCommand(CommandEventArgs e)
 		{
-			if ( e.Mobile is PlayerMobile )
+			if (e.Mobile is PlayerMobile)
 			{
 				PlayerMobile pm = (PlayerMobile)e.Mobile;
 				ArrayList list = pm.VisibilityList;
 
-				if ( list.Count > 0 )
+				if (list.Count > 0)
 				{
-					pm.SendMessage( "You are visible to {0} mobile{1}:", list.Count, list.Count == 1 ? "" : "s" );
+					pm.SendMessage("You are visible to {0} mobile{1}:", list.Count, list.Count == 1 ? "" : "s");
 
-					for ( int i = 0; i < list.Count; ++i )
-						pm.SendMessage( "#{0}: {1}", i+1, ((Mobile)list[i]).Name );
-										}
+					for (int i = 0; i < list.Count; ++i)
+						pm.SendMessage("#{0}: {1}", i + 1, ((Mobile)list[i]).Name);
+				}
 				else
 				{
-					pm.SendMessage( "Your visibility list is empty." );
+					pm.SendMessage("Your visibility list is empty.");
 				}
 			}
 		}
-		
-		[Usage( "VisRemove" )]
-		[Description( "Manage your visibility list." )]
-		public static void VisRemove_OnCommand( CommandEventArgs e )
+
+		[Usage("VisRemove")]
+		[Description("Manage your visibility list.")]
+		public static void VisRemove_OnCommand(CommandEventArgs e)
 		{
-			
-			if ( e.Mobile is PlayerMobile )
+
+			if (e.Mobile is PlayerMobile)
 			{
 				PlayerMobile pm = (PlayerMobile)e.Mobile;
 				ArrayList list = pm.VisibilityList;
 
-				if ( list.Count > 0 )
+				if (list.Count > 0)
 				{
-					pm.SendGump( new VisListGump( pm, list, 0 ) );
+					pm.SendGump(new VisListGump(pm, list, 0));
 				}
 				else
 				{
-					pm.SendMessage( "Your visibility list is empty." );
+					pm.SendMessage("Your visibility list is empty.");
 				}
 			}
 		}
-	
-		[Usage( "VisClear" )]
-		[Description( "Removes everyone from your visibility list." )]
-		public static void VisClear_OnCommand( CommandEventArgs e )
+
+		[Usage("VisClear")]
+		[Description("Removes everyone from your visibility list.")]
+		public static void VisClear_OnCommand(CommandEventArgs e)
 		{
-			if ( e.Mobile is PlayerMobile )
+			if (e.Mobile is PlayerMobile)
 			{
 				PlayerMobile pm = (PlayerMobile)e.Mobile;
-				ArrayList list = new ArrayList( pm.VisibilityList );
-				
+				ArrayList list = new ArrayList(pm.VisibilityList);
+
 				pm.VisibilityList.Clear();
-				pm.SendMessage( "Your visibility list has been cleared." );
+				pm.SendMessage("Your visibility list has been cleared.");
 
-				for ( int i = 0; i < list.Count; ++i )
+				for (int i = 0; i < list.Count; ++i)
 				{
 					Mobile m = (Mobile)list[i];
 
-					if ( !m.CanSee( pm ) && Utility.InUpdateRange( m, pm ) )
-						m.Send( pm.RemovePacket );
+					if (!m.CanSee(pm) && Utility.InUpdateRange(m, pm))
+						m.Send(pm.RemovePacket);
 				}
 			}
 		}
 
 		private class VisTarget : Target
 		{
-			public VisTarget() : base( -1, false, TargetFlags.None )
+			public VisTarget()
+				: base(-1, false, TargetFlags.None)
 			{
 			}
 
-			protected override void OnTarget( Mobile from, object targeted )
+			protected override void OnTarget(Mobile from, object targeted)
 			{
-				if ( from is PlayerMobile && targeted is PlayerMobile && ((PlayerMobile)from) != ((PlayerMobile)targeted) )
+				if (from is PlayerMobile && targeted is PlayerMobile && ((PlayerMobile)from) != ((PlayerMobile)targeted))
 				{
 					PlayerMobile pm = (PlayerMobile)from;
 					Mobile targ = (Mobile)targeted;
 
-					if ( targ.AccessLevel <= from.AccessLevel )
+					if (targ.AccessLevel <= from.AccessLevel)
 					{
 						ArrayList list = pm.VisibilityList;
 
-						if ( list.Contains( targ ) )
+						if (list.Contains(targ))
 						{
-							list.Remove( targ );
-							from.SendMessage( "{0} has been removed from your visibility list.", targ.Name );
+							list.Remove(targ);
+							from.SendMessage("{0} has been removed from your visibility list.", targ.Name);
 						}
 						else
 						{
-							list.Add( targeted );
-							from.SendMessage( "{0} has been added to your visibility list.", targ.Name );
+							list.Add(targeted);
+							from.SendMessage("{0} has been added to your visibility list.", targ.Name);
 						}
 
-						if ( Utility.InUpdateRange( targ, from ) )
+						if (Utility.InUpdateRange(targ, from))
 						{
-							if ( targ.CanSee( from ) )
+							if (targ.CanSee(from))
 							{
-								targ.Send( new Network.MobileIncoming( targ, from ) );
+								targ.Send(new Network.MobileIncoming(targ, from));
 
-								if ( ObjectPropertyList.Enabled )
+								if (ObjectPropertyList.Enabled)
 								{
-									targ.Send( from.OPLPacket );
+									targ.Send(from.OPLPacket);
 
-									foreach ( Item item in from.Items )
-										targ.Send( item.OPLPacket );
+									foreach (Item item in from.Items)
+										targ.Send(item.OPLPacket);
 								}
 							}
 							else
 							{
-								targ.Send( from.RemovePacket );
+								targ.Send(from.RemovePacket);
 							}
 						}
 					}
 					else
 					{
-						from.SendMessage( "They can already see you!" );
+						from.SendMessage("They can already see you!");
 					}
 				}
 				else
 				{
-					from.SendMessage( "That is not a valid target." );
+					from.SendMessage("That is not a valid target.");
 				}
 			}
 		}

@@ -43,7 +43,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_X, value );
+				Delta(ref m_X, value);
 			}
 		}
 
@@ -55,7 +55,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Y, value );
+				Delta(ref m_Y, value);
 			}
 		}
 
@@ -67,7 +67,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Width, value );
+				Delta(ref m_Width, value);
 			}
 		}
 
@@ -79,7 +79,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Height, value );
+				Delta(ref m_Height, value);
 			}
 		}
 
@@ -91,7 +91,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Number, value );
+				Delta(ref m_Number, value);
 			}
 		}
 
@@ -103,7 +103,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Color, value );
+				Delta(ref m_Color, value);
 			}
 		}
 
@@ -115,7 +115,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_UseColor, value );
+				Delta(ref m_UseColor, value);
 			}
 		}
 
@@ -127,7 +127,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Background, value );
+				Delta(ref m_Background, value);
 			}
 		}
 
@@ -139,11 +139,11 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Scrollbar, value );
+				Delta(ref m_Scrollbar, value);
 			}
 		}
 
-		public GumpHtmlLocalized( int x, int y, int width, int height, int number, bool background, bool scrollbar )
+		public GumpHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
 		{
 			m_X = x;
 			m_Y = y;
@@ -154,7 +154,7 @@ namespace Server.Gumps
 			m_Scrollbar = scrollbar;
 		}
 
-		public GumpHtmlLocalized( int x, int y, int width, int height, int number, int color, bool background, bool scrollbar )
+		public GumpHtmlLocalized(int x, int y, int width, int height, int number, int color, bool background, bool scrollbar)
 		{
 			m_X = x;
 			m_Y = y;
@@ -170,28 +170,28 @@ namespace Server.Gumps
 
 		public override string Compile()
 		{
-			if ( m_UseColor )
-				return String.Format( "{{ xmfhtmlgumpcolor {0} {1} {2} {3} {4} {5} {6} {7} }}", m_X, m_Y, m_Width, m_Height, m_Number, m_Background ? 1 : 0, m_Scrollbar ? 1 : 0, m_Color );
+			if (m_UseColor)
+				return String.Format("{{ xmfhtmlgumpcolor {0} {1} {2} {3} {4} {5} {6} {7} }}", m_X, m_Y, m_Width, m_Height, m_Number, m_Background ? 1 : 0, m_Scrollbar ? 1 : 0, m_Color);
 			else
-				return String.Format( "{{ xmfhtmlgump {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, m_Number, m_Background ? 1 : 0, m_Scrollbar ? 1 : 0 );
+				return String.Format("{{ xmfhtmlgump {0} {1} {2} {3} {4} {5} {6} }}", m_X, m_Y, m_Width, m_Height, m_Number, m_Background ? 1 : 0, m_Scrollbar ? 1 : 0);
 		}
 
-		private static byte[] m_LayoutNameColor = Gump.StringToBuffer( "xmfhtmlgumpcolor" );
-		private static byte[] m_LayoutName = Gump.StringToBuffer( "xmfhtmlgump" );
+		private static byte[] m_LayoutNameColor = Gump.StringToBuffer("xmfhtmlgumpcolor");
+		private static byte[] m_LayoutName = Gump.StringToBuffer("xmfhtmlgump");
 
-		public override void AppendTo( DisplayGumpFast disp )
+		public override void AppendTo(DisplayGumpFast disp)
 		{
-			disp.AppendLayout( m_UseColor ? m_LayoutNameColor : m_LayoutName );
-			disp.AppendLayout( m_X );
-			disp.AppendLayout( m_Y );
-			disp.AppendLayout( m_Width );
-			disp.AppendLayout( m_Height );
-			disp.AppendLayout( m_Number );
-			disp.AppendLayout( m_Background );
-			disp.AppendLayout( m_Scrollbar );
+			disp.AppendLayout(m_UseColor ? m_LayoutNameColor : m_LayoutName);
+			disp.AppendLayout(m_X);
+			disp.AppendLayout(m_Y);
+			disp.AppendLayout(m_Width);
+			disp.AppendLayout(m_Height);
+			disp.AppendLayout(m_Number);
+			disp.AppendLayout(m_Background);
+			disp.AppendLayout(m_Scrollbar);
 
-			if ( m_UseColor )
-				disp.AppendLayout( m_Color );
+			if (m_UseColor)
+				disp.AppendLayout(m_Color);
 		}
 	}
 }

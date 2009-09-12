@@ -109,16 +109,16 @@ namespace Server.Accounting
 		/// </summary>
 		public void Delete()
 		{
-			for ( int i = 0; i < m_Mobiles.Length; ++i )
+			for (int i = 0; i < m_Mobiles.Length; ++i)
 			{
 				Mobile m = this[i];
 
-				if ( m == null )
+				if (m == null)
 					continue;
 
-				ArrayList list = Multis.BaseHouse.GetHouses( m );
+				ArrayList list = Multis.BaseHouse.GetHouses(m);
 
-				for ( int j = 0; j < list.Count; ++j )
+				for (int j = 0; j < list.Count; ++j)
 					((Item)list[j]).Delete();
 
 				m.Delete();
@@ -127,7 +127,7 @@ namespace Server.Accounting
 				m_Mobiles[i] = null;
 			}
 
-			Accounts.Table.Remove( m_Username );
+			Accounts.Table.Remove(m_Username);
 		}
 
 		/// <summary>
@@ -135,8 +135,8 @@ namespace Server.Accounting
 		/// </summary>
 		public HardwareInfo HardwareInfo
 		{
-			get{ return m_HardwareInfo; }
-			set{ m_HardwareInfo = value; }
+			get { return m_HardwareInfo; }
+			set { m_HardwareInfo = value; }
 		}
 
 		/// <summary>
@@ -144,41 +144,41 @@ namespace Server.Accounting
 		/// </summary>
 		public string[] IPRestrictions
 		{
-			get{ return m_IPRestrictions; }
-			set{ m_IPRestrictions = value; }
+			get { return m_IPRestrictions; }
+			set { m_IPRestrictions = value; }
 		}
 
 		public string[] EmailHistory
 		{
-			get{ return m_EmailHistory; }
-			set{ m_EmailHistory = value; }
+			get { return m_EmailHistory; }
+			set { m_EmailHistory = value; }
 		}
 
 		public string ResetPassword
 		{
-			get{ return m_ResetPassword; }
+			get { return m_ResetPassword; }
 			set
-			{ 
+			{
 				m_ResetPasswordRequestedTime = DateTime.Now;
-				m_ResetPassword = value; 
+				m_ResetPassword = value;
 			}
 		}
 
 		public DateTime ResetPasswordRequestedTime
 		{
-			get{ return m_ResetPasswordRequestedTime; }
+			get { return m_ResetPasswordRequestedTime; }
 		}
 
 		public bool AccountActivated
 		{
-			get{ return m_bAccountActivated; }
-			set{ m_bAccountActivated = value; }
+			get { return m_bAccountActivated; }
+			set { m_bAccountActivated = value; }
 		}
 
 		public string ActivationKey
 		{
-			get{ return m_ActivationKey; }
-			set{ m_ActivationKey = value; }
+			get { return m_ActivationKey; }
+			set { m_ActivationKey = value; }
 		}
 
 		/// <summary>
@@ -186,8 +186,8 @@ namespace Server.Accounting
 		/// </summary>
 		public IPAddress[] LoginIPs
 		{
-			get{ return m_LoginIPs; }
-			set{ m_LoginIPs = value; }
+			get { return m_LoginIPs; }
+			set { m_LoginIPs = value; }
 		}
 
 		/// <summary>
@@ -195,7 +195,7 @@ namespace Server.Accounting
 		/// </summary>
 		public ArrayList Comments
 		{
-			get{ return m_Comments; }
+			get { return m_Comments; }
 		}
 
 		/// <summary>
@@ -203,7 +203,7 @@ namespace Server.Accounting
 		/// </summary>
 		public ArrayList Tags
 		{
-			get{ return m_Tags; }
+			get { return m_Tags; }
 		}
 
 		/// <summary>
@@ -211,8 +211,8 @@ namespace Server.Accounting
 		/// </summary>
 		public string Username
 		{
-			get{ return m_Username; }
-			set{ m_Username = value; }
+			get { return m_Username; }
+			set { m_Username = value; }
 		}
 
 		/// <summary>
@@ -220,8 +220,8 @@ namespace Server.Accounting
 		/// </summary>
 		public string PlainPassword
 		{
-			get{ return m_PlainPassword; }
-			set{ m_PlainPassword = value; }
+			get { return m_PlainPassword; }
+			set { m_PlainPassword = value; }
 		}
 
 		/// <summary>
@@ -229,8 +229,8 @@ namespace Server.Accounting
 		/// </summary>
 		public string CryptPassword
 		{
-			get{ return m_CryptPassword; }
-			set{ m_CryptPassword = value; }
+			get { return m_CryptPassword; }
+			set { m_CryptPassword = value; }
 		}
 
 		/// <summary>
@@ -238,8 +238,8 @@ namespace Server.Accounting
 		/// </summary>
 		public string EmailAddress
 		{
-			get{ return m_EmailAddress; }
-			set{ m_EmailAddress = value; }
+			get { return m_EmailAddress; }
+			set { m_EmailAddress = value; }
 		}
 
 		public string WatchReason
@@ -259,8 +259,8 @@ namespace Server.Accounting
 		/// </summary>
 		public AccessLevel AccessLevel
 		{
-			get{ return m_AccessLevel; }
-			set{ m_AccessLevel = value; }
+			get { return m_AccessLevel; }
+			set { m_AccessLevel = value; }
 		}
 
 		/// <summary>
@@ -268,8 +268,8 @@ namespace Server.Accounting
 		/// </summary>
 		public int Flags
 		{
-			get{ return m_Flags; }
-			set{ m_Flags = value; }
+			get { return m_Flags; }
+			set { m_Flags = value; }
 		}
 
 		public enum AccountFlag
@@ -283,7 +283,7 @@ namespace Server.Accounting
 		{
 			get
 			{
-				return GetFlag( AccountFlag.DoNotSendEmail );
+				return GetFlag(AccountFlag.DoNotSendEmail);
 			}
 			set
 			{
@@ -310,19 +310,19 @@ namespace Server.Accounting
 		{
 			get
 			{
-				bool isBanned = GetFlag( AccountFlag.Banned ); //GetFlag( 0 );
+				bool isBanned = GetFlag(AccountFlag.Banned); //GetFlag( 0 );
 
-				if ( !isBanned )
+				if (!isBanned)
 					return false;
 
 				DateTime banTime;
 				TimeSpan banDuration;
 
-				if ( GetBanTags( out banTime, out banDuration ) )
+				if (GetBanTags(out banTime, out banDuration))
 				{
-					if ( banDuration != TimeSpan.MaxValue && DateTime.Now >= (banTime + banDuration) )
+					if (banDuration != TimeSpan.MaxValue && DateTime.Now >= (banTime + banDuration))
 					{
-						SetUnspecifiedBan( null ); // clear
+						SetUnspecifiedBan(null); // clear
 						Banned = false;
 						return false;
 					}
@@ -331,9 +331,9 @@ namespace Server.Accounting
 				return true;
 			}
 			set
-			{ 
+			{
 				//SetFlag( 0, value ); 
-				SetFlag( AccountFlag.Banned, value );
+				SetFlag(AccountFlag.Banned, value);
 			}
 		}
 
@@ -342,7 +342,7 @@ namespace Server.Accounting
 		/// </summary>
 		public DateTime Created
 		{
-			get{ return m_Created; }
+			get { return m_Created; }
 		}
 
 		/// <summary>
@@ -350,28 +350,28 @@ namespace Server.Accounting
 		/// </summary>
 		public DateTime LastLogin
 		{
-			get{ return m_LastLogin; }
-			set{ m_LastLogin = value; }
+			get { return m_LastLogin; }
+			set { m_LastLogin = value; }
 		}
 
 		/// <summary>
 		/// Gets the value of a specific flag in the Flags bitfield.
 		/// </summary>
 		/// <param name="index">The zero-based flag index.</param>
-		private bool GetFlag( int index )
+		private bool GetFlag(int index)
 		{
-			return ( m_Flags & (1 << index) ) != 0;
+			return (m_Flags & (1 << index)) != 0;
 		}
 
-		public bool GetFlag( AccountFlag flag )
+		public bool GetFlag(AccountFlag flag)
 		{
 			bool bReturn = false;
 			try
 			{
-				int iFlag = (int) flag;
-				if( iFlag >= 0 && iFlag < 32 )
+				int iFlag = (int)flag;
+				if (iFlag >= 0 && iFlag < 32)
 				{
-					bReturn = GetFlag( iFlag );
+					bReturn = GetFlag(iFlag);
 				}
 			}
 			catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
@@ -383,22 +383,22 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="index">The zero-based flag index.</param>
 		/// <param name="value">The value to set.</param>
-		private void SetFlag( int index, bool value )
+		private void SetFlag(int index, bool value)
 		{
-			if ( value )
+			if (value)
 				m_Flags |= (1 << index);
 			else
 				m_Flags &= ~(1 << index);
 		}
 
-		public void SetFlag( AccountFlag flag, bool value )
+		public void SetFlag(AccountFlag flag, bool value)
 		{
 			try
 			{
-				int iFlag = (int) flag;
-				if( iFlag >= 0 && iFlag < 32 )
+				int iFlag = (int)flag;
+				if (iFlag >= 0 && iFlag < 32)
 				{
-					SetFlag( iFlag, value );
+					SetFlag(iFlag, value);
 				}
 			}
 			catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
@@ -409,26 +409,26 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="name">New tag name.</param>
 		/// <param name="value">New tag value.</param>
-		public void AddTag( string name, string value )
+		public void AddTag(string name, string value)
 		{
-			m_Tags.Add( new AccountTag( name, value ) );
+			m_Tags.Add(new AccountTag(name, value));
 		}
 
 		/// <summary>
 		/// Removes all tags with the specified name from this account.
 		/// </summary>
 		/// <param name="name">Tag name to remove.</param>
-		public void RemoveTag( string name )
+		public void RemoveTag(string name)
 		{
-			for ( int i = m_Tags.Count - 1; i >= 0; --i )
+			for (int i = m_Tags.Count - 1; i >= 0; --i)
 			{
-				if ( i >= m_Tags.Count )
+				if (i >= m_Tags.Count)
 					continue;
 
 				AccountTag tag = (AccountTag)m_Tags[i];
 
-				if ( tag.Name == name )
-					m_Tags.RemoveAt( i );
+				if (tag.Name == name)
+					m_Tags.RemoveAt(i);
 			}
 		}
 
@@ -437,87 +437,87 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="name">Tag name.</param>
 		/// <param name="value">Tag value.</param>
-		public void SetTag( string name, string value )
+		public void SetTag(string name, string value)
 		{
-			for ( int i = 0; i < m_Tags.Count; ++i )
+			for (int i = 0; i < m_Tags.Count; ++i)
 			{
 				AccountTag tag = (AccountTag)m_Tags[i];
 
-				if ( tag.Name == name )
+				if (tag.Name == name)
 				{
 					tag.Value = value;
 					return;
 				}
 			}
 
-			AddTag( name, value );
+			AddTag(name, value);
 		}
 
 		/// <summary>
 		/// Gets the value of a tag -or- null if there are no tags with the specified name.
 		/// </summary>
 		/// <param name="name">Name of the desired tag value.</param>
-		public string GetTag( string name )
+		public string GetTag(string name)
 		{
-			for ( int i = 0; i < m_Tags.Count; ++i )
+			for (int i = 0; i < m_Tags.Count; ++i)
 			{
 				AccountTag tag = (AccountTag)m_Tags[i];
 
-				if ( tag.Name == name )
+				if (tag.Name == name)
 					return tag.Value;
 			}
 
 			return null;
 		}
 
-		public void SetUnspecifiedBan( Mobile from )
+		public void SetUnspecifiedBan(Mobile from)
 		{
-			SetBanTags( from, DateTime.MinValue, TimeSpan.Zero );
+			SetBanTags(from, DateTime.MinValue, TimeSpan.Zero);
 		}
 
-		public void SetBanTags( Mobile from, DateTime banTime, TimeSpan banDuration )
+		public void SetBanTags(Mobile from, DateTime banTime, TimeSpan banDuration)
 		{
-			if ( from == null )
-				RemoveTag( "BanDealer" );
+			if (from == null)
+				RemoveTag("BanDealer");
 			else
-				SetTag( "BanDealer", from.ToString() );
+				SetTag("BanDealer", from.ToString());
 
-			if ( banTime == DateTime.MinValue )
-				RemoveTag( "BanTime" );
+			if (banTime == DateTime.MinValue)
+				RemoveTag("BanTime");
 			else
-				SetTag( "BanTime", XmlConvert.ToString( banTime ) );
+				SetTag("BanTime", XmlConvert.ToString(banTime));
 
-			if ( banDuration == TimeSpan.Zero )
-				RemoveTag( "BanDuration" );
+			if (banDuration == TimeSpan.Zero)
+				RemoveTag("BanDuration");
 			else
-				SetTag( "BanDuration", banDuration.ToString() );
+				SetTag("BanDuration", banDuration.ToString());
 		}
 
-		public bool GetBanTags( out DateTime banTime, out TimeSpan banDuration )
+		public bool GetBanTags(out DateTime banTime, out TimeSpan banDuration)
 		{
-			string tagTime = GetTag( "BanTime" );
-			string tagDuration = GetTag( "BanDuration" );
+			string tagTime = GetTag("BanTime");
+			string tagDuration = GetTag("BanDuration");
 
-			if ( tagTime != null )
-				banTime = Accounts.GetDateTime( tagTime, DateTime.MinValue );
+			if (tagTime != null)
+				banTime = Accounts.GetDateTime(tagTime, DateTime.MinValue);
 			else
 				banTime = DateTime.MinValue;
 
-			if ( tagDuration == "Infinite" )
+			if (tagDuration == "Infinite")
 			{
 				banDuration = TimeSpan.MaxValue;
 			}
-			else if ( tagDuration != null )
+			else if (tagDuration != null)
 			{
-				try{ banDuration = TimeSpan.Parse( tagDuration ); }
-				catch{ banDuration = TimeSpan.Zero; }
+				try { banDuration = TimeSpan.Parse(tagDuration); }
+				catch { banDuration = TimeSpan.Zero; }
 			}
 			else
 			{
 				banDuration = TimeSpan.Zero;
 			}
 
-			return ( banTime != DateTime.MinValue && banDuration != TimeSpan.Zero );
+			return (banTime != DateTime.MinValue && banDuration != TimeSpan.Zero);
 		}
 
 		public AccessLevel GetAccessLevel()
@@ -552,25 +552,25 @@ namespace Server.Accounting
 		private static MD5CryptoServiceProvider m_HashProvider;
 		private static byte[] m_HashBuffer;
 
-		public static string HashPassword( string plainPassword )
+		public static string HashPassword(string plainPassword)
 		{
-			if ( m_HashProvider == null )
+			if (m_HashProvider == null)
 				m_HashProvider = new MD5CryptoServiceProvider();
 
-			if ( m_HashBuffer == null )
+			if (m_HashBuffer == null)
 				m_HashBuffer = new byte[256];
 
-			int length = Encoding.ASCII.GetBytes( plainPassword, 0, plainPassword.Length > 256 ? 256 : plainPassword.Length, m_HashBuffer, 0 );
-			byte[] hashed = m_HashProvider.ComputeHash( m_HashBuffer, 0, length );
+			int length = Encoding.ASCII.GetBytes(plainPassword, 0, plainPassword.Length > 256 ? 256 : plainPassword.Length, m_HashBuffer, 0);
+			byte[] hashed = m_HashProvider.ComputeHash(m_HashBuffer, 0, length);
 
-			return BitConverter.ToString( hashed );
+			return BitConverter.ToString(hashed);
 		}
 
-		public void SetPassword( string plainPassword )
+		public void SetPassword(string plainPassword)
 		{
-			if ( AccountHandler.ProtectPasswords )
+			if (AccountHandler.ProtectPasswords)
 			{
-				m_CryptPassword = HashPassword( plainPassword );
+				m_CryptPassword = HashPassword(plainPassword);
 				m_PlainPassword = null;
 			}
 			else
@@ -580,18 +580,18 @@ namespace Server.Accounting
 			}
 		}
 
-		public bool CheckPassword( string plainPassword )
+		public bool CheckPassword(string plainPassword)
 		{
-			if ( m_PlainPassword != null )
+			if (m_PlainPassword != null)
 			{
-				bool bPlainGood = ( m_PlainPassword == plainPassword );
-				if( bPlainGood )
+				bool bPlainGood = (m_PlainPassword == plainPassword);
+				if (bPlainGood)
 				{
 					m_ResetPassword = "";
 				}
 				else
 				{
-					if( m_ResetPassword.Length > 0 && plainPassword == m_ResetPassword )
+					if (m_ResetPassword.Length > 0 && plainPassword == m_ResetPassword)
 					{
 						m_PlainPassword = m_ResetPassword;
 						m_ResetPassword = "";
@@ -601,17 +601,17 @@ namespace Server.Accounting
 				return bPlainGood;
 			}
 
-			bool bCryptGood = ( m_CryptPassword == HashPassword( plainPassword ) );
+			bool bCryptGood = (m_CryptPassword == HashPassword(plainPassword));
 
-			if( bCryptGood )
+			if (bCryptGood)
 			{
 				m_ResetPassword = "";
 			}
 			else
 			{
-				if( m_ResetPassword.Length > 0 && plainPassword == m_ResetPassword )
+				if (m_ResetPassword.Length > 0 && plainPassword == m_ResetPassword)
 				{
-					SetPassword( plainPassword );
+					SetPassword(plainPassword);
 					m_ResetPassword = "";
 					bCryptGood = true;
 				}
@@ -626,10 +626,10 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="username">Initial username for this account.</param>
 		/// <param name="password">Initial password for this account.</param>
-		public Account( string username, string password )
+		public Account(string username, string password)
 		{
 			m_Username = username;
-			SetPassword( password );
+			SetPassword(password);
 
 			m_AccessLevel = AccessLevel.Player;
 
@@ -652,55 +652,55 @@ namespace Server.Accounting
 		/// Deserializes an Account instance from an xml element. Intended only to be called from Accounts.Load.
 		/// </summary>
 		/// <param name="node">The XmlElement instance from which to deserialize.</param>
-		public Account( XmlElement node )
+		public Account(XmlElement node)
 		{
-			m_Username = Accounts.GetText( node["username"], "empty" );
+			m_Username = Accounts.GetText(node["username"], "empty");
 
-			string plainPassword = Accounts.GetText( node["password"], null );
-			string cryptPassword = Accounts.GetText( node["cryptPassword"], null );
+			string plainPassword = Accounts.GetText(node["password"], null);
+			string cryptPassword = Accounts.GetText(node["cryptPassword"], null);
 
-			if ( AccountHandler.ProtectPasswords )
+			if (AccountHandler.ProtectPasswords)
 			{
-				if ( cryptPassword != null )
+				if (cryptPassword != null)
 					m_CryptPassword = cryptPassword;
-				else if ( plainPassword != null )
-					SetPassword( plainPassword );
+				else if (plainPassword != null)
+					SetPassword(plainPassword);
 				else
-					SetPassword( "empty" );
+					SetPassword("empty");
 			}
 			else
 			{
-				if ( plainPassword == null )
+				if (plainPassword == null)
 					plainPassword = "empty";
 
-				SetPassword( plainPassword );
+				SetPassword(plainPassword);
 			}
 
-			m_AccessLevel = (AccessLevel)Enum.Parse( typeof( AccessLevel ), Accounts.GetText( node["accessLevel"], "Player" ), true );
-			m_Flags = Accounts.GetInt32( Accounts.GetText( node["flags"], "0" ), 0 );
-			m_Created = Accounts.GetDateTime( Accounts.GetText( node["created"], null ), DateTime.Now );
-			m_LastLogin = Accounts.GetDateTime( Accounts.GetText( node["lastLogin"], null ), DateTime.Now );
+			m_AccessLevel = (AccessLevel)Enum.Parse(typeof(AccessLevel), Accounts.GetText(node["accessLevel"], "Player"), true);
+			m_Flags = Accounts.GetInt32(Accounts.GetText(node["flags"], "0"), 0);
+			m_Created = Accounts.GetDateTime(Accounts.GetText(node["created"], null), DateTime.Now);
+			m_LastLogin = Accounts.GetDateTime(Accounts.GetText(node["lastLogin"], null), DateTime.Now);
 
-			m_EmailAddress = Accounts.GetText( node["email"], "empty" );
+			m_EmailAddress = Accounts.GetText(node["email"], "empty");
 
 			m_WatchReason = Accounts.GetText(node["watchreason"], "");
 			m_WatchExpire = Accounts.GetDateTime(Accounts.GetText(node["watchexpiredate"], null), DateTime.MinValue);
 
-			m_Mobiles = LoadMobiles( node );
-			m_Comments = LoadComments( node );
-			m_Tags = LoadTags( node );
-			m_LoginIPs = LoadAddressList( node );
-			m_IPRestrictions = LoadAccessCheck( node );
-			m_EmailHistory = LoadEmailHistory( node );
+			m_Mobiles = LoadMobiles(node);
+			m_Comments = LoadComments(node);
+			m_Tags = LoadTags(node);
+			m_LoginIPs = LoadAddressList(node);
+			m_IPRestrictions = LoadAccessCheck(node);
+			m_EmailHistory = LoadEmailHistory(node);
 
-			m_bAccountActivated = Accounts.GetBool( node["accountactivated"], false );
-			m_ActivationKey = Accounts.GetText( node["activationkey"], "" );
-			m_ResetPassword = Accounts.GetText( node["resetpassword"], "" );
-			m_ResetPasswordRequestedTime = Accounts.GetDateTime( Accounts.GetText( node["resetpwdtime"], null ), DateTime.MinValue );
+			m_bAccountActivated = Accounts.GetBool(node["accountactivated"], false);
+			m_ActivationKey = Accounts.GetText(node["activationkey"], "");
+			m_ResetPassword = Accounts.GetText(node["resetpassword"], "");
+			m_ResetPasswordRequestedTime = Accounts.GetDateTime(Accounts.GetText(node["resetpwdtime"], null), DateTime.MinValue);
 
-			for ( int i = 0; i < m_Mobiles.Length; ++i )
+			for (int i = 0; i < m_Mobiles.Length; ++i)
 			{
-				if ( m_Mobiles[i] != null )
+				if (m_Mobiles[i] != null)
 					m_Mobiles[i].Account = this;
 			}
 		}
@@ -710,24 +710,24 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="node">The XmlElement from which to deserialize.</param>
 		/// <returns>String list. Value will never be null.</returns>
-		public static string[] LoadAccessCheck( XmlElement node )
+		public static string[] LoadAccessCheck(XmlElement node)
 		{
 			string[] stringList;
 			XmlElement accessCheck = node["accessCheck"];
 
-			if ( accessCheck != null )
+			if (accessCheck != null)
 			{
 				ArrayList list = new ArrayList();
 
-				foreach ( XmlElement ip in accessCheck.GetElementsByTagName( "ip" ) )
+				foreach (XmlElement ip in accessCheck.GetElementsByTagName("ip"))
 				{
-					string text = Accounts.GetText( ip, null );
+					string text = Accounts.GetText(ip, null);
 
-					if ( text != null )
-						list.Add( text );
+					if (text != null)
+						list.Add(text);
 				}
 
-				stringList = (string[])list.ToArray( typeof( string ) );
+				stringList = (string[])list.ToArray(typeof(string));
 			}
 			else
 			{
@@ -737,24 +737,24 @@ namespace Server.Accounting
 			return stringList;
 		}
 
-		public static string[] LoadEmailHistory( XmlElement node )
+		public static string[] LoadEmailHistory(XmlElement node)
 		{
 			string[] stringList;
 			XmlElement emailHistory = node["emailHistory"];
 
-			if ( emailHistory != null )
+			if (emailHistory != null)
 			{
 				ArrayList list = new ArrayList();
 
-				foreach ( XmlElement address in emailHistory.GetElementsByTagName( "addr" ) )
+				foreach (XmlElement address in emailHistory.GetElementsByTagName("addr"))
 				{
-					string text = Accounts.GetText( address, null );
+					string text = Accounts.GetText(address, null);
 
-					if ( text != null )
-						list.Add( text );
+					if (text != null)
+						list.Add(text);
 				}
 
-				stringList = (string[])list.ToArray( typeof( string ) );
+				stringList = (string[])list.ToArray(typeof(string));
 			}
 			else
 			{
@@ -770,38 +770,38 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="node">The XmlElement from which to deserialize.</param>
 		/// <returns>Address list. Value will never be null.</returns>
-		public static IPAddress[] LoadAddressList( XmlElement node )
+		public static IPAddress[] LoadAddressList(XmlElement node)
 		{
 			IPAddress[] list;
 			XmlElement addressList = node["addressList"];
 
-			if ( addressList != null )
+			if (addressList != null)
 			{
-				int count = Accounts.GetInt32( Accounts.GetAttribute( addressList, "count", "0" ), 0 );
+				int count = Accounts.GetInt32(Accounts.GetAttribute(addressList, "count", "0"), 0);
 
 				list = new IPAddress[count];
 
 				count = 0;
 
-				foreach ( XmlElement ip in addressList.GetElementsByTagName( "ip" ) )
+				foreach (XmlElement ip in addressList.GetElementsByTagName("ip"))
 				{
 					try
 					{
-						if ( count < list.Length )
+						if (count < list.Length)
 						{
-							list[count] = IPAddress.Parse( Accounts.GetText( ip, null ) );
+							list[count] = IPAddress.Parse(Accounts.GetText(ip, null));
 							count++;
 						}
 					}
 					catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
 				}
 
-				if ( count != list.Length )
+				if (count != list.Length)
 				{
 					IPAddress[] old = list;
 					list = new IPAddress[count];
 
-					for ( int i = 0; i < count && i < old.Length; ++i )
+					for (int i = 0; i < count && i < old.Length; ++i)
 						list[i] = old[i];
 				}
 			}
@@ -818,16 +818,16 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="node">The XmlElement from which to deserialize.</param>
 		/// <returns>Tag list. Value will never be null.</returns>
-		public static ArrayList LoadTags( XmlElement node )
+		public static ArrayList LoadTags(XmlElement node)
 		{
 			ArrayList list = new ArrayList();
 			XmlElement tags = node["tags"];
 
-			if ( tags != null )
+			if (tags != null)
 			{
-				foreach ( XmlElement tag in tags.GetElementsByTagName( "tag" ) )
+				foreach (XmlElement tag in tags.GetElementsByTagName("tag"))
 				{
-					try { list.Add( new AccountTag( tag ) ); }
+					try { list.Add(new AccountTag(tag)); }
 					catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
 				}
 			}
@@ -840,16 +840,16 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="node">The XmlElement from which to deserialize.</param>
 		/// <returns>Comment list. Value will never be null.</returns>
-		public static ArrayList LoadComments( XmlElement node )
+		public static ArrayList LoadComments(XmlElement node)
 		{
 			ArrayList list = new ArrayList();
 			XmlElement comments = node["comments"];
 
-			if ( comments != null )
+			if (comments != null)
 			{
-				foreach ( XmlElement comment in comments.GetElementsByTagName( "comment" ) )
+				foreach (XmlElement comment in comments.GetElementsByTagName("comment"))
 				{
-					try { list.Add( new AccountComment( comment ) ); }
+					try { list.Add(new AccountComment(comment)); }
 					catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
 				}
 			}
@@ -862,30 +862,30 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="node">The XmlElement instance from which to deserialize.</param>
 		/// <returns>Mobile list. Value will never be null.</returns>
-		public static Mobile[] LoadMobiles( XmlElement node )
+		public static Mobile[] LoadMobiles(XmlElement node)
 		{
 			Mobile[] list;
 			XmlElement chars = node["chars"];
 
-			if ( chars == null )
+			if (chars == null)
 			{
 				list = new Mobile[5];
 			}
 			else
 			{
-				int length = Accounts.GetInt32( Accounts.GetAttribute( chars, "length", "5" ), 5 );
+				int length = Accounts.GetInt32(Accounts.GetAttribute(chars, "length", "5"), 5);
 
 				list = new Mobile[length];
 
-				foreach ( XmlElement ele in chars.GetElementsByTagName( "char" ) )
+				foreach (XmlElement ele in chars.GetElementsByTagName("char"))
 				{
 					try
 					{
-						int index = Accounts.GetInt32( Accounts.GetAttribute( ele, "index", "0" ), 0 );
-						int serial = Accounts.GetInt32( Accounts.GetText( ele, "0" ), 0 );
+						int index = Accounts.GetInt32(Accounts.GetAttribute(ele, "index", "0"), 0);
+						int serial = Accounts.GetInt32(Accounts.GetText(ele, "0"), 0);
 
-						if ( index >= 0 && index < list.Length )
-							list[index] = World.FindMobile( serial );
+						if (index >= 0 && index < list.Length)
+							list[index] = World.FindMobile(serial);
 					}
 					catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }
 				}
@@ -899,45 +899,45 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="ns">NetState instance to check.</param>
 		/// <returns>True if allowed, false if not.</returns>
-		public bool HasAccess( NetState ns )
+		public bool HasAccess(NetState ns)
 		{
-			if ( ns == null )
+			if (ns == null)
 				return false;
 
 			AccessLevel level = Misc.AccountHandler.LockdownLevel;
 
-			if ( level > AccessLevel.Player )
+			if (level > AccessLevel.Player)
 			{
 				bool hasAccess = false;
 
-				if ( m_AccessLevel >= level )
+				if (m_AccessLevel >= level)
 				{
 					hasAccess = true;
 				}
 				else
 				{
-					for ( int i = 0; !hasAccess && i < 5; ++i )
+					for (int i = 0; !hasAccess && i < 5; ++i)
 					{
 						Mobile m = this[i];
 
-						if ( m != null && m.AccessLevel >= level )
+						if (m != null && m.AccessLevel >= level)
 							hasAccess = true;
 					}
 				}
 
-				if ( !hasAccess )
+				if (!hasAccess)
 					return false;
 			}
 
 			IPAddress ipAddress;
 
-			try{ ipAddress = ((IPEndPoint)ns.Socket.RemoteEndPoint).Address; }
-			catch{ return false; }
+			try { ipAddress = ((IPEndPoint)ns.Socket.RemoteEndPoint).Address; }
+			catch { return false; }
 
-			bool accessAllowed = ( m_IPRestrictions.Length == 0 );
+			bool accessAllowed = (m_IPRestrictions.Length == 0);
 
-			for ( int i = 0; !accessAllowed && i < m_IPRestrictions.Length; ++i )
-				accessAllowed = Utility.IPMatch( m_IPRestrictions[i], ipAddress );
+			for (int i = 0; !accessAllowed && i < m_IPRestrictions.Length; ++i)
+				accessAllowed = Utility.IPMatch(m_IPRestrictions[i], ipAddress);
 
 			return accessAllowed;
 		}
@@ -946,45 +946,45 @@ namespace Server.Accounting
 		/// Records the IP address of 'ns' in its 'LoginIPs' list.
 		/// </summary>
 		/// <param name="ns">NetState instance to record.</param>
-		public void LogAccess( NetState ns )
+		public void LogAccess(NetState ns)
 		{
-			if ( ns == null )
+			if (ns == null)
 				return;
 
 			IPAddress ipAddress;
 
-			try{ ipAddress = ((IPEndPoint)ns.Socket.RemoteEndPoint).Address; }
-			catch{ return; }
+			try { ipAddress = ((IPEndPoint)ns.Socket.RemoteEndPoint).Address; }
+			catch { return; }
 
 			bool contains = false;
 			int containsAt = 0;
 
-			for ( int i = 0; !contains && i < m_LoginIPs.Length; ++i )
+			for (int i = 0; !contains && i < m_LoginIPs.Length; ++i)
 			{
-				contains = m_LoginIPs[i].Equals( ipAddress );
-				if( contains )
+				contains = m_LoginIPs[i].Equals(ipAddress);
+				if (contains)
 				{
 					containsAt = i;
 				}
 			}
 
-//			if ( contains )
-//				return;
+			//			if ( contains )
+			//				return;
 
 			//PIX: now we have the IP list be in the order that the account was accessed
 			IPAddress[] old = m_LoginIPs;
 
-			if( contains )
+			if (contains)
 			{
 				m_LoginIPs = new IPAddress[old.Length];
 
 				//Add current IP to beginning of list
 				m_LoginIPs[0] = ipAddress;
 
-				int j=1;
-				for ( int i = 0; i < old.Length; ++i )
+				int j = 1;
+				for (int i = 0; i < old.Length; ++i)
 				{
-					if( i==containsAt )
+					if (i == containsAt)
 					{
 						//skip
 					}
@@ -1002,8 +1002,8 @@ namespace Server.Accounting
 				//Add new IP to beginning of list
 				m_LoginIPs[0] = ipAddress;
 
-				for ( int i = 0; i < old.Length; ++i )
-					m_LoginIPs[i+1] = old[i];
+				for (int i = 0; i < old.Length; ++i)
+					m_LoginIPs[i + 1] = old[i];
 			}
 
 		}
@@ -1013,12 +1013,12 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="ns">NetState instance to check.</param>
 		/// <returns>True if allowed, false if not.</returns>
-		public bool CheckAccess( NetState ns )
+		public bool CheckAccess(NetState ns)
 		{
-			if ( !HasAccess( ns ) )
+			if (!HasAccess(ns))
 				return false;
 
-			LogAccess( ns );
+			LogAccess(ns);
 			return true;
 		}
 
@@ -1026,30 +1026,30 @@ namespace Server.Accounting
 		/// Serializes this Account instance to an XmlTextWriter.
 		/// </summary>
 		/// <param name="xml">The XmlTextWriter instance from which to serialize.</param>
-		public void Save( XmlTextWriter xml )
+		public void Save(XmlTextWriter xml)
 		{
-			xml.WriteStartElement( "account" );
+			xml.WriteStartElement("account");
 
-			xml.WriteStartElement( "username" );
-			xml.WriteString( m_Username );
+			xml.WriteStartElement("username");
+			xml.WriteString(m_Username);
 			xml.WriteEndElement();
 
-			if ( m_PlainPassword != null )
+			if (m_PlainPassword != null)
 			{
-				xml.WriteStartElement( "password" );
-				xml.WriteString( m_PlainPassword );
+				xml.WriteStartElement("password");
+				xml.WriteString(m_PlainPassword);
 				xml.WriteEndElement();
 			}
 
-			if ( m_CryptPassword != null )
+			if (m_CryptPassword != null)
 			{
-				xml.WriteStartElement( "cryptPassword" );
-				xml.WriteString( m_CryptPassword );
+				xml.WriteStartElement("cryptPassword");
+				xml.WriteString(m_CryptPassword);
 				xml.WriteEndElement();
 			}
 
-			xml.WriteStartElement( "email" );
-			xml.WriteString( m_EmailAddress );
+			xml.WriteStartElement("email");
+			xml.WriteString(m_EmailAddress);
 			xml.WriteEndElement();
 
 			if (Watched)
@@ -1063,108 +1063,108 @@ namespace Server.Accounting
 				xml.WriteEndElement();
 			}
 
-			xml.WriteStartElement( "accountactivated" );
-			xml.WriteString( (m_bAccountActivated?"true":"false") );
+			xml.WriteStartElement("accountactivated");
+			xml.WriteString((m_bAccountActivated ? "true" : "false"));
 			xml.WriteEndElement();
 
-			xml.WriteStartElement( "activationkey" );
-			xml.WriteString( m_ActivationKey );
+			xml.WriteStartElement("activationkey");
+			xml.WriteString(m_ActivationKey);
 			xml.WriteEndElement();
 
-			xml.WriteStartElement( "resetpassword" );
-			xml.WriteString( m_ResetPassword );
+			xml.WriteStartElement("resetpassword");
+			xml.WriteString(m_ResetPassword);
 			xml.WriteEndElement();
 
-			xml.WriteStartElement( "resetpwdtime" );
-			xml.WriteString( XmlConvert.ToString( m_ResetPasswordRequestedTime ) );
+			xml.WriteStartElement("resetpwdtime");
+			xml.WriteString(XmlConvert.ToString(m_ResetPasswordRequestedTime));
 			xml.WriteEndElement();
 
-			if ( m_AccessLevel != AccessLevel.Player )
+			if (m_AccessLevel != AccessLevel.Player)
 			{
-				xml.WriteStartElement( "accessLevel" );
-				xml.WriteString( m_AccessLevel.ToString() );
+				xml.WriteStartElement("accessLevel");
+				xml.WriteString(m_AccessLevel.ToString());
 				xml.WriteEndElement();
 			}
 
-			if ( m_Flags != 0 )
+			if (m_Flags != 0)
 			{
-				xml.WriteStartElement( "flags" );
-				xml.WriteString( XmlConvert.ToString( m_Flags ) );
+				xml.WriteStartElement("flags");
+				xml.WriteString(XmlConvert.ToString(m_Flags));
 				xml.WriteEndElement();
 			}
 
-			xml.WriteStartElement( "created" );
-			xml.WriteString( XmlConvert.ToString( m_Created ) );
+			xml.WriteStartElement("created");
+			xml.WriteString(XmlConvert.ToString(m_Created));
 			xml.WriteEndElement();
 
-			xml.WriteStartElement( "lastLogin" );
-			xml.WriteString( XmlConvert.ToString( m_LastLogin ) );
+			xml.WriteStartElement("lastLogin");
+			xml.WriteString(XmlConvert.ToString(m_LastLogin));
 			xml.WriteEndElement();
 
-			xml.WriteStartElement( "chars" );
+			xml.WriteStartElement("chars");
 
-			xml.WriteAttributeString( "length", m_Mobiles.Length.ToString() );
+			xml.WriteAttributeString("length", m_Mobiles.Length.ToString());
 
-			for ( int i = 0; i < m_Mobiles.Length; ++i )
+			for (int i = 0; i < m_Mobiles.Length; ++i)
 			{
 				Mobile m = m_Mobiles[i];
 
-				if ( m != null && !m.Deleted )
+				if (m != null && !m.Deleted)
 				{
-					xml.WriteStartElement( "char" );
-					xml.WriteAttributeString( "index", i.ToString() );
-					xml.WriteString( m.Serial.Value.ToString() );
+					xml.WriteStartElement("char");
+					xml.WriteAttributeString("index", i.ToString());
+					xml.WriteString(m.Serial.Value.ToString());
 					xml.WriteEndElement();
 				}
 			}
 
 			xml.WriteEndElement();
 
-			if ( m_Comments.Count > 0 )
+			if (m_Comments.Count > 0)
 			{
-				xml.WriteStartElement( "comments" );
+				xml.WriteStartElement("comments");
 
-				for ( int i = 0; i < m_Comments.Count; ++i )
-					((AccountComment)m_Comments[i]).Save( xml );
+				for (int i = 0; i < m_Comments.Count; ++i)
+					((AccountComment)m_Comments[i]).Save(xml);
 
 				xml.WriteEndElement();
 			}
 
-			if ( m_Tags.Count > 0 )
+			if (m_Tags.Count > 0)
 			{
-				xml.WriteStartElement( "tags" );
+				xml.WriteStartElement("tags");
 
-				for ( int i = 0; i < m_Tags.Count; ++i )
-					((AccountTag)m_Tags[i]).Save( xml );
+				for (int i = 0; i < m_Tags.Count; ++i)
+					((AccountTag)m_Tags[i]).Save(xml);
 
 				xml.WriteEndElement();
 			}
 
-			if ( m_LoginIPs.Length > 0 )
+			if (m_LoginIPs.Length > 0)
 			{
-				xml.WriteStartElement( "addressList" );
+				xml.WriteStartElement("addressList");
 
 				int maxcount = 5;
 				//Pix: 6/28/06 - trim to last maxcount IPs, for efficiency
-				if( m_LoginIPs.Length <= maxcount )
+				if (m_LoginIPs.Length <= maxcount)
 				{
-					xml.WriteAttributeString( "count", m_LoginIPs.Length.ToString() );
-	
-					for ( int i = 0; i < m_LoginIPs.Length; ++i )
+					xml.WriteAttributeString("count", m_LoginIPs.Length.ToString());
+
+					for (int i = 0; i < m_LoginIPs.Length; ++i)
 					{
-						xml.WriteStartElement( "ip" );
-						xml.WriteString( m_LoginIPs[i].ToString() );
+						xml.WriteStartElement("ip");
+						xml.WriteString(m_LoginIPs[i].ToString());
 						xml.WriteEndElement();
 					}
 				}
 				else
 				{
-					xml.WriteAttributeString( "count", maxcount.ToString() );
-	
-					for ( int i = 0; i < maxcount; ++i )
+					xml.WriteAttributeString("count", maxcount.ToString());
+
+					for (int i = 0; i < maxcount; ++i)
 					{
-						xml.WriteStartElement( "ip" );
-						xml.WriteString( m_LoginIPs[i].ToString() );
+						xml.WriteStartElement("ip");
+						xml.WriteString(m_LoginIPs[i].ToString());
 						xml.WriteEndElement();
 					}
 				}
@@ -1172,28 +1172,28 @@ namespace Server.Accounting
 				xml.WriteEndElement();
 			}
 
-			if ( m_IPRestrictions.Length > 0 )
+			if (m_IPRestrictions.Length > 0)
 			{
-				xml.WriteStartElement( "accessCheck" );
+				xml.WriteStartElement("accessCheck");
 
-				for ( int i = 0; i < m_IPRestrictions.Length; ++i )
+				for (int i = 0; i < m_IPRestrictions.Length; ++i)
 				{
-					xml.WriteStartElement( "ip" );
-					xml.WriteString( m_IPRestrictions[i] );
+					xml.WriteStartElement("ip");
+					xml.WriteString(m_IPRestrictions[i]);
 					xml.WriteEndElement();
 				}
 
 				xml.WriteEndElement();
 			}
-	
-			if ( m_EmailHistory.Length > 0 )
-			{
-				xml.WriteStartElement( "emailHistory" );
 
-				for( int i=0; i<m_EmailHistory.Length; i++ )
+			if (m_EmailHistory.Length > 0)
+			{
+				xml.WriteStartElement("emailHistory");
+
+				for (int i = 0; i < m_EmailHistory.Length; i++)
 				{
-					xml.WriteStartElement( "addr" );
-					xml.WriteString( m_EmailHistory[i] );
+					xml.WriteStartElement("addr");
+					xml.WriteString(m_EmailHistory[i]);
 					xml.WriteEndElement();
 				}
 
@@ -1212,9 +1212,9 @@ namespace Server.Accounting
 			{
 				int count = 0;
 
-				for ( int i = 0; i < this.Length; ++i )
+				for (int i = 0; i < this.Length; ++i)
 				{
-					if ( this[i] != null )
+					if (this[i] != null)
 						++count;
 				}
 
@@ -1227,7 +1227,7 @@ namespace Server.Accounting
 		/// </summary>
 		public int Limit
 		{
-			get{ return 5; }
+			get { return 5; }
 		}
 
 		/// <summary>
@@ -1235,7 +1235,7 @@ namespace Server.Accounting
 		/// </summary>
 		public int Length
 		{
-			get{ return m_Mobiles.Length; }
+			get { return m_Mobiles.Length; }
 		}
 
 		/// <summary>
@@ -1245,11 +1245,11 @@ namespace Server.Accounting
 		{
 			get
 			{
-				if ( index >= 0 && index < m_Mobiles.Length )
+				if (index >= 0 && index < m_Mobiles.Length)
 				{
 					Mobile m = m_Mobiles[index];
 
-					if ( m != null && m.Deleted )
+					if (m != null && m.Deleted)
 					{
 						m.Account = null;
 						m_Mobiles[index] = m = null;
@@ -1262,14 +1262,14 @@ namespace Server.Accounting
 			}
 			set
 			{
-				if ( index >= 0 && index < m_Mobiles.Length )
+				if (index >= 0 && index < m_Mobiles.Length)
 				{
-					if ( m_Mobiles[index] != null )
+					if (m_Mobiles[index] != null)
 						m_Mobiles[index].Account = null;
 
 					m_Mobiles[index] = value;
 
-					if ( m_Mobiles[index] != null )
+					if (m_Mobiles[index] != null)
 						m_Mobiles[index].Account = this;
 				}
 			}

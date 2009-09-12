@@ -47,27 +47,28 @@ namespace Server.Scripts.Commands
 
 		public static void Register()
 		{
-			Server.Commands.Register( "Skills", AccessLevel.Counselor, new CommandEventHandler( Skills_OnCommand ) );
+			Server.Commands.Register("Skills", AccessLevel.Counselor, new CommandEventHandler(Skills_OnCommand));
 		}
 
 		private class SkillsTarget : Target
 		{
-			public SkillsTarget( ) : base( -1, true, TargetFlags.None )
+			public SkillsTarget()
+				: base(-1, true, TargetFlags.None)
 			{
 			}
 
-			protected override void OnTarget( Mobile from, object o )
+			protected override void OnTarget(Mobile from, object o)
 			{
-				if ( o is Mobile )
-					from.SendGump( new SkillsGump( from, (Mobile)o ) );
+				if (o is Mobile)
+					from.SendGump(new SkillsGump(from, (Mobile)o));
 			}
 		}
 
-		[Usage( "Skills" )]
-		[Description( "Opens a menu where you can view or edit skills of a targeted mobile." )]
-		private static void Skills_OnCommand( CommandEventArgs e )
+		[Usage("Skills")]
+		[Description("Opens a menu where you can view or edit skills of a targeted mobile.")]
+		private static void Skills_OnCommand(CommandEventArgs e)
 		{
 			e.Mobile.Target = new SkillsTarget();
 		}
 	}
-} 
+}

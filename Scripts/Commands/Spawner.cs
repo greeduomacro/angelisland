@@ -49,40 +49,41 @@ namespace Server.Scripts.Commands
 
 		public static void Register()
 		{
-			Server.Commands.Register( "Spawner", AccessLevel.GameMaster, new CommandEventHandler( Spawner_OnCommand ) );
+			Server.Commands.Register("Spawner", AccessLevel.GameMaster, new CommandEventHandler(Spawner_OnCommand));
 		}
 
-		[Usage( "Spawner" )]
-		[Description( "Moves you to the spawner of the targeted creature, if any." )]
-		private static void Spawner_OnCommand( CommandEventArgs e )
+		[Usage("Spawner")]
+		[Description("Moves you to the spawner of the targeted creature, if any.")]
+		private static void Spawner_OnCommand(CommandEventArgs e)
 		{
 			e.Mobile.Target = new SpawnerTarget();
 		}
 
 		private class SpawnerTarget : Target
 		{
-			public SpawnerTarget( ) : base( -1, true, TargetFlags.None )
+			public SpawnerTarget()
+				: base(-1, true, TargetFlags.None)
 			{
 			}
 
-			protected override void OnTarget( Mobile from, object o )
+			protected override void OnTarget(Mobile from, object o)
 			{
-				if ( o is BaseCreature )
-					{	
+				if (o is BaseCreature)
+				{
 					if (((BaseCreature)o).Spawner != null)
-						{
-							BaseCreature bc = (BaseCreature)o;
-							from.MoveToWorld(bc.Spawner.Location, bc.Spawner.Map);
-						}
-					else
-						{
-							from.SendMessage("That mobile is homeless");
-						}
-					}
-				else
 					{
-						from.SendMessage("Why would that have a spawner?");
+						BaseCreature bc = (BaseCreature)o;
+						from.MoveToWorld(bc.Spawner.Location, bc.Spawner.Map);
 					}
+					else
+					{
+						from.SendMessage("That mobile is homeless");
+					}
+				}
+				else
+				{
+					from.SendMessage("Why would that have a spawner?");
+				}
 			}
 		}
 	}

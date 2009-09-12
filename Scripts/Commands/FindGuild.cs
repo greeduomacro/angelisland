@@ -37,37 +37,37 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "FindGuild", AccessLevel.GameMaster, new CommandEventHandler( FindGuild_OnCommand ) );
+			Server.Commands.Register("FindGuild", AccessLevel.GameMaster, new CommandEventHandler(FindGuild_OnCommand));
 		}
 
-		[Usage( "FindGuild <abbrevation>" )]
-		[Description( "Finds a guild by abbrevation." )]
-		public static void FindGuild_OnCommand( CommandEventArgs e )
+		[Usage("FindGuild <abbrevation>")]
+		[Description("Finds a guild by abbrevation.")]
+		public static void FindGuild_OnCommand(CommandEventArgs e)
 		{
 			Guild temp = null;
 			PlayerMobile ptemp = null;
-					
-			if ( e.Length == 1 )
-			{
-				string name = e.GetString( 0 ).ToLower();
 
-				foreach(Item n in World.Items.Values)
+			if (e.Length == 1)
+			{
+				string name = e.GetString(0).ToLower();
+
+				foreach (Item n in World.Items.Values)
 				{
-					if(n is Guildstone && n != null)
+					if (n is Guildstone && n != null)
 					{
-						if(((Guildstone)n).Guild != null)
+						if (((Guildstone)n).Guild != null)
 							temp = ((Guildstone)n).Guild;
 
-						if(temp.Abbreviation.ToLower() == name)
+						if (temp.Abbreviation.ToLower() == name)
 						{
-							if(n.Parent != null && n.Parent is PlayerMobile)
+							if (n.Parent != null && n.Parent is PlayerMobile)
 							{
 								ptemp = (PlayerMobile)n.Parent;
 								e.Mobile.SendMessage("Guild Stone Found on Mobile {2}:{0}, {1}", ptemp.Name, ptemp.Location, ptemp.Account);
 							}
 							else
 							{
-								e.Mobile.SendMessage("Guild Stone Found {0}",n.Location);
+								e.Mobile.SendMessage("Guild Stone Found {0}", n.Location);
 							}
 							return;
 						}
@@ -75,9 +75,9 @@ namespace Server.Scripts.Commands
 				}
 				e.Mobile.SendMessage("Guild Stone not found in world");
 			}
-			else														  
+			else
 			{
-				e.Mobile.SendMessage( "Format: FindGuild <abbreviation>" );
+				e.Mobile.SendMessage("Format: FindGuild <abbreviation>");
 			}
 		}
 	}

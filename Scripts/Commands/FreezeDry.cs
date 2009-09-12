@@ -53,46 +53,46 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-            Server.Commands.Register("FDStats", AccessLevel.Administrator, new CommandEventHandler(On_FDStats));
+			Server.Commands.Register("FDStats", AccessLevel.Administrator, new CommandEventHandler(On_FDStats));
 			Server.Commands.Register("StartFDTimers", AccessLevel.Administrator, new CommandEventHandler(On_StartFDTimers));
 			Server.Commands.Register("RehydrateAll", AccessLevel.Administrator, new CommandEventHandler(On_RehydrateAll));
 		}
 
-        public static void On_FDStats(CommandEventArgs e)
-        {
-            e.Mobile.SendMessage("Display FreezeDry status for all eligible containers...");
+		public static void On_FDStats(CommandEventArgs e)
+		{
+			e.Mobile.SendMessage("Display FreezeDry status for all eligible containers...");
 
-            DateTime start = DateTime.Now;
-            int containers = 0;
-            int eligible = 0;
-            int freezeDried = 0;
-            int scheduled = 0;
-            int orphans = 0;
-            foreach (Item i in World.Items.Values)
-            {
-                if (i as Container != null)
-                {
-                    Container cx = i as Container;
-                    containers++;
-                    if (cx.CanFreezeDry == true)
-                    {
-                        eligible++;
-                        if (cx.IsFreezeDried == true)
-                            freezeDried++;
-                    }
-                    
-                    if (cx.IsFreezeScheduled == true)
-                        scheduled++;
+			DateTime start = DateTime.Now;
+			int containers = 0;
+			int eligible = 0;
+			int freezeDried = 0;
+			int scheduled = 0;
+			int orphans = 0;
+			foreach (Item i in World.Items.Values)
+			{
+				if (i as Container != null)
+				{
+					Container cx = i as Container;
+					containers++;
+					if (cx.CanFreezeDry == true)
+					{
+						eligible++;
+						if (cx.IsFreezeDried == true)
+							freezeDried++;
+					}
 
-                    if (cx.CanFreezeDry == true && cx.IsFreezeDried == false && cx.IsFreezeScheduled == false)
-                        orphans++;
-                }
-            }
+					if (cx.IsFreezeScheduled == true)
+						scheduled++;
 
-            e.Mobile.SendMessage("Out of {0} eligible containers, {1} are freeze dried, {2} scheduled, and {3} orphans.", eligible, freezeDried, scheduled, orphans);
-            DateTime end = DateTime.Now;
-            e.Mobile.SendMessage("Finished in {0}ms.", (end - start).TotalMilliseconds);
-        }
+					if (cx.CanFreezeDry == true && cx.IsFreezeDried == false && cx.IsFreezeScheduled == false)
+						orphans++;
+				}
+			}
+
+			e.Mobile.SendMessage("Out of {0} eligible containers, {1} are freeze dried, {2} scheduled, and {3} orphans.", eligible, freezeDried, scheduled, orphans);
+			DateTime end = DateTime.Now;
+			e.Mobile.SendMessage("Finished in {0}ms.", (end - start).TotalMilliseconds);
+		}
 
 		public static void On_StartFDTimers(CommandEventArgs e)
 		{

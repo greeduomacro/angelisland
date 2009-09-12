@@ -28,7 +28,7 @@ namespace Server.Network
 	{
 		private static List<BufferPool> m_Pools = new List<BufferPool>();
 
-		public static List<BufferPool> Pools{ get{ return m_Pools; } set{ m_Pools = value; } }
+		public static List<BufferPool> Pools { get { return m_Pools; } set { m_Pools = value; } }
 
 		private string m_Name;
 
@@ -39,9 +39,9 @@ namespace Server.Network
 
 		private Queue<byte[]> m_FreeBuffers;
 
-		public void GetInfo( out string name, out int freeCount, out int initialCapacity, out int currentCapacity, out int bufferSize, out int misses )
+		public void GetInfo(out string name, out int freeCount, out int initialCapacity, out int currentCapacity, out int bufferSize, out int misses)
 		{
-			lock ( this )
+			lock (this)
 			{
 				name = m_Name;
 				freeCount = m_FreeBuffers.Count;
@@ -52,51 +52,51 @@ namespace Server.Network
 			}
 		}
 
-		public BufferPool( string name, int initialCapacity, int bufferSize )
+		public BufferPool(string name, int initialCapacity, int bufferSize)
 		{
 			m_Name = name;
 
 			m_InitialCapacity = initialCapacity;
 			m_BufferSize = bufferSize;
 
-			m_FreeBuffers = new Queue<byte[]>( initialCapacity );
+			m_FreeBuffers = new Queue<byte[]>(initialCapacity);
 
-			for ( int i = 0; i < initialCapacity; ++i )
-				m_FreeBuffers.Enqueue( new byte[bufferSize] );
+			for (int i = 0; i < initialCapacity; ++i)
+				m_FreeBuffers.Enqueue(new byte[bufferSize]);
 
-			lock ( m_Pools )
-				m_Pools.Add( this );
+			lock (m_Pools)
+				m_Pools.Add(this);
 		}
 
 		public byte[] AcquireBuffer()
 		{
-			lock ( this )
+			lock (this)
 			{
-				if ( m_FreeBuffers.Count > 0 )
+				if (m_FreeBuffers.Count > 0)
 					return m_FreeBuffers.Dequeue();
 
 				++m_Misses;
 
-				for ( int i = 0; i < m_InitialCapacity; ++i )
-					m_FreeBuffers.Enqueue( new byte[m_BufferSize] );
+				for (int i = 0; i < m_InitialCapacity; ++i)
+					m_FreeBuffers.Enqueue(new byte[m_BufferSize]);
 
 				return m_FreeBuffers.Dequeue();
 			}
 		}
 
-		public void ReleaseBuffer( byte[] buffer )
+		public void ReleaseBuffer(byte[] buffer)
 		{
-			if ( buffer == null )
+			if (buffer == null)
 				return;
 
-			lock ( this )
-				m_FreeBuffers.Enqueue( buffer );
+			lock (this)
+				m_FreeBuffers.Enqueue(buffer);
 		}
 
 		public void Free()
 		{
-			lock ( m_Pools )
-				m_Pools.Remove( this );
+			lock (m_Pools)
+				m_Pools.Remove(this);
 		}
 	}
 }

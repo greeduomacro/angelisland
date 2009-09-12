@@ -56,37 +56,37 @@ using Server.Scripts.Commands;
 
 namespace Server.Scripts.Commands
 {
-					
+
 	public class MultiClientCommand : BaseCommand
 	{
 
 		public static void Initialize()
 		{
-			TargetCommands.Register( new MultiClientCommand() );
+			TargetCommands.Register(new MultiClientCommand());
 		}
 
-		public MultiClientCommand( )
+		public MultiClientCommand()
 		{
 			AccessLevel = AccessLevel.GameMaster;
 			Supports = CommandSupport.Simple;
-			Commands = new string[]{ "MultiClient" };
+			Commands = new string[] { "MultiClient" };
 			ObjectTypes = ObjectTypes.Mobiles;
 
 			Usage = "MultiClient <target>";
 			Description = "Lists possible multiclients of the target";
 		}
 
-		public override void Execute( CommandEventArgs e, object obj )
+		public override void Execute(CommandEventArgs e, object obj)
 		{
 			PlayerMobile pm = obj as PlayerMobile;
 			Mobile from = e.Mobile;
 
 			try
 			{
-				if( pm != null )
+				if (pm != null)
 				{
 					NetState ns = pm.NetState;
-					if( ns == null )
+					if (ns == null)
 					{
 						from.SendMessage("That player is no longer online.");
 						return;
@@ -95,15 +95,15 @@ namespace Server.Scripts.Commands
 					HardwareInfo pmHWInfo = pmAccount.HardwareInfo;
 
 					from.SendMessage("{0}/{1}: Finding possible multi-clients (IP: {2}, CV: {3})",
-						pmAccount.Username, pm.Name, ns.Address.ToString(), ns.Version.ToString() );
+						pmAccount.Username, pm.Name, ns.Address.ToString(), ns.Version.ToString());
 
 					//ArrayList netStates = NetState.Instances;
-                    List<NetState> netStates = NetState.Instances;
+					List<NetState> netStates = NetState.Instances;
 
-					for ( int i = 0; i < netStates.Count; i++ )
+					for (int i = 0; i < netStates.Count; i++)
 					{
 						NetState compState = netStates[i];
-						
+
 						//guard against NetStates which haven't completely logged in yet
 						if (compState == null ||
 							compState.Address == null ||
@@ -112,47 +112,47 @@ namespace Server.Scripts.Commands
 							continue;
 						}
 
-						if ( ns.Address.Equals( compState.Address ) )
+						if (ns.Address.Equals(compState.Address))
 						{
-							if( compState.Mobile != pm )
+							if (compState.Mobile != pm)
 							{
 								Server.Accounting.Account compAcct = (Server.Accounting.Account)compState.Mobile.Account;
-								string clientName = string.Format("{0}/{1}", compAcct.Username, compState.Mobile.Name );
+								string clientName = string.Format("{0}/{1}", compAcct.Username, compState.Mobile.Name);
 
 								HardwareInfo compHWInfo = compAcct.HardwareInfo;
 
-								from.SendMessage( "{0}: Same IP Address ({1})", clientName, compState.Address.ToString() );
+								from.SendMessage("{0}: Same IP Address ({1})", clientName, compState.Address.ToString());
 
 								//Found another client from same IP, check client version
-								if(  ns.Version.CompareTo( compState.Version ) == 0 )
+								if (ns.Version.CompareTo(compState.Version) == 0)
 								{
-									from.SendMessage( "{0}: Same Client Version: {1}", clientName, compState.Version.ToString() );
+									from.SendMessage("{0}: Same Client Version: {1}", clientName, compState.Version.ToString());
 								}
 								else
 								{
-									from.SendMessage( "{0}: Different Client Version: {1}", clientName, compState.Version.ToString() );
+									from.SendMessage("{0}: Different Client Version: {1}", clientName, compState.Version.ToString());
 								}
 
 								//Check HWInfo
-								if( pmHWInfo == null && compHWInfo == null )
+								if (pmHWInfo == null && compHWInfo == null)
 								{
-									from.SendMessage( "{0}+{1}: BOTH Hardware UNKNOWN", pm.Name, clientName );
+									from.SendMessage("{0}+{1}: BOTH Hardware UNKNOWN", pm.Name, clientName);
 								}
-								else if( pmHWInfo == null || (pmHWInfo.CpuClockSpeed == 0 && pmHWInfo.OSMajor == 0) )
+								else if (pmHWInfo == null || (pmHWInfo.CpuClockSpeed == 0 && pmHWInfo.OSMajor == 0))
 								{
-									from.SendMessage( "{0}: Hardware UNKNOWN, {1} Known", pm.Name, clientName );
+									from.SendMessage("{0}: Hardware UNKNOWN, {1} Known", pm.Name, clientName);
 								}
-								else if( compHWInfo == null || (compHWInfo.CpuClockSpeed == 0 && compHWInfo.OSMajor == 0) )
+								else if (compHWInfo == null || (compHWInfo.CpuClockSpeed == 0 && compHWInfo.OSMajor == 0))
 								{
-									from.SendMessage( "{0}: Hardware UNKNOWN, {1} Known", clientName, pm.Name );
+									from.SendMessage("{0}: Hardware UNKNOWN, {1} Known", clientName, pm.Name);
 								}
-								else if( IsSameHWInfo( pmHWInfo, compHWInfo ) )
+								else if (IsSameHWInfo(pmHWInfo, compHWInfo))
 								{
-									from.SendMessage( "{0}: Same Hardware", clientName );
+									from.SendMessage("{0}: Same Hardware", clientName);
 								}
 								else
 								{
-									from.SendMessage( "{0}: Different Hardware", clientName );
+									from.SendMessage("{0}: Different Hardware", clientName);
 								}
 							}
 						}
@@ -161,24 +161,24 @@ namespace Server.Scripts.Commands
 				}
 				else
 				{
-					AddResponse( "Please target a player." );
+					AddResponse("Please target a player.");
 				}
 			}
-			catch( Exception ex )
+			catch (Exception ex)
 			{
 				LogHelper.LogException(ex);
 				from.SendMessage("ERROR: Caught exception: " + ex.Message);
 			}
 		}
-		
-		public static bool IsSameHWInfo( HardwareInfo hw1, HardwareInfo hw2 )
+
+		public static bool IsSameHWInfo(HardwareInfo hw1, HardwareInfo hw2)
 		{
 			bool bSame = false;
 
-            if (hw1 == null || hw2 == null)
-                return bSame;
+			if (hw1 == null || hw2 == null)
+				return bSame;
 
-			if( hw1.CpuClockSpeed == hw2.CpuClockSpeed 
+			if (hw1.CpuClockSpeed == hw2.CpuClockSpeed
 				&& hw1.CpuFamily == hw2.CpuFamily
 				&& hw1.CpuManufacturer == hw2.CpuManufacturer
 				&& hw1.CpuModel == hw2.CpuModel
@@ -190,7 +190,7 @@ namespace Server.Scripts.Commands
 				&& hw1.OSRevision == hw2.OSRevision
 				&& hw1.PhysicalMemory == hw2.PhysicalMemory
 				&& hw1.VCDescription == hw2.VCDescription
-				&& hw1.VCMemory == hw2.VCMemory 
+				&& hw1.VCMemory == hw2.VCMemory
 				)
 			{
 				bSame = true;
@@ -200,7 +200,6 @@ namespace Server.Scripts.Commands
 		}
 	}
 
-	
+
 }
 
- 

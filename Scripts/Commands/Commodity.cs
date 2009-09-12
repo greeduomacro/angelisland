@@ -52,21 +52,21 @@ namespace Server.Scripts.Commands
 			Server.Commands.Register("ComLogger", AccessLevel.Administrator, new CommandEventHandler(ComLogger_OnCommand));
 		}
 
-		[Usage( "ComLogger" )]
-		[Description( "Logs all commodity deeds in world info" )]
-		public static void ComLogger_OnCommand( CommandEventArgs e)
+		[Usage("ComLogger")]
+		[Description("Logs all commodity deeds in world info")]
+		public static void ComLogger_OnCommand(CommandEventArgs e)
 		{
 			LogHelper Logger = new LogHelper("Commoditydeed.log", true);
-				
-			foreach ( Item m in World.Items.Values )
+
+			foreach (Item m in World.Items.Values)
 			{
-							
-				if( m != null)
+
+				if (m != null)
 				{
-					if(m is CommodityDeed && ((CommodityDeed)m).Commodity != null)
+					if (m is CommodityDeed && ((CommodityDeed)m).Commodity != null)
 					{
 						string output = string.Format("{0}\t{1,-25}\t{2,-25}",
-							m.Serial + ",",	((CommodityDeed)m).Commodity  + ",", ((CommodityDeed)m).Commodity.Amount  );
+							m.Serial + ",", ((CommodityDeed)m).Commodity + ",", ((CommodityDeed)m).Commodity.Amount);
 
 						Logger.Log(LogType.Text, output);
 					}

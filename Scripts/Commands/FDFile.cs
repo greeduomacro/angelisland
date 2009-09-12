@@ -130,7 +130,8 @@ namespace Server.Scripts.Commands
 		{
 			private uint m_Start;
 
-			public ReassignTarget(uint start) : base(8, false, TargetFlags.None)
+			public ReassignTarget(uint start)
+				: base(8, false, TargetFlags.None)
 			{
 				m_Start = start;
 			}
@@ -220,7 +221,7 @@ namespace Server.Scripts.Commands
 
 							Type[] ctortypes = new Type[] { typeof(Serial) };
 							object[] ctorargs = new object[1];
-				
+
 							for (int i = 0; i < count; i++)
 							{
 								string type = idx.ReadString();
@@ -275,7 +276,7 @@ namespace Server.Scripts.Commands
 									World.FreeSerial(serial);
 
 									World.AddItem(item);
-									items.Add(new object[]{item, position, length});
+									items.Add(new object[] { item, position, length });
 									log.Log(String.Format("Successfully created item {0}", item));
 								}
 							}
@@ -313,7 +314,7 @@ namespace Server.Scripts.Commands
 										{
 											item.Delta(ItemDelta.Update);
 										}
-																						
+
 										item.ClearProperties();
 
 										object rp = item.RootParent;
@@ -343,7 +344,7 @@ namespace Server.Scripts.Commands
 									}
 								}
 							}
-								
+
 						}
 						idx.Close();
 						bin.Close();
@@ -367,7 +368,8 @@ namespace Server.Scripts.Commands
 		{
 			private string m_Filename;
 
-			public FDFileTarget(string filename) : base(8, false, TargetFlags.None)
+			public FDFileTarget(string filename)
+				: base(8, false, TargetFlags.None)
 			{
 				m_Filename = filename;
 			}
@@ -395,26 +397,26 @@ namespace Server.Scripts.Commands
 							items.Add(cont);
 							items.AddRange(cont.GetDeepItems());
 
-							idx.Write( (int) items.Count );
+							idx.Write((int)items.Count);
 							foreach (Item item in items)
 							{
 								long start = bin.Position;
 
-								idx.Write( item.GetType().FullName ); // <--- DIFFERENT FROM WORLD SAVE FORMAT!
-								idx.Write( (int)item.Serial );
-								idx.Write( (long) start );
+								idx.Write(item.GetType().FullName); // <--- DIFFERENT FROM WORLD SAVE FORMAT!
+								idx.Write((int)item.Serial);
+								idx.Write((long)start);
 
-								item.Serialize( bin );
+								item.Serialize(bin);
 
-								idx.Write( (int) (bin.Position - start) );
+								idx.Write((int)(bin.Position - start));
 							}
-							
+
 
 							idx.Close();
 							bin.Close();
 						}
 					}
-					
+
 					from.SendMessage("Container successfully dumped to {0}.", m_Filename);
 				}
 				catch (Exception e)

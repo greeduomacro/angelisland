@@ -44,25 +44,25 @@ namespace Server
 
 		static Body()
 		{
-			if ( File.Exists( "Data/Binary/BodyTypes.bin" ) )
+			if (File.Exists("Data/Binary/BodyTypes.bin"))
 			{
-				using ( BinaryReader bin = new BinaryReader( new FileStream( "Data/Binary/BodyTypes.bin", FileMode.Open, FileAccess.Read, FileShare.Read ) ) )
+				using (BinaryReader bin = new BinaryReader(new FileStream("Data/Binary/BodyTypes.bin", FileMode.Open, FileAccess.Read, FileShare.Read)))
 				{
 					m_Types = new BodyType[(int)bin.BaseStream.Length];
 
-					for ( int i = 0; i < m_Types.Length; ++i )
+					for (int i = 0; i < m_Types.Length; ++i)
 						m_Types[i] = (BodyType)bin.ReadByte();
 				}
 			}
 			else
 			{
-				Console.WriteLine( "Warning: Data/Binary/BodyTypes.bin does not exist" );
+				Console.WriteLine("Warning: Data/Binary/BodyTypes.bin does not exist");
 
 				m_Types = new BodyType[0];
 			}
 		}
 
-		public Body( int bodyID )
+		public Body(int bodyID)
 		{
 			m_BodyID = bodyID;
 		}
@@ -71,7 +71,7 @@ namespace Server
 		{
 			get
 			{
-				if ( m_BodyID >= 0 && m_BodyID < m_Types.Length )
+				if (m_BodyID >= 0 && m_BodyID < m_Types.Length)
 					return m_Types[m_BodyID];
 				else
 					return BodyType.Empty;
@@ -183,19 +183,19 @@ namespace Server
 			}
 		}
 
-		public static implicit operator int( Body a )
+		public static implicit operator int(Body a)
 		{
 			return a.m_BodyID;
 		}
 
-		public static implicit operator Body( int a )
+		public static implicit operator Body(int a)
 		{
-			return new Body( a );
+			return new Body(a);
 		}
 
 		public override string ToString()
 		{
-			return string.Format( "0x{0:X}", m_BodyID );
+			return string.Format("0x{0:X}", m_BodyID);
 		}
 
 		public override int GetHashCode()
@@ -203,39 +203,39 @@ namespace Server
 			return m_BodyID;
 		}
 
-		public override bool Equals( object o )
+		public override bool Equals(object o)
 		{
-			if ( o == null || !(o is Body) ) return false;
+			if (o == null || !(o is Body)) return false;
 
 			return ((Body)o).m_BodyID == m_BodyID;
 		}
 
-		public static bool operator == ( Body l, Body r )
+		public static bool operator ==(Body l, Body r)
 		{
 			return l.m_BodyID == r.m_BodyID;
 		}
 
-		public static bool operator != ( Body l, Body r )
+		public static bool operator !=(Body l, Body r)
 		{
 			return l.m_BodyID != r.m_BodyID;
 		}
 
-		public static bool operator > ( Body l, Body r )
+		public static bool operator >(Body l, Body r)
 		{
 			return l.m_BodyID > r.m_BodyID;
 		}
 
-		public static bool operator >= ( Body l, Body r )
+		public static bool operator >=(Body l, Body r)
 		{
 			return l.m_BodyID >= r.m_BodyID;
 		}
 
-		public static bool operator < ( Body l, Body r )
+		public static bool operator <(Body l, Body r)
 		{
 			return l.m_BodyID < r.m_BodyID;
 		}
 
-		public static bool operator <= ( Body l, Body r )
+		public static bool operator <=(Body l, Body r)
 		{
 			return l.m_BodyID <= r.m_BodyID;
 		}

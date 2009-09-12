@@ -52,33 +52,33 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "FindItemByType", AccessLevel.Administrator, new CommandEventHandler( FindItemByType_OnCommand ) );
+			Server.Commands.Register("FindItemByType", AccessLevel.Administrator, new CommandEventHandler(FindItemByType_OnCommand));
 		}
 
-		[Usage( "FindItemByType <type>" )]
-		[Description( "Finds an item by type." )]
-		public static void FindItemByType_OnCommand( CommandEventArgs e )
+		[Usage("FindItemByType <type>")]
+		[Description("Finds an item by type.")]
+		public static void FindItemByType_OnCommand(CommandEventArgs e)
 		{
 			try
 			{
-				if ( e.Length == 1 )
+				if (e.Length == 1)
 				{
 					LogHelper Logger = new LogHelper("FindItemByType.log", e.Mobile, false);
-				
-					string name = e.GetString( 0 );
 
-                    foreach (Item item in World.Items.Values)
+					string name = e.GetString(0);
+
+					foreach (Item item in World.Items.Values)
 					{
-                        if (item != null && item.GetType().ToString().ToLower().IndexOf(name.ToLower()) >= 0)
+						if (item != null && item.GetType().ToString().ToLower().IndexOf(name.ToLower()) >= 0)
 						{
-                            Logger.Log(LogType.Item, item);
+							Logger.Log(LogType.Item, item);
 						}
 					}
 					Logger.Finish();
 				}
 				else
 				{
-					e.Mobile.SendMessage( "Format: FindItemByType <type>" );
+					e.Mobile.SendMessage("Format: FindItemByType <type>");
 				}
 			}
 			catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }

@@ -44,14 +44,14 @@ namespace Server.Prompts
 			do
 			{
 				m_Serial = ++m_Serials;
-			} while ( m_Serial == 0 );
+			} while (m_Serial == 0);
 		}
 
-		public virtual void OnCancel( Mobile from )
+		public virtual void OnCancel(Mobile from)
 		{
-        }
+		}
 
-		public virtual void OnResponse( Mobile from, string text )
+		public virtual void OnResponse(Mobile from, string text)
 		{
 		}
 	}

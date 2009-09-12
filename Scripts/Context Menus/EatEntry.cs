@@ -40,7 +40,8 @@ namespace Server.ContextMenus
 		private Mobile m_From;
 		private Food m_Food;
 
-		public EatEntry( Mobile from, Food food ) : base( 6135, 1 )
+		public EatEntry(Mobile from, Food food)
+			: base(6135, 1)
 		{
 			m_From = from;
 			m_Food = food;
@@ -48,10 +49,10 @@ namespace Server.ContextMenus
 
 		public override void OnClick()
 		{
-			if ( m_Food.Deleted || !m_Food.Movable || !m_From.CheckAlive() )
+			if (m_Food.Deleted || !m_Food.Movable || !m_From.CheckAlive())
 				return;
 
-			m_Food.Eat( m_From );
+			m_Food.Eat(m_From);
 		}
 	}
-} 
+}

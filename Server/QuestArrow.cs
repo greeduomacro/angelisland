@@ -48,20 +48,20 @@ namespace Server
 			}
 		}
 
-		public void Update( int x, int y )
+		public void Update(int x, int y)
 		{
-			if ( m_Running )
-				m_Mobile.Send( new SetArrow( x, y ) );
+			if (m_Running)
+				m_Mobile.Send(new SetArrow(x, y));
 		}
 
 		public void Stop()
 		{
-			if ( !m_Running )
+			if (!m_Running)
 				return;
 
 			m_Mobile.ClearQuestArrow();
 
-			m_Mobile.Send( new CancelArrow() );
+			m_Mobile.Send(new CancelArrow());
 			m_Running = false;
 
 			OnStop();
@@ -71,19 +71,20 @@ namespace Server
 		{
 		}
 
-		public virtual void OnClick( bool rightClick )
+		public virtual void OnClick(bool rightClick)
 		{
 		}
 
-		public QuestArrow( Mobile m )
+		public QuestArrow(Mobile m)
 		{
 			m_Running = true;
 			m_Mobile = m;
 		}
 
-		public QuestArrow( Mobile m, int x, int y ) : this( m )
+		public QuestArrow(Mobile m, int x, int y)
+			: this(m)
 		{
-			Update( x, y );
+			Update(x, y);
 		}
 	}
 }

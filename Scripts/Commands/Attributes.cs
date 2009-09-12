@@ -38,9 +38,9 @@ namespace Server
 	{
 		private string m_Usage;
 
-		public string Usage{ get{ return m_Usage; } }
+		public string Usage { get { return m_Usage; } }
 
-		public UsageAttribute( string usage )
+		public UsageAttribute(string usage)
 		{
 			m_Usage = usage;
 		}
@@ -50,9 +50,9 @@ namespace Server
 	{
 		private string m_Description;
 
-		public string Description{ get{ return m_Description; } }
+		public string Description { get { return m_Description; } }
 
-		public DescriptionAttribute( string description )
+		public DescriptionAttribute(string description)
 		{
 			m_Description = description;
 		}
@@ -62,11 +62,11 @@ namespace Server
 	{
 		private string[] m_Aliases;
 
-		public string[] Aliases{ get{ return m_Aliases; } }
+		public string[] Aliases { get { return m_Aliases; } }
 
-		public AliasesAttribute( params string[] aliases )
+		public AliasesAttribute(params string[] aliases)
 		{
 			m_Aliases = aliases;
 		}
 	}
-} 
+}

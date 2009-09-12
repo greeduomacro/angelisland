@@ -46,21 +46,21 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "FindItemByName", AccessLevel.Administrator, new CommandEventHandler( FindItemByName_OnCommand ) );
+			Server.Commands.Register("FindItemByName", AccessLevel.Administrator, new CommandEventHandler(FindItemByName_OnCommand));
 		}
 
-		[Usage( "FindItemByName <name>" )]
-		[Description( "Finds an item by name." )]
-		public static void FindItemByName_OnCommand( CommandEventArgs e )
+		[Usage("FindItemByName <name>")]
+		[Description("Finds an item by name.")]
+		public static void FindItemByName_OnCommand(CommandEventArgs e)
 		{
-			if ( e.Length == 1 )
+			if (e.Length == 1)
 			{
 				LogHelper Logger = new LogHelper("FindItemByName.log", e.Mobile, false);
-				
-				string name = e.GetString( 0 ).ToLower();
 
-				foreach ( Item item in World.Items.Values )
-					if ( item.Name != null && item.Name.ToLower().IndexOf( name ) >= 0 )
+				string name = e.GetString(0).ToLower();
+
+				foreach (Item item in World.Items.Values)
+					if (item.Name != null && item.Name.ToLower().IndexOf(name) >= 0)
 						Logger.Log(LogType.Item, item);
 
 				Logger.Finish();
@@ -69,7 +69,7 @@ namespace Server.Scripts.Commands
 			}
 			else
 			{
-				e.Mobile.SendMessage( "Format: FindItemByName <name>" );
+				e.Mobile.SendMessage("Format: FindItemByName <name>");
 			}
 		}
 	}

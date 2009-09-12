@@ -48,28 +48,28 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "FindMultiByType", AccessLevel.Administrator, new CommandEventHandler( FindMultiByType_OnCommand ) );
+			Server.Commands.Register("FindMultiByType", AccessLevel.Administrator, new CommandEventHandler(FindMultiByType_OnCommand));
 		}
 
-		[Usage( "FindMultiByType <type>" )]
-		[Description( "Finds a multi by type." )]
-		public static void FindMultiByType_OnCommand( CommandEventArgs e )
+		[Usage("FindMultiByType <type>")]
+		[Description("Finds a multi by type.")]
+		public static void FindMultiByType_OnCommand(CommandEventArgs e)
 		{
 			try
 			{
-				if ( e.Length == 1 )
+				if (e.Length == 1)
 				{
 					LogHelper Logger = new LogHelper("FindMultiByType.log", e.Mobile, false);
-				
-					string name = e.GetString( 0 );
 
-					foreach ( ArrayList list in Server.Multis.BaseHouse.Multis.Values )
+					string name = e.GetString(0);
+
+					foreach (ArrayList list in Server.Multis.BaseHouse.Multis.Values)
 					{
-						for (int i=0; i<list.Count; i++)
+						for (int i = 0; i < list.Count; i++)
 						{
 							BaseHouse house = list[i] as BaseHouse;
 							// like Server.Multis.Tower
-							if ( house.GetType().ToString().ToLower().IndexOf(name.ToLower()) >= 0 )
+							if (house.GetType().ToString().ToLower().IndexOf(name.ToLower()) >= 0)
 							{
 								Logger.Log(house);
 							}
@@ -79,7 +79,7 @@ namespace Server.Scripts.Commands
 				}
 				else
 				{
-					e.Mobile.SendMessage( "Format: FindMultiByType <type>" );
+					e.Mobile.SendMessage("Format: FindMultiByType <type>");
 				}
 			}
 			catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }

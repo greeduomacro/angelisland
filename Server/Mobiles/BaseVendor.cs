@@ -32,13 +32,13 @@ namespace Server.Mobiles
 {
 	public class BuyItemStateComparer : IComparer
 	{
-		public int Compare( object l, object r )
+		public int Compare(object l, object r)
 		{
-			if ( l == null && r == null ) return 0;
-			if ( l == null ) return -1;
-			if ( r == null ) return 1;
+			if (l == null && r == null) return 0;
+			if (l == null) return -1;
+			if (r == null) return 1;
 
-			return ((BuyItemState)l).MySerial.CompareTo( ((BuyItemState)r).MySerial );
+			return ((BuyItemState)l).MySerial.CompareTo(((BuyItemState)r).MySerial);
 		}
 	}
 
@@ -47,7 +47,7 @@ namespace Server.Mobiles
 		private Serial m_Serial;
 		private int m_Amount;
 
-		public BuyItemResponse( Serial serial, int amount )
+		public BuyItemResponse(Serial serial, int amount)
 		{
 			m_Serial = serial;
 			m_Amount = amount;
@@ -75,7 +75,7 @@ namespace Server.Mobiles
 		private Item m_Item;
 		private int m_Amount;
 
-		public SellItemResponse( Item i, int amount )
+		public SellItemResponse(Item i, int amount)
 		{
 			m_Item = i;
 			m_Amount = amount;
@@ -104,7 +104,7 @@ namespace Server.Mobiles
 		private int m_Price;
 		private string m_Name;
 
-		public SellItemState( Item item, int price, string name )
+		public SellItemState(Item item, int price, string name)
 		{
 			m_Item = item;
 			m_Price = price;
@@ -146,7 +146,7 @@ namespace Server.Mobiles
 		private int m_Price;
 		private string m_Desc;
 
-		public BuyItemState( string name, Serial cont, Serial serial, int price, int amount, int itemID, int hue )
+		public BuyItemState(string name, Serial cont, Serial serial, int price, int amount, int itemID, int hue)
 		{
 			m_Desc = name;
 			m_ContSer = cont;

@@ -168,7 +168,7 @@ namespace Server.Scripts.Commands
 			string output = string.Empty;
 			List<Region> regions = Region.CreateCacheFromXML(ref output);
 			List<RegionControl> controllers = new List<RegionControl>();
-			if( regions == null || regions.Count == 0 )
+			if (regions == null || regions.Count == 0)
 			{
 				e.Mobile.SendMessage("Regions failed to load!");
 				return;
@@ -178,7 +178,7 @@ namespace Server.Scripts.Commands
 			{
 				//See if a DRDT region already exists for this one?
 				Region temp = Region.GetByName(r.Name, r.Map);
-				if (temp == null &&  (temp is CustomRegion))
+				if (temp == null && (temp is CustomRegion))
 				{
 					e.Mobile.SendMessage("Region {0} does not exist or is already a DRDT region", r.Name);
 					continue;
@@ -186,7 +186,7 @@ namespace Server.Scripts.Commands
 
 				RegionControl rc = null;
 				//create new region controller 
-				if (TestCenter.Enabled && ( r.Name == "Skara Brae" || new List<String>(Enum.GetNames(typeof(KinFactionCities))).Find(delegate(string s) { return s.Equals(r.Name); }) != null))
+				if (TestCenter.Enabled && (r.Name == "Skara Brae" || new List<String>(Enum.GetNames(typeof(KinFactionCities))).Find(delegate(string s) { return s.Equals(r.Name); }) != null))
 				{
 					rc = new Server.Engines.IOBSystem.KinCityRegionStone();
 					e.Mobile.SendMessage("Kin Faction Region {0} created", r.Name);
@@ -199,8 +199,8 @@ namespace Server.Scripts.Commands
 				rc.Name = r.Name;
 				controllers.Add(rc);
 				//upgrade this region to DRDT
-				rc.CloneFromRegionObject(r,true);
-				
+				rc.CloneFromRegionObject(r, true);
+
 			}
 
 			//Now sort them alphabetically and move them to the world in rows of 7 from the mobile
@@ -221,7 +221,7 @@ namespace Server.Scripts.Commands
 					y++;
 				}
 			}
-			
+
 			e.Mobile.SendMessage("done");
 		}
 

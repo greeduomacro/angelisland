@@ -39,8 +39,9 @@ namespace Server.Network
 		public static int InitialCapacity
 		{
 			get { return m_InitialCapacity; }
-			set {
-				if ( m_Created )
+			set
+			{
+				if (m_Created)
 					return;
 
 				m_InitialCapacity = value;
@@ -51,23 +52,23 @@ namespace Server.Network
 
 		public static void Create()
 		{
-			if ( m_Created )
+			if (m_Created)
 				return;
 
-			m_FreeSockets = new Queue<Socket>( m_InitialCapacity );
-			
-			for ( int i = 0; i < m_InitialCapacity; ++i )
-				m_FreeSockets.Enqueue( new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp ) );
-		
+			m_FreeSockets = new Queue<Socket>(m_InitialCapacity);
+
+			for (int i = 0; i < m_InitialCapacity; ++i)
+				m_FreeSockets.Enqueue(new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp));
+
 			m_Created = true;
 		}
 
 		public static void Destroy()
 		{
-			if ( !m_Created )
+			if (!m_Created)
 				return;
 
-			while ( m_FreeSockets.Count > 0 )
+			while (m_FreeSockets.Count > 0)
 				m_FreeSockets.Dequeue().Close();
 
 			m_FreeSockets = null;
@@ -75,21 +76,21 @@ namespace Server.Network
 
 		public static Socket AcquireSocket()
 		{
-			lock ( m_FreeSockets )
+			lock (m_FreeSockets)
 			{
-				if ( m_FreeSockets.Count > 0 )
+				if (m_FreeSockets.Count > 0)
 					return m_FreeSockets.Dequeue();
 
 				++m_Misses;
 
-				for ( int i = 0; i < m_InitialCapacity; ++i )
-					m_FreeSockets.Enqueue( new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp ) );
+				for (int i = 0; i < m_InitialCapacity; ++i)
+					m_FreeSockets.Enqueue(new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp));
 
 				return m_FreeSockets.Dequeue();
 			}
 		}
 
-		public static void ReleaseSocket( Socket s )
+		public static void ReleaseSocket(Socket s)
 		{
 			/*if ( s == null )
 				return;

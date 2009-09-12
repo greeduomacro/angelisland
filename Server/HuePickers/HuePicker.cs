@@ -49,24 +49,24 @@ namespace Server.HuePickers
 			}
 		}
 
-		public HuePicker( int itemID )
+		public HuePicker(int itemID)
 		{
 			do
 			{
 				m_Serial = m_NextSerial++;
-			} while ( m_Serial == 0 );
+			} while (m_Serial == 0);
 
 			m_ItemID = itemID;
 		}
 
-		public virtual void OnResponse( int hue )
+		public virtual void OnResponse(int hue)
 		{
 		}
 
-		public void SendTo( NetState state )
+		public void SendTo(NetState state)
 		{
-			state.Send( new DisplayHuePicker( this ) );
-			state.AddHuePicker( this );
+			state.Send(new DisplayHuePicker(this));
+			state.AddHuePicker(this);
 		}
 	}
 }

@@ -32,11 +32,12 @@ namespace Server.Gumps
 		private int m_GumpID;
 		private int m_Hue;
 
-		public GumpImage( int x, int y, int gumpID ) : this( x, y, gumpID, 0 )
+		public GumpImage(int x, int y, int gumpID)
+			: this(x, y, gumpID, 0)
 		{
 		}
 
-		public GumpImage( int x, int y, int gumpID, int hue )
+		public GumpImage(int x, int y, int gumpID, int hue)
 		{
 			m_X = x;
 			m_Y = y;
@@ -52,7 +53,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_X, value );
+				Delta(ref m_X, value);
 			}
 		}
 
@@ -64,7 +65,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Y, value );
+				Delta(ref m_Y, value);
 			}
 		}
 
@@ -76,7 +77,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_GumpID, value );
+				Delta(ref m_GumpID, value);
 			}
 		}
 
@@ -88,32 +89,32 @@ namespace Server.Gumps
 			}
 			set
 			{
-				Delta( ref m_Hue, value );
+				Delta(ref m_Hue, value);
 			}
 		}
 
 		public override string Compile()
 		{
-			if ( m_Hue == 0 )
-				return String.Format( "{{ gumppic {0} {1} {2} }}", m_X, m_Y, m_GumpID );
+			if (m_Hue == 0)
+				return String.Format("{{ gumppic {0} {1} {2} }}", m_X, m_Y, m_GumpID);
 			else
-				return String.Format( "{{ gumppic {0} {1} {2} hue={3} }}", m_X, m_Y, m_GumpID, m_Hue );
+				return String.Format("{{ gumppic {0} {1} {2} hue={3} }}", m_X, m_Y, m_GumpID, m_Hue);
 		}
 
-		private static byte[] m_LayoutName = Gump.StringToBuffer( "gumppic" );
-		private static byte[] m_HueEquals = Gump.StringToBuffer( " hue=" );
+		private static byte[] m_LayoutName = Gump.StringToBuffer("gumppic");
+		private static byte[] m_HueEquals = Gump.StringToBuffer(" hue=");
 
-		public override void AppendTo( DisplayGumpFast disp )
+		public override void AppendTo(DisplayGumpFast disp)
 		{
-			disp.AppendLayout( m_LayoutName );
-			disp.AppendLayout( m_X );
-			disp.AppendLayout( m_Y );
-			disp.AppendLayout( m_GumpID );
+			disp.AppendLayout(m_LayoutName);
+			disp.AppendLayout(m_X);
+			disp.AppendLayout(m_Y);
+			disp.AppendLayout(m_GumpID);
 
-			if ( m_Hue != 0 )
+			if (m_Hue != 0)
 			{
-				disp.AppendLayout( m_HueEquals );
-				disp.AppendLayoutNS( m_Hue );
+				disp.AppendLayout(m_HueEquals);
+				disp.AppendLayoutNS(m_Hue);
 			}
 		}
 	}

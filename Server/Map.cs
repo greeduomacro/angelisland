@@ -65,26 +65,26 @@ namespace Server
 	[Flags]
 	public enum MapRules
 	{
-		None					= 0x0000,
-		Internal				= 0x0001, // Internal map (used for dragging, commodity deeds, etc)
-	    FreeMovement			= 0x0002, // Anyone can move over anyone else without taking stamina loss
-		BeneficialRestrictions	= 0x0004, // Disallow performing beneficial actions on criminals/murderers
-		HarmfulRestrictions		= 0x0008, // Disallow performing harmful actions on innocents
-		TrammelRules			= FreeMovement | BeneficialRestrictions | HarmfulRestrictions,
-		FeluccaRules			= None
+		None = 0x0000,
+		Internal = 0x0001, // Internal map (used for dragging, commodity deeds, etc)
+		FreeMovement = 0x0002, // Anyone can move over anyone else without taking stamina loss
+		BeneficialRestrictions = 0x0004, // Disallow performing beneficial actions on criminals/murderers
+		HarmfulRestrictions = 0x0008, // Disallow performing harmful actions on innocents
+		TrammelRules = FreeMovement | BeneficialRestrictions | HarmfulRestrictions,
+		FeluccaRules = None
 	}
 
-    [Flags]
-    public enum CanFitFlags
-    {
-        none                = 0x0000,
-        checkBlocksFit      = 0x0001,
-        checkMobiles        = 0x0002,
-        requireSurface      = 0x0004,
-        ignoreDeadMobiles   = 0x0008,
-        canSwim             = 0x0010,
-        cantWalk            = 0x0020,
-    }
+	[Flags]
+	public enum CanFitFlags
+	{
+		none = 0x0000,
+		checkBlocksFit = 0x0001,
+		checkMobiles = 0x0002,
+		requireSurface = 0x0004,
+		ignoreDeadMobiles = 0x0008,
+		canSwim = 0x0010,
+		cantWalk = 0x0020,
+	}
 
 	public interface IPooledEnumerable : IEnumerable
 	{
@@ -93,7 +93,7 @@ namespace Server
 
 	public interface IPooledEnumerator : IEnumerator
 	{
-		IPooledEnumerable Enumerable{ get; set; }
+		IPooledEnumerable Enumerable { get; set; }
 		void Free();
 	}
 
@@ -110,18 +110,18 @@ namespace Server
 
 		private static Map[] m_Maps = new Map[0x100];
 
-		public static Map[] Maps{ get{ return m_Maps; } }
+		public static Map[] Maps { get { return m_Maps; } }
 
-		public static Map Felucca{ get{ return m_Maps[0]; } }
-		public static Map Trammel{ get{ return m_Maps[1]; } }
-		public static Map Ilshenar{ get{ return m_Maps[2]; } }
-		public static Map Malas{ get{ return m_Maps[3]; } }
-		public static Map Tokuno{ get{ return m_Maps[4]; } }
-		public static Map Internal{ get{ return m_Maps[0x7F]; } }
+		public static Map Felucca { get { return m_Maps[0]; } }
+		public static Map Trammel { get { return m_Maps[1]; } }
+		public static Map Ilshenar { get { return m_Maps[2]; } }
+		public static Map Malas { get { return m_Maps[3]; } }
+		public static Map Tokuno { get { return m_Maps[4]; } }
+		public static Map Internal { get { return m_Maps[0x7F]; } }
 
 		private static ArrayList m_AllMaps = new ArrayList();
 
-		public static ArrayList AllMaps{ get{ return m_AllMaps; } }
+		public static ArrayList AllMaps { get { return m_AllMaps; } }
 
 		/*public static readonly Map Felucca	= new Map( 0, 0, 6144, 4096, 4, "Felucca",	MapRules.FeluccaRules );
 		public static readonly Map Trammel	= new Map( 1, 0, 6144, 4096, 0, "Trammel",	MapRules.TrammelRules );
@@ -138,7 +138,7 @@ namespace Server
 		private ArrayList m_Regions;
 		private Region m_DefaultRegion;
 
-		public int Season{ get{ return m_Season; } set{ m_Season = value; } }
+		public int Season { get { return m_Season; } set { m_Season = value; } }
 
 		private string m_Name;
 		private MapRules m_Rules;
@@ -162,14 +162,14 @@ namespace Server
 			return m_MapValues;
 		}
 
-		public static Map Parse( string value )
+		public static Map Parse(string value)
 		{
 			CheckNamesAndValues();
 
 			// try as a string
-			for ( int i = 0; i < m_MapNames.Length; ++i )
+			for (int i = 0; i < m_MapNames.Length; ++i)
 			{
-				if ( Insensitive.Equals( m_MapNames[i], value ) )
+				if (Insensitive.Equals(m_MapNames[i], value))
 					return m_MapValues[i];
 			}
 
@@ -186,13 +186,13 @@ namespace Server
 
 		private static void CheckNamesAndValues()
 		{
-			if ( m_MapNames != null && m_MapNames.Length == m_AllMaps.Count )
+			if (m_MapNames != null && m_MapNames.Length == m_AllMaps.Count)
 				return;
 
 			m_MapNames = new string[m_AllMaps.Count];
 			m_MapValues = new Map[m_AllMaps.Count];
 
-			for ( int i = 0; i < m_AllMaps.Count; ++i )
+			for (int i = 0; i < m_AllMaps.Count; ++i)
 			{
 				Map map = (Map)m_AllMaps[i];
 
@@ -206,42 +206,42 @@ namespace Server
 			return m_Name;
 		}
 
-		public int GetAverageZ( int x, int y )
+		public int GetAverageZ(int x, int y)
 		{
 			int z = 0, avg = 0, top = 0;
 
-			GetAverageZ( x, y, ref z, ref avg, ref top );
+			GetAverageZ(x, y, ref z, ref avg, ref top);
 
 			return avg;
 		}
 
-		public void GetAverageZ( int x, int y, ref int z, ref int avg, ref int top )
+		public void GetAverageZ(int x, int y, ref int z, ref int avg, ref int top)
 		{
-			int zTop = Tiles.GetLandTile( x, y ).Z;
-			int zLeft = Tiles.GetLandTile( x, y + 1 ).Z;
-			int zRight = Tiles.GetLandTile( x + 1, y ).Z;
-			int zBottom = Tiles.GetLandTile( x + 1, y + 1 ).Z;
+			int zTop = Tiles.GetLandTile(x, y).Z;
+			int zLeft = Tiles.GetLandTile(x, y + 1).Z;
+			int zRight = Tiles.GetLandTile(x + 1, y).Z;
+			int zBottom = Tiles.GetLandTile(x + 1, y + 1).Z;
 
 			z = zTop;
-			if ( zLeft < z )
+			if (zLeft < z)
 				z = zLeft;
-			if ( zRight < z )
+			if (zRight < z)
 				z = zRight;
-			if ( zBottom < z )
+			if (zBottom < z)
 				z = zBottom;
 
 			top = zTop;
-			if ( zLeft > top )
+			if (zLeft > top)
 				top = zLeft;
-			if ( zRight > top )
+			if (zRight > top)
 				top = zRight;
-			if ( zBottom > top )
+			if (zBottom > top)
 				top = zBottom;
 
-			if ( Math.Abs( zTop - zBottom ) > Math.Abs( zLeft - zRight) )
-				avg = (int)Math.Floor( (zLeft + zRight) / 2.0 );
+			if (Math.Abs(zTop - zBottom) > Math.Abs(zLeft - zRight))
+				avg = (int)Math.Floor((zLeft + zRight) / 2.0);
 			else
-				avg = (int)Math.Floor( (zTop + zBottom) / 2.0 );
+				avg = (int)Math.Floor((zTop + zBottom) / 2.0);
 
 			//avg = (int)Math.Floor( (zTop + zLeft + zRight + zBottom) / 4.0 );
 
@@ -251,217 +251,217 @@ namespace Server
 			//avg = (z + top) / 2;
 		}
 
-		public IPooledEnumerable GetObjectsInRange( Point3D p )
+		public IPooledEnumerable GetObjectsInRange(Point3D p)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( ObjectEnumerator.Instantiate( this, new Rectangle2D( p.m_X - 18, p.m_Y - 18, 37, 37 ) ) );
+			return PooledEnumerable.Instantiate(ObjectEnumerator.Instantiate(this, new Rectangle2D(p.m_X - 18, p.m_Y - 18, 37, 37)));
 		}
 
-		public IPooledEnumerable GetObjectsInRange( Point3D p, int range )
+		public IPooledEnumerable GetObjectsInRange(Point3D p, int range)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( ObjectEnumerator.Instantiate( this, new Rectangle2D( p.m_X - range, p.m_Y - range, range*2 + 1, range*2 + 1 ) ) );
+			return PooledEnumerable.Instantiate(ObjectEnumerator.Instantiate(this, new Rectangle2D(p.m_X - range, p.m_Y - range, range * 2 + 1, range * 2 + 1)));
 		}
 
-		public IPooledEnumerable GetObjectsInBounds( Rectangle2D bounds )
+		public IPooledEnumerable GetObjectsInBounds(Rectangle2D bounds)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( ObjectEnumerator.Instantiate( this, bounds ) );
+			return PooledEnumerable.Instantiate(ObjectEnumerator.Instantiate(this, bounds));
 		}
 
-		public IPooledEnumerable GetClientsInRange( Point3D p )
+		public IPooledEnumerable GetClientsInRange(Point3D p)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( TypedEnumerator.Instantiate( this, new Rectangle2D( p.m_X - 18, p.m_Y - 18, 37, 37 ), SectorEnumeratorType.Clients ) );
+			return PooledEnumerable.Instantiate(TypedEnumerator.Instantiate(this, new Rectangle2D(p.m_X - 18, p.m_Y - 18, 37, 37), SectorEnumeratorType.Clients));
 		}
 
-		public IPooledEnumerable GetClientsInRange( Point3D p, int range )
+		public IPooledEnumerable GetClientsInRange(Point3D p, int range)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( TypedEnumerator.Instantiate( this, new Rectangle2D( p.m_X - range, p.m_Y - range, range*2 + 1, range*2 + 1 ), SectorEnumeratorType.Clients ) );
+			return PooledEnumerable.Instantiate(TypedEnumerator.Instantiate(this, new Rectangle2D(p.m_X - range, p.m_Y - range, range * 2 + 1, range * 2 + 1), SectorEnumeratorType.Clients));
 		}
 
-		public IPooledEnumerable GetClientsInBounds( Rectangle2D bounds )
+		public IPooledEnumerable GetClientsInBounds(Rectangle2D bounds)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( TypedEnumerator.Instantiate( this, bounds, SectorEnumeratorType.Clients ) );
+			return PooledEnumerable.Instantiate(TypedEnumerator.Instantiate(this, bounds, SectorEnumeratorType.Clients));
 		}
 
-		public IPooledEnumerable GetItemsInRange( Point3D p )
+		public IPooledEnumerable GetItemsInRange(Point3D p)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( TypedEnumerator.Instantiate( this, new Rectangle2D( p.m_X - 18, p.m_Y - 18, 37, 37 ), SectorEnumeratorType.Items ) );
+			return PooledEnumerable.Instantiate(TypedEnumerator.Instantiate(this, new Rectangle2D(p.m_X - 18, p.m_Y - 18, 37, 37), SectorEnumeratorType.Items));
 		}
 
-		public IPooledEnumerable GetItemsInRange( Point3D p, int range )
+		public IPooledEnumerable GetItemsInRange(Point3D p, int range)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( TypedEnumerator.Instantiate( this, new Rectangle2D( p.m_X - range, p.m_Y - range, range*2 + 1, range*2 + 1 ), SectorEnumeratorType.Items ) );
+			return PooledEnumerable.Instantiate(TypedEnumerator.Instantiate(this, new Rectangle2D(p.m_X - range, p.m_Y - range, range * 2 + 1, range * 2 + 1), SectorEnumeratorType.Items));
 		}
 
-		public IPooledEnumerable GetItemsInBounds( Rectangle2D bounds )
+		public IPooledEnumerable GetItemsInBounds(Rectangle2D bounds)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( TypedEnumerator.Instantiate( this, bounds, SectorEnumeratorType.Items ) );
+			return PooledEnumerable.Instantiate(TypedEnumerator.Instantiate(this, bounds, SectorEnumeratorType.Items));
 		}
 
-		public IPooledEnumerable GetMobilesInRange( Point3D p )
+		public IPooledEnumerable GetMobilesInRange(Point3D p)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( TypedEnumerator.Instantiate( this, new Rectangle2D( p.m_X - 18, p.m_Y - 18, 37, 37 ), SectorEnumeratorType.Mobiles ) );
+			return PooledEnumerable.Instantiate(TypedEnumerator.Instantiate(this, new Rectangle2D(p.m_X - 18, p.m_Y - 18, 37, 37), SectorEnumeratorType.Mobiles));
 		}
 
-		public IPooledEnumerable GetMobilesInRange( Point3D p, int range )
+		public IPooledEnumerable GetMobilesInRange(Point3D p, int range)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( TypedEnumerator.Instantiate( this, new Rectangle2D( p.m_X - range, p.m_Y - range, range*2 + 1, range*2 + 1 ), SectorEnumeratorType.Mobiles ) );
+			return PooledEnumerable.Instantiate(TypedEnumerator.Instantiate(this, new Rectangle2D(p.m_X - range, p.m_Y - range, range * 2 + 1, range * 2 + 1), SectorEnumeratorType.Mobiles));
 		}
 
-		public IPooledEnumerable GetMobilesInBounds( Rectangle2D bounds )
+		public IPooledEnumerable GetMobilesInBounds(Rectangle2D bounds)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( TypedEnumerator.Instantiate( this, bounds, SectorEnumeratorType.Mobiles ) );
+			return PooledEnumerable.Instantiate(TypedEnumerator.Instantiate(this, bounds, SectorEnumeratorType.Mobiles));
 		}
 
-		public IPooledEnumerable GetMultiTilesAt( int x, int y )
+		public IPooledEnumerable GetMultiTilesAt(int x, int y)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return NullEnumerable.Instance;
 
-			Sector sector = GetSector( x, y );
+			Sector sector = GetSector(x, y);
 
-			if ( sector.Multis.Count == 0 )
+			if (sector.Multis.Count == 0)
 				return NullEnumerable.Instance;
 
-			return PooledEnumerable.Instantiate( MultiTileEnumerator.Instantiate( sector, new Point2D( x, y ) ) );
+			return PooledEnumerable.Instantiate(MultiTileEnumerator.Instantiate(sector, new Point2D(x, y)));
 		}
 
-        public bool CanFit(Point2D p, int z, int height)
-        {
-            return CanFit(p.m_X, p.m_Y, z, height, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
-        }
+		public bool CanFit(Point2D p, int z, int height)
+		{
+			return CanFit(p.m_X, p.m_Y, z, height, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
+		}
 
-        public bool CanFit(Point3D p, int height)
-        {
-            return CanFit(p.m_X, p.m_Y, p.m_Z, height, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
-        }
+		public bool CanFit(Point3D p, int height)
+		{
+			return CanFit(p.m_X, p.m_Y, p.m_Z, height, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
+		}
 
-        public bool CanFit(Point2D p, int z, int height, CanFitFlags flags)
-        {
-            return CanFit(p.m_X, p.m_Y, z, height, flags);
-        }
+		public bool CanFit(Point2D p, int z, int height, CanFitFlags flags)
+		{
+			return CanFit(p.m_X, p.m_Y, z, height, flags);
+		}
 
-        public bool CanFit(Point3D p, int height, CanFitFlags flags)
-        {
-            return CanFit(p.m_X, p.m_Y, p.m_Z, height, flags);
-        }
+		public bool CanFit(Point3D p, int height, CanFitFlags flags)
+		{
+			return CanFit(p.m_X, p.m_Y, p.m_Z, height, flags);
+		}
 
-        public bool CanFit(int x, int y, int z, int height)
-        {
-            return CanFit(x, y, z, height, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
-        }
+		public bool CanFit(int x, int y, int z, int height)
+		{
+			return CanFit(x, y, z, height, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
+		}
 
 		//Pix: added ignoreDeadMobiles -- default is false (meaning we take them into account)
 		// ignoreDeadMobiles==true means that we'll treat dead mobiles like they're not there.
 		public bool CanFit(int x, int y, int z, int height, CanFitFlags flags)
 		{
-            bool checkBlocksFit = (flags & CanFitFlags.checkBlocksFit) != 0;
-            bool checkMobiles = (flags & CanFitFlags.checkMobiles) != 0;
-            bool requireSurface = (flags & CanFitFlags.requireSurface) != 0;
-            bool ignoreDeadMobiles = (flags & CanFitFlags.ignoreDeadMobiles) != 0;
-            bool canSwim = (flags & CanFitFlags.canSwim) != 0;
-            bool cantWalk = (flags & CanFitFlags.cantWalk) != 0;
+			bool checkBlocksFit = (flags & CanFitFlags.checkBlocksFit) != 0;
+			bool checkMobiles = (flags & CanFitFlags.checkMobiles) != 0;
+			bool requireSurface = (flags & CanFitFlags.requireSurface) != 0;
+			bool ignoreDeadMobiles = (flags & CanFitFlags.ignoreDeadMobiles) != 0;
+			bool canSwim = (flags & CanFitFlags.canSwim) != 0;
+			bool cantWalk = (flags & CanFitFlags.cantWalk) != 0;
 
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return false;
 
-			if ( x < 0 || y < 0 || x >= m_Width || y >= m_Height )
+			if (x < 0 || y < 0 || x >= m_Width || y >= m_Height)
 				return false;
 
 			bool hasSurface = false;
 
-			Tile lt = Tiles.GetLandTile( x, y );
+			Tile lt = Tiles.GetLandTile(x, y);
 			int lowZ = 0, avgZ = 0, topZ = 0;
 
-			GetAverageZ( x, y, ref lowZ, ref avgZ, ref topZ );
+			GetAverageZ(x, y, ref lowZ, ref avgZ, ref topZ);
 			TileFlag landFlags = TileData.LandTable[lt.ID & 0x3FFF].Flags;
 
-			if ( (landFlags & TileFlag.Impassable) != 0 && avgZ > z && (z + height) > lowZ )
+			if ((landFlags & TileFlag.Impassable) != 0 && avgZ > z && (z + height) > lowZ)
 				return false;
-            // can walk on land
-            else if (!cantWalk && (landFlags & TileFlag.Impassable) == 0 && z == avgZ && !lt.Ignored)
+			// can walk on land
+			else if (!cantWalk && (landFlags & TileFlag.Impassable) == 0 && z == avgZ && !lt.Ignored)
 				hasSurface = true;
-            // can swim in water
-            else if (canSwim && (landFlags & TileFlag.Impassable) != 0 && (landFlags & TileFlag.Wet) != 0 && z == avgZ && !lt.Ignored)
-                hasSurface = true;
+			// can swim in water
+			else if (canSwim && (landFlags & TileFlag.Impassable) != 0 && (landFlags & TileFlag.Wet) != 0 && z == avgZ && !lt.Ignored)
+				hasSurface = true;
 
-			Tile[] staticTiles = Tiles.GetStaticTiles( x, y, true );
+			Tile[] staticTiles = Tiles.GetStaticTiles(x, y, true);
 
 			bool surface, impassable;
 
-			for ( int i = 0; i < staticTiles.Length; ++i )
+			for (int i = 0; i < staticTiles.Length; ++i)
 			{
 				ItemData id = TileData.ItemTable[staticTiles[i].ID & 0x3FFF];
 				surface = id.Surface;
 				impassable = id.Impassable;
 
-				if ( (surface || impassable) && (staticTiles[i].Z + id.CalcHeight) > z && (z + height) > staticTiles[i].Z )
+				if ((surface || impassable) && (staticTiles[i].Z + id.CalcHeight) > z && (z + height) > staticTiles[i].Z)
 					return false;
-				else if ( surface && !impassable && z == (staticTiles[i].Z + id.CalcHeight) )
+				else if (surface && !impassable && z == (staticTiles[i].Z + id.CalcHeight))
 					hasSurface = true;
 			}
 
-			Sector sector = GetSector( x, y );
+			Sector sector = GetSector(x, y);
 			Dictionary<Server.Serial, object>.ValueCollection items = sector.Items.Values, mobs = sector.Mobiles.Values;
 
-			foreach (Item item in items )
+			foreach (Item item in items)
 			{
-                if (item == null)
-                    continue;
+				if (item == null)
+					continue;
 
-				if ( item.ItemID < 0x4000 && item.AtWorldPoint( x, y ) )
+				if (item.ItemID < 0x4000 && item.AtWorldPoint(x, y))
 				{
 					ItemData id = item.ItemData;
 					surface = id.Surface;
 					impassable = id.Impassable;
 
-					if ( (surface || impassable || (checkBlocksFit && item.BlocksFit)) && (item.Z + id.CalcHeight) > z && (z + height) > item.Z )
+					if ((surface || impassable || (checkBlocksFit && item.BlocksFit)) && (item.Z + id.CalcHeight) > z && (z + height) > item.Z)
 						return false;
-					else if ( surface && !impassable && z == (item.Z + id.CalcHeight) )
+					else if (surface && !impassable && z == (item.Z + id.CalcHeight))
 						hasSurface = true;
 				}
 			}
 
-			if ( checkMobiles )
+			if (checkMobiles)
 			{
 				foreach (Mobile m in mobs)
 				{
-                    if (m == null)
-                        continue;
+					if (m == null)
+						continue;
 
 					if (m.Alive == true || ignoreDeadMobiles == false)
 					{
@@ -479,98 +479,98 @@ namespace Server
 			return !requireSurface || hasSurface;
 		}
 
-		public bool CanSpawnMobile( Point3D p )
+		public bool CanSpawnMobile(Point3D p)
 		{
-            return CanSpawnMobile(p.m_X, p.m_Y, p.m_Z, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
+			return CanSpawnMobile(p.m_X, p.m_Y, p.m_Z, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
 		}
 
-        public bool CanSpawnMobile(Point3D p, CanFitFlags flags)
-        {
-            return CanSpawnMobile(p.m_X, p.m_Y, p.m_Z, flags);
-        }
-
-		public bool CanSpawnMobile( Point2D p, int z )
+		public bool CanSpawnMobile(Point3D p, CanFitFlags flags)
 		{
-            return CanSpawnMobile(p.m_X, p.m_Y, z, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
+			return CanSpawnMobile(p.m_X, p.m_Y, p.m_Z, flags);
 		}
 
-        public bool CanSpawnMobile(Point2D p, int z, CanFitFlags flags)
-        {
-            return CanSpawnMobile(p.m_X, p.m_Y, z, flags);
-        }
-
-        public bool CanSpawnMobile(int x, int y, int z)
-        {
-            return CanSpawnMobile(x, y, z, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
-        }
-
-		public bool CanSpawnMobile( int x, int y, int z, CanFitFlags flags )
+		public bool CanSpawnMobile(Point2D p, int z)
 		{
-			if ( !Region.Find( new Point3D( x, y, z ), this ).AllowSpawn() )
+			return CanSpawnMobile(p.m_X, p.m_Y, z, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
+		}
+
+		public bool CanSpawnMobile(Point2D p, int z, CanFitFlags flags)
+		{
+			return CanSpawnMobile(p.m_X, p.m_Y, z, flags);
+		}
+
+		public bool CanSpawnMobile(int x, int y, int z)
+		{
+			return CanSpawnMobile(x, y, z, CanFitFlags.checkMobiles | CanFitFlags.requireSurface);
+		}
+
+		public bool CanSpawnMobile(int x, int y, int z, CanFitFlags flags)
+		{
+			if (!Region.Find(new Point3D(x, y, z), this).AllowSpawn())
 				return false;
 
-			return CanFit( x, y, z, 16, flags);
+			return CanFit(x, y, z, 16, flags);
 		}
 
 		private class ZComparer : IComparer
 		{
 			public static readonly IComparer Default = new ZComparer();
 
-			public int Compare( object x, object y )
+			public int Compare(object x, object y)
 			{
 				Item a = (Item)x;
 				Item b = (Item)y;
 
-				return a.Z.CompareTo( b.Z );
+				return a.Z.CompareTo(b.Z);
 			}
 		}
 
-		public int FixColumn( int x, int y )
+		public int FixColumn(int x, int y)
 		{
 			int numberMoved = 0;
-			Tile landTile = Tiles.GetLandTile( x, y );
+			Tile landTile = Tiles.GetLandTile(x, y);
 
 			int landZ = 0, landAvg = 0, landTop = 0;
-			GetAverageZ( x, y, ref landZ, ref landAvg, ref landTop );
+			GetAverageZ(x, y, ref landZ, ref landAvg, ref landTop);
 
-			Tile[] tiles = Tiles.GetStaticTiles( x, y, true );
+			Tile[] tiles = Tiles.GetStaticTiles(x, y, true);
 
 			ArrayList items = new ArrayList();
 
-			IPooledEnumerable eable = GetItemsInRange( new Point3D( x, y, 0 ), 0 );
+			IPooledEnumerable eable = GetItemsInRange(new Point3D(x, y, 0), 0);
 
-			foreach ( Item item in eable )
+			foreach (Item item in eable)
 			{
-				if ( item.ItemID < 0x4000 )
+				if (item.ItemID < 0x4000)
 				{
-					items.Add( item );
+					items.Add(item);
 
-					if ( items.Count > 100 )
+					if (items.Count > 100)
 						break;
 				}
 			}
 
 			eable.Free();
 
-			if ( items.Count > 100 )
+			if (items.Count > 100)
 				return 0;
 
-			items.Sort( ZComparer.Default );
+			items.Sort(ZComparer.Default);
 
-			for ( int i = 0; i < items.Count; ++i )
+			for (int i = 0; i < items.Count; ++i)
 			{
 				Item toFix = (Item)items[i];
 
-				if ( !toFix.Movable )
+				if (!toFix.Movable)
 					continue;
 
 				int z = int.MinValue;
 				int currentZ = toFix.Z;
 
-				if ( !landTile.Ignored && landAvg <= currentZ )
+				if (!landTile.Ignored && landAvg <= currentZ)
 					z = landAvg;
 
-				for ( int j = 0; j < tiles.Length; ++j )
+				for (int j = 0; j < tiles.Length; ++j)
 				{
 					Tile tile = tiles[j];
 					ItemData id = TileData.ItemTable[tile.ID & 0x3FFF];
@@ -578,16 +578,16 @@ namespace Server
 					int checkZ = tile.Z;
 					int checkTop = checkZ + id.CalcHeight;
 
-					if ( checkTop == checkZ && !id.Surface )
+					if (checkTop == checkZ && !id.Surface)
 						++checkTop;
 
-					if ( checkTop > z && checkTop <= currentZ )
+					if (checkTop > z && checkTop <= currentZ)
 						z = checkTop;
 				}
 
-				for ( int j = 0; j < items.Count; ++j )
+				for (int j = 0; j < items.Count; ++j)
 				{
-					if ( j == i )
+					if (j == i)
 						continue;
 
 					Item item = (Item)items[j];
@@ -596,10 +596,10 @@ namespace Server
 					int checkZ = item.Z;
 					int checkTop = checkZ + id.CalcHeight;
 
-					if ( checkTop == checkZ && !id.Surface )
+					if (checkTop == checkZ && !id.Surface)
 						++checkTop;
 
-					if ( checkTop > z && checkTop <= currentZ )
+					if (checkTop > z && checkTop <= currentZ)
 						z = checkTop;
 				}
 
@@ -611,40 +611,40 @@ namespace Server
 			}
 
 			if (numberMoved > 0)
-				EventSink.InvokeDropMobile(new DropMobileEventArgs(this,x,y));
+				EventSink.InvokeDropMobile(new DropMobileEventArgs(this, x, y));
 
 			return numberMoved;
 		}
 
-		public ArrayList GetTilesAt( Point2D p, bool items, bool land, bool statics )
+		public ArrayList GetTilesAt(Point2D p, bool items, bool land, bool statics)
 		{
 			ArrayList list = new ArrayList();
 
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return list;
 
-			if ( land )
+			if (land)
 			{
-				list.Add( Tiles.GetLandTile( p.m_X, p.m_Y ) );
+				list.Add(Tiles.GetLandTile(p.m_X, p.m_Y));
 			}
 
-			if ( statics )
+			if (statics)
 			{
-				list.AddRange( Tiles.GetStaticTiles( p.m_X, p.m_Y, true ) );
+				list.AddRange(Tiles.GetStaticTiles(p.m_X, p.m_Y, true));
 			}
 
-			if ( items )
+			if (items)
 			{
-				Sector sector = GetSector( p );
+				Sector sector = GetSector(p);
 
-				foreach (Item item in sector.Items.Values )
+				foreach (Item item in sector.Items.Values)
 				{
-                    if (item == null)
-                        continue;
+					if (item == null)
+						continue;
 
-					if ( item.AtWorldPoint( p.m_X, p.m_Y ) )
+					if (item.AtWorldPoint(p.m_X, p.m_Y))
 					{
-						list.Add( new Tile( (short)((item.ItemID & 0x3FFF) + 0x4000), (sbyte)item.Z ) );
+						list.Add(new Tile((short)((item.ItemID & 0x3FFF) + 0x4000), (sbyte)item.Z));
 					}
 				}
 			}
@@ -652,31 +652,31 @@ namespace Server
 			return list;
 		}
 
-		public void Bound( int x, int y, out int newX, out int newY )
+		public void Bound(int x, int y, out int newX, out int newY)
 		{
-			if ( x < 0 ) newX = 0;
-			else if ( x >= m_Width ) newX = m_Width - 1;
+			if (x < 0) newX = 0;
+			else if (x >= m_Width) newX = m_Width - 1;
 			else newX = x;
 
-			if ( y < 0 ) newY = 0;
-			else if ( y >= m_Height ) newY = m_Height - 1;
+			if (y < 0) newY = 0;
+			else if (y >= m_Height) newY = m_Height - 1;
 			else newY = y;
 		}
 
-		public Point2D Bound( Point2D p )
+		public Point2D Bound(Point2D p)
 		{
 			int x = p.m_X, y = p.m_Y;
 
-			if ( x < 0 ) x = 0;
-			else if ( x >= m_Width ) x = m_Width - 1;
+			if (x < 0) x = 0;
+			else if (x >= m_Width) x = m_Width - 1;
 
-			if ( y < 0 ) y = 0;
-			else if ( y >= m_Height ) y = m_Height - 1;
+			if (y < 0) y = 0;
+			else if (y >= m_Height) y = m_Height - 1;
 
-			return new Point2D( x, y );
+			return new Point2D(x, y);
 		}
 
-		public Map( int mapID, int mapIndex, int fileIndex, int width, int height, int season, string name, MapRules rules )
+		public Map(int mapID, int mapIndex, int fileIndex, int width, int height, int season, string name, MapRules rules)
 		{
 			m_MapID = mapID;
 			m_MapIndex = mapIndex;
@@ -690,7 +690,7 @@ namespace Server
 
 			//m_Tiles = new TileMatrix( fileIndex, width, height );
 
-			m_InvalidSector = new Sector( 0, 0, this );
+			m_InvalidSector = new Sector(0, 0, this);
 
 			m_SectorsWidth = width >> SectorShift;
 			m_SectorsHeight = height >> SectorShift;
@@ -698,44 +698,44 @@ namespace Server
 			m_Sectors = new Sector[m_SectorsWidth][];
 		}
 
-		public Sector GetSector( Point3D p )
+		public Sector GetSector(Point3D p)
 		{
-			return InternalGetSector( p.m_X >> SectorShift, p.m_Y >> SectorShift );
+			return InternalGetSector(p.m_X >> SectorShift, p.m_Y >> SectorShift);
 		}
 
-		public Sector GetSector( Point2D p )
+		public Sector GetSector(Point2D p)
 		{
-			return InternalGetSector( p.m_X >> SectorShift, p.m_Y >> SectorShift );
+			return InternalGetSector(p.m_X >> SectorShift, p.m_Y >> SectorShift);
 		}
 
-		public Sector GetSector( IPoint2D p )
+		public Sector GetSector(IPoint2D p)
 		{
-			return InternalGetSector( p.X >> SectorShift, p.Y >> SectorShift );
+			return InternalGetSector(p.X >> SectorShift, p.Y >> SectorShift);
 		}
 
-		public Sector GetSector( int x, int y )
+		public Sector GetSector(int x, int y)
 		{
-			return InternalGetSector( x >> SectorShift, y >> SectorShift );
+			return InternalGetSector(x >> SectorShift, y >> SectorShift);
 		}
 
-		public Sector GetRealSector( int x, int y )
+		public Sector GetRealSector(int x, int y)
 		{
-			return InternalGetSector( x, y );
+			return InternalGetSector(x, y);
 		}
 
-		private Sector InternalGetSector( int x, int y )
+		private Sector InternalGetSector(int x, int y)
 		{
-			if ( x >= 0 && x < m_SectorsWidth && y >= 0 && y < m_SectorsHeight )
+			if (x >= 0 && x < m_SectorsWidth && y >= 0 && y < m_SectorsHeight)
 			{
 				Sector[] xSectors = m_Sectors[x];
 
-				if ( xSectors == null )
+				if (xSectors == null)
 					m_Sectors[x] = xSectors = new Sector[m_SectorsHeight];
 
 				Sector sec = xSectors[y];
 
-				if ( sec == null )
-					xSectors[y] = sec = new Sector( x, y, this );
+				if (sec == null)
+					xSectors[y] = sec = new Sector(x, y, this);
 
 				return sec;
 			}
@@ -745,160 +745,160 @@ namespace Server
 			}
 		}
 
-		public void ActivateSectors( int cx, int cy )
+		public void ActivateSectors(int cx, int cy)
 		{
-			for (int x=cx - SectorActiveRange;x<=cx + SectorActiveRange;++x)
+			for (int x = cx - SectorActiveRange; x <= cx + SectorActiveRange; ++x)
 			{
-				for (int y=cy - SectorActiveRange;y<=cy + SectorActiveRange;++y)
+				for (int y = cy - SectorActiveRange; y <= cy + SectorActiveRange; ++y)
 				{
-					Sector sect = GetRealSector( x, y );
-					if ( sect != m_InvalidSector )
+					Sector sect = GetRealSector(x, y);
+					if (sect != m_InvalidSector)
 						sect.Activate();
 				}
 			}
 		}
 
-		public void DeactivateSectors( int cx, int cy )
+		public void DeactivateSectors(int cx, int cy)
 		{
-			for (int x=cx - SectorActiveRange;x<=cx + SectorActiveRange;++x)
+			for (int x = cx - SectorActiveRange; x <= cx + SectorActiveRange; ++x)
 			{
-				for (int y=cy - SectorActiveRange;y<=cy + SectorActiveRange;++y)
+				for (int y = cy - SectorActiveRange; y <= cy + SectorActiveRange; ++y)
 				{
-					Sector sect = GetRealSector( x, y );
-					if ( sect != m_InvalidSector && !PlayersInRange( sect, SectorActiveRange )  )
+					Sector sect = GetRealSector(x, y);
+					if (sect != m_InvalidSector && !PlayersInRange(sect, SectorActiveRange))
 						sect.Deactivate();
 				}
 			}
 		}
 
-		private bool PlayersInRange( Sector sect, int range )
+		private bool PlayersInRange(Sector sect, int range)
 		{
-			for (int x=sect.X - range;x<=sect.X + range;++x)
+			for (int x = sect.X - range; x <= sect.X + range; ++x)
 			{
-				for (int y=sect.Y - range;y<=sect.Y + range;++y)
+				for (int y = sect.Y - range; y <= sect.Y + range; ++y)
 				{
-					Sector check = GetRealSector( x, y );
-                    if (check != m_InvalidSector && check.Players.Count > 0)
+					Sector check = GetRealSector(x, y);
+					if (check != m_InvalidSector && check.Players.Count > 0)
 						return true;
-				}	
+				}
 			}
 
 			return false;
 		}
 
-		public void OnClientChange( NetState oldState, NetState newState, Mobile m )
+		public void OnClientChange(NetState oldState, NetState newState, Mobile m)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return;
 
-			GetSector( m ).OnClientChange( oldState, newState );
+			GetSector(m).OnClientChange(oldState, newState);
 		}
 
-		public void OnEnter( Mobile m )
+		public void OnEnter(Mobile m)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return;
 
-			Sector sector = GetSector( m );
+			Sector sector = GetSector(m);
 
-			sector.OnEnter( m );
+			sector.OnEnter(m);
 
-			if ( sector.Active )
+			if (sector.Active)
 				m.OnSectorActivate();
 			else
 				m.OnSectorDeactivate();
 		}
 
-		public void OnEnter( Item item )
+		public void OnEnter(Item item)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return;
 
-			GetSector( item ).OnEnter( item );
+			GetSector(item).OnEnter(item);
 
-			if ( item is BaseMulti )
+			if (item is BaseMulti)
 			{
 				MultiComponentList mcl = ((BaseMulti)item).Components;
 
-				Sector start = GetMultiMinSector( item.Location, mcl );
-				Sector end = GetMultiMaxSector( item.Location, mcl );
+				Sector start = GetMultiMinSector(item.Location, mcl);
+				Sector end = GetMultiMaxSector(item.Location, mcl);
 
-				AddMulti( item, start, end );
+				AddMulti(item, start, end);
 			}
 		}
 
-		public void OnLeave( Mobile m )
+		public void OnLeave(Mobile m)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return;
 
-			GetSector( m ).OnLeave( m );
+			GetSector(m).OnLeave(m);
 		}
 
-		public void OnLeave( Item item )
+		public void OnLeave(Item item)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return;
 
-			GetSector( item ).OnLeave( item );
+			GetSector(item).OnLeave(item);
 
-			if ( item is BaseMulti )
+			if (item is BaseMulti)
 			{
 				MultiComponentList mcl = ((BaseMulti)item).Components;
 
-				Sector start = GetMultiMinSector( item.Location, mcl );
-				Sector end = GetMultiMaxSector( item.Location, mcl );
+				Sector start = GetMultiMinSector(item.Location, mcl);
+				Sector end = GetMultiMaxSector(item.Location, mcl);
 
-				RemoveMulti( item, start, end );
+				RemoveMulti(item, start, end);
 			}
 		}
 
-		public void RemoveMulti( Item item, Sector start, Sector end )
+		public void RemoveMulti(Item item, Sector start, Sector end)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return;
 
-			for ( int x = start.X; x <= end.X; ++x )
-				for ( int y = start.Y; y <= end.Y; ++y )
-					InternalGetSector( x, y ).OnMultiLeave( item );
+			for (int x = start.X; x <= end.X; ++x)
+				for (int y = start.Y; y <= end.Y; ++y)
+					InternalGetSector(x, y).OnMultiLeave(item);
 		}
 
-		public void AddMulti( Item item, Sector start, Sector end )
+		public void AddMulti(Item item, Sector start, Sector end)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return;
 
-			for ( int x = start.X; x <= end.X; ++x )
-				for ( int y = start.Y; y <= end.Y; ++y )
-					InternalGetSector( x, y ).OnMultiEnter( item );
+			for (int x = start.X; x <= end.X; ++x)
+				for (int y = start.Y; y <= end.Y; ++y)
+					InternalGetSector(x, y).OnMultiEnter(item);
 		}
 
-		public Sector GetMultiMinSector( Point3D loc, MultiComponentList mcl )
+		public Sector GetMultiMinSector(Point3D loc, MultiComponentList mcl)
 		{
-			return GetSector( Bound( new Point2D( loc.m_X + mcl.Min.m_X, loc.m_Y + mcl.Min.m_Y ) ) );
+			return GetSector(Bound(new Point2D(loc.m_X + mcl.Min.m_X, loc.m_Y + mcl.Min.m_Y)));
 		}
 
-		public Sector GetMultiMaxSector( Point3D loc, MultiComponentList mcl )
+		public Sector GetMultiMaxSector(Point3D loc, MultiComponentList mcl)
 		{
-			return GetSector( Bound( new Point2D( loc.m_X + mcl.Max.m_X, loc.m_Y + mcl.Max.m_Y ) ) );
+			return GetSector(Bound(new Point2D(loc.m_X + mcl.Max.m_X, loc.m_Y + mcl.Max.m_Y)));
 		}
 
-		public void OnMove( Point3D oldLocation, Mobile m )
+		public void OnMove(Point3D oldLocation, Mobile m)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return;
 
-			Sector oldSector = GetSector( oldLocation );
-			Sector newSector = GetSector( m.Location );
+			Sector oldSector = GetSector(oldLocation);
+			Sector newSector = GetSector(m.Location);
 
-			if ( oldSector != newSector )
+			if (oldSector != newSector)
 			{
-				oldSector.OnLeave( m );
-				newSector.OnEnter( m );
+				oldSector.OnLeave(m);
+				newSector.OnEnter(m);
 
-				if ( oldSector.Active != newSector.Active )
+				if (oldSector.Active != newSector.Active)
 				{
-					if ( newSector.Active )
+					if (newSector.Active)
 						m.OnSectorActivate();
 					else
 						m.OnSectorDeactivate();
@@ -906,34 +906,34 @@ namespace Server
 			}
 		}
 
-		public void OnMove( Point3D oldLocation, Item item )
+		public void OnMove(Point3D oldLocation, Item item)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return;
 
-			Sector oldSector = GetSector( oldLocation );
-			Sector newSector = GetSector( item.Location );
+			Sector oldSector = GetSector(oldLocation);
+			Sector newSector = GetSector(item.Location);
 
-			if ( oldSector != newSector )
+			if (oldSector != newSector)
 			{
-				oldSector.OnLeave( item );
-				newSector.OnEnter( item );
+				oldSector.OnLeave(item);
+				newSector.OnEnter(item);
 			}
 
-			if ( item is BaseMulti )
+			if (item is BaseMulti)
 			{
 				MultiComponentList mcl = ((BaseMulti)item).Components;
 
-				Sector start = GetMultiMinSector( item.Location, mcl );
-				Sector end = GetMultiMaxSector( item.Location, mcl );
+				Sector start = GetMultiMinSector(item.Location, mcl);
+				Sector end = GetMultiMaxSector(item.Location, mcl);
 
-				Sector oldStart = GetMultiMinSector( oldLocation, mcl );
-				Sector oldEnd = GetMultiMaxSector( oldLocation, mcl );
+				Sector oldStart = GetMultiMinSector(oldLocation, mcl);
+				Sector oldEnd = GetMultiMaxSector(oldLocation, mcl);
 
-				if ( oldStart != start || oldEnd != end )
+				if (oldStart != start || oldEnd != end)
 				{
-					RemoveMulti( item, oldStart, oldEnd );
-					AddMulti( item, start, end );
+					RemoveMulti(item, oldStart, oldEnd);
+					AddMulti(item, start, end);
 				}
 			}
 		}
@@ -942,8 +942,8 @@ namespace Server
 		{
 			get
 			{
-				if ( m_Tiles == null )
-					m_Tiles = new TileMatrix( this, m_FileIndex, m_MapID, m_Width, m_Height );
+				if (m_Tiles == null)
+					m_Tiles = new TileMatrix(this, m_FileIndex, m_MapID, m_Width, m_Height);
 
 				return m_Tiles;
 			}
@@ -993,8 +993,8 @@ namespace Server
 		{
 			get
 			{
-				if ( m_DefaultRegion == null )
-					m_DefaultRegion = new Region( "", "", this );
+				if (m_DefaultRegion == null)
+					m_DefaultRegion = new Region("", "", this);
 
 				return m_DefaultRegion;
 			}
@@ -1092,10 +1092,10 @@ namespace Server
 			private static int m_Depth = 0;
 			private static int m_HighWaterMark = 0;
 
-            public enum status { normal, derived_disposed, derived_moveNext };
-            public status Status = status.normal;
+			public enum status { normal, derived_disposed, derived_moveNext };
+			public status Status = status.normal;
 
-			public static PooledEnumerable Instantiate( IPooledEnumerator etor )
+			public static PooledEnumerable Instantiate(IPooledEnumerator etor)
 			{
 				++m_Depth;                          // track current depth
 				if (m_Depth > m_HighWaterMark)      // track max depth
@@ -1103,66 +1103,66 @@ namespace Server
 
 				if (m_Depth >= 5)
 					Console.WriteLine("PooledEnumerable: Depth = {0}, High Water Mark = {1}", m_Depth, m_HighWaterMark);
-                    
+
 				PooledEnumerable e;
 
-				if ( m_InstancePool.Count > 0 )
+				if (m_InstancePool.Count > 0)
 				{
 					e = (PooledEnumerable)m_InstancePool.Dequeue();
 					e.m_Enumerator = etor;
 
-                    if (e != null && e.Status != PooledEnumerable.status.normal && e.Status != PooledEnumerable.status.derived_moveNext)
-                    {	// always happens. Back to the drawing board.
-                        // string message = String.Format("PooledEnumerable.Instantiate() called after the derived class was: {0}", e.Status.ToString());
-                        // Console.WriteLine(message);
-                    }
+					if (e != null && e.Status != PooledEnumerable.status.normal && e.Status != PooledEnumerable.status.derived_moveNext)
+					{	// always happens. Back to the drawing board.
+						// string message = String.Format("PooledEnumerable.Instantiate() called after the derived class was: {0}", e.Status.ToString());
+						// Console.WriteLine(message);
+					}
 
-                    if (etor == null)
-                    {   // TEST
-                        string message = String.Format("PooledEnumerable.Instantiate() etor starting out null");
-                        Console.WriteLine(message);
-                    }
-                    
+					if (etor == null)
+					{   // TEST
+						string message = String.Format("PooledEnumerable.Instantiate() etor starting out null");
+						Console.WriteLine(message);
+					}
+
 				}
 				else
 				{
-					e = new PooledEnumerable( etor );
+					e = new PooledEnumerable(etor);
 				}
 
 				etor.Enumerable = e;
 
-                // reset
-                e.Status = PooledEnumerable.status.normal;
+				// reset
+				e.Status = PooledEnumerable.status.normal;
 
 				return e;
 			}
 
-			private PooledEnumerable( IPooledEnumerator etor )
+			private PooledEnumerable(IPooledEnumerator etor)
 			{
 				m_Enumerator = etor;
 			}
 
 			public IEnumerator GetEnumerator()
 			{
-                if (m_Enumerator == null)
-                {
-                    string message = "GetEnumerator() called after Free()";
-                    if (Status != status.normal)
-                        message = String.Format("GetEnumerator() called after the derived class was: {0}", Status.ToString());
-                    throw new ObjectDisposedException("PooledEnumerable", message);
-                }
+				if (m_Enumerator == null)
+				{
+					string message = "GetEnumerator() called after Free()";
+					if (Status != status.normal)
+						message = String.Format("GetEnumerator() called after the derived class was: {0}", Status.ToString());
+					throw new ObjectDisposedException("PooledEnumerable", message);
+				}
 
 				return m_Enumerator;
 			}
 
 			public void Free()
-            {
-                if (m_Enumerator != null)
+			{
+				if (m_Enumerator != null)
 				{
-                    // reset
-                    this.Status = PooledEnumerable.status.normal;
+					// reset
+					this.Status = PooledEnumerable.status.normal;
 
-					m_InstancePool.Enqueue( this );
+					m_InstancePool.Enqueue(this);
 
 					m_Enumerator.Free();
 					m_Enumerator = null;
@@ -1173,8 +1173,8 @@ namespace Server
 
 			public void Dispose()
 			{
-                //if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
-                    //(m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_disposed;
+				//if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
+				//(m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_disposed;
 
 				Free();
 			}
@@ -1186,8 +1186,8 @@ namespace Server
 
 			public IPooledEnumerable Enumerable
 			{
-				get{ return m_Enumerable; }
-				set{ m_Enumerable = value; }
+				get { return m_Enumerable; }
+				set { m_Enumerable = value; }
 			}
 
 			private Map m_Map;
@@ -1198,11 +1198,11 @@ namespace Server
 
 			private static Queue m_InstancePool = new Queue();
 
-			public static TypedEnumerator Instantiate( Map map, Rectangle2D bounds, SectorEnumeratorType type )
+			public static TypedEnumerator Instantiate(Map map, Rectangle2D bounds, SectorEnumeratorType type)
 			{
 				TypedEnumerator e;
 
-				if ( m_InstancePool.Count > 0 )
+				if (m_InstancePool.Count > 0)
 				{
 					e = (TypedEnumerator)m_InstancePool.Dequeue();
 
@@ -1214,7 +1214,7 @@ namespace Server
 				}
 				else
 				{
-					e = new TypedEnumerator( map, bounds, type );
+					e = new TypedEnumerator(map, bounds, type);
 				}
 
 				return e;
@@ -1222,26 +1222,26 @@ namespace Server
 
 			public void Free()
 			{
-				if ( m_Map == null )
+				if (m_Map == null)
 					return;
 
-				m_InstancePool.Enqueue( this );
+				m_InstancePool.Enqueue(this);
 
 				m_Map = null;
 
-				if ( m_Enumerator != null )
+				if (m_Enumerator != null)
 				{
 					m_Enumerator.Free();
 					m_Enumerator = null;
 				}
 
-                if (m_Enumerable != null)
-                {
-                    m_Enumerable.Free();
-                }
+				if (m_Enumerable != null)
+				{
+					m_Enumerable.Free();
+				}
 			}
 
-			public TypedEnumerator( Map map, Rectangle2D bounds, SectorEnumeratorType type )
+			public TypedEnumerator(Map map, Rectangle2D bounds, SectorEnumeratorType type)
 			{
 				m_Map = map;
 				m_Bounds = bounds;
@@ -1260,37 +1260,37 @@ namespace Server
 
 			public bool MoveNext()
 			{
-				while ( true )
+				while (true)
 				{
-					if ( m_Enumerator.MoveNext() )
+					if (m_Enumerator.MoveNext())
 					{
 						object o = m_Enumerator.Current;
 
-						if ( o is Mobile )
+						if (o is Mobile)
 						{
 							Mobile m = (Mobile)o;
 
-							if ( !m.Deleted && m_Bounds.Contains( m.Location ) )
+							if (!m.Deleted && m_Bounds.Contains(m.Location))
 							{
 								m_Current = o;
 								return true;
 							}
 						}
-						else if ( o is Item )
+						else if (o is Item)
 						{
 							Item item = (Item)o;
 
-							if ( !item.Deleted && item.Parent == null && m_Bounds.Contains( item.Location ) )
+							if (!item.Deleted && item.Parent == null && m_Bounds.Contains(item.Location))
 							{
 								m_Current = o;
 								return true;
 							}
 						}
-						else if ( o is NetState )
+						else if (o is NetState)
 						{
 							Mobile m = ((NetState)o).Mobile;
 
-							if ( m != null && !m.Deleted && m_Bounds.Contains( m.Location ) )
+							if (m != null && !m.Deleted && m_Bounds.Contains(m.Location))
 							{
 								m_Current = o;
 								return true;
@@ -1301,8 +1301,8 @@ namespace Server
 					{
 						m_Current = null;
 
-                        if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
-                            (m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_moveNext;
+						if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
+							(m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_moveNext;
 
 						m_Enumerator.Free();
 						m_Enumerator = null;
@@ -1316,36 +1316,36 @@ namespace Server
 			{
 				m_Current = null;
 
-				if ( m_Enumerator != null )
+				if (m_Enumerator != null)
 					m_Enumerator.Free();
 
-				m_Enumerator = SectorEnumerator.Instantiate( m_Map, m_Bounds, m_Type );//new SectorEnumerator( m_Map, m_Origin, m_Type, m_Range );
+				m_Enumerator = SectorEnumerator.Instantiate(m_Map, m_Bounds, m_Type);//new SectorEnumerator( m_Map, m_Origin, m_Type, m_Range );
 			}
 
 			public void Dispose()
 			{
-                if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
-                    (m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_disposed;
+				if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
+					(m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_disposed;
 
 				Free();
 			}
 		}
 
-        private class ListManager
-        {
+		private class ListManager
+		{
 			private Dictionary<Server.Serial, object>.ValueCollection m_vc;
 			private Dictionary<Server.Serial, object>.ValueCollection.Enumerator m_enum;
 
 			public ListManager(Dictionary<Server.Serial, object>.ValueCollection vc)
-            {
+			{
 				m_vc = vc;
 				m_enum = vc.GetEnumerator();
-            }
-            public bool MoveNext() { return m_enum.MoveNext(); }
+			}
+			public bool MoveNext() { return m_enum.MoveNext(); }
 			public object Current { get { return m_enum.Current; /*m_enum.Value*/ } }
 			public void Reset() { m_enum = m_vc.GetEnumerator(); /*m_enum.Reset();*/ }
-            public int Count { get { return m_vc.Count; } }
-        }
+			public int Count { get { return m_vc.Count; } }
+		}
 
 		private class MultiTileEnumerator : IPooledEnumerator, IDisposable
 		{
@@ -1353,43 +1353,43 @@ namespace Server
 
 			public IPooledEnumerable Enumerable
 			{
-				get{ return m_Enumerable; }
-				set{ m_Enumerable = value; }
+				get { return m_Enumerable; }
+				set { m_Enumerable = value; }
 			}
 
 			//private ArrayList m_List;
-            private ListManager m_ListManager;
+			private ListManager m_ListManager;
 			private Point2D m_Location;
 			private object m_Current;
 			private int m_Index;
 
 			private static Queue m_InstancePool = new Queue();
 
-			public static MultiTileEnumerator Instantiate( Sector sector, Point2D loc )
+			public static MultiTileEnumerator Instantiate(Sector sector, Point2D loc)
 			{
 				MultiTileEnumerator e;
 
-				if ( m_InstancePool.Count > 0 )
+				if (m_InstancePool.Count > 0)
 				{
 					e = (MultiTileEnumerator)m_InstancePool.Dequeue();
 
 					e.m_ListManager = new ListManager(sector.Multis.Values);
-                    //m_List = sector.Multis;
+					//m_List = sector.Multis;
 					e.m_Location = loc;
 
 					e.Reset();
 				}
 				else
 				{
-					e = new MultiTileEnumerator( sector, loc );
+					e = new MultiTileEnumerator(sector, loc);
 				}
 
 				return e;
 			}
 
-			private MultiTileEnumerator( Sector sector, Point2D loc )
+			private MultiTileEnumerator(Sector sector, Point2D loc)
 			{
-                m_ListManager = new ListManager(sector.Multis.Values);
+				m_ListManager = new ListManager(sector.Multis.Values);
 				//m_List = sector.Multis;
 				m_Location = loc;
 
@@ -1409,28 +1409,28 @@ namespace Server
 				//while ( ++m_Index < m_List.Count )
 				while (++m_Index < m_ListManager.Count)
 				{
-                    m_ListManager.MoveNext();
+					m_ListManager.MoveNext();
 
 					//BaseMulti m = m_List[m_Index] as BaseMulti;
-                    BaseMulti m = m_ListManager.Current as BaseMulti;
+					BaseMulti m = m_ListManager.Current as BaseMulti;
 
-					if ( m != null && !m.Deleted )
+					if (m != null && !m.Deleted)
 					{
 						MultiComponentList list = m.Components;
 
 						int xOffset = m_Location.m_X - (m.Location.m_X + list.Min.m_X);
 						int yOffset = m_Location.m_Y - (m.Location.m_Y + list.Min.m_Y);
 
-						if ( xOffset >= 0 && xOffset < list.Width && yOffset >= 0 && yOffset < list.Height )
+						if (xOffset >= 0 && xOffset < list.Width && yOffset >= 0 && yOffset < list.Height)
 						{
 							Tile[] tiles = list.Tiles[xOffset][yOffset];
 
-							if ( tiles.Length > 0 )
+							if (tiles.Length > 0)
 							{
 								// TODO: How to avoid this copy?
 								Tile[] copy = new Tile[tiles.Length];
 
-								for ( int i = 0; i < copy.Length; ++i )
+								for (int i = 0; i < copy.Length; ++i)
 								{
 									copy[i] = tiles[i];
 									copy[i].Z += m.Z;
@@ -1449,31 +1449,31 @@ namespace Server
 			public void Free()
 			{
 				//if ( m_List == null )
-					//return;
+				//return;
 
-                if (m_ListManager == null)
-                    return;
+				if (m_ListManager == null)
+					return;
 
-				m_InstancePool.Enqueue( this );
+				m_InstancePool.Enqueue(this);
 
 				//m_List = null;
-                m_ListManager = null;
+				m_ListManager = null;
 
-				if ( m_Enumerable != null )
+				if (m_Enumerable != null)
 					m_Enumerable.Free();
 			}
 
 			public void Reset()
 			{
-                m_ListManager.Reset();
+				m_ListManager.Reset();
 				m_Current = null;
 				m_Index = -1;
 			}
 
 			public void Dispose()
 			{
-                if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
-                    (m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_disposed;
+				if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
+					(m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_disposed;
 
 				Free();
 			}
@@ -1485,8 +1485,8 @@ namespace Server
 
 			public IPooledEnumerable Enumerable
 			{
-				get{ return m_Enumerable; }
-				set{ m_Enumerable = value; }
+				get { return m_Enumerable; }
+				set { m_Enumerable = value; }
 			}
 
 			private Map m_Map;
@@ -1497,11 +1497,11 @@ namespace Server
 
 			private static Queue m_InstancePool = new Queue();
 
-			public static ObjectEnumerator Instantiate( Map map, Rectangle2D bounds )
+			public static ObjectEnumerator Instantiate(Map map, Rectangle2D bounds)
 			{
 				ObjectEnumerator e;
 
-				if ( m_InstancePool.Count > 0 )
+				if (m_InstancePool.Count > 0)
 				{
 					e = (ObjectEnumerator)m_InstancePool.Dequeue();
 
@@ -1512,7 +1512,7 @@ namespace Server
 				}
 				else
 				{
-					e = new ObjectEnumerator( map, bounds );
+					e = new ObjectEnumerator(map, bounds);
 				}
 
 				return e;
@@ -1520,24 +1520,24 @@ namespace Server
 
 			public void Free()
 			{
-				if ( m_Map == null )
+				if (m_Map == null)
 					return;
 
-				m_InstancePool.Enqueue( this );
+				m_InstancePool.Enqueue(this);
 
 				m_Map = null;
 
-				if ( m_Enumerator != null )
+				if (m_Enumerator != null)
 				{
 					m_Enumerator.Free();
 					m_Enumerator = null;
 				}
 
-				if ( m_Enumerable != null )
+				if (m_Enumerable != null)
 					m_Enumerable.Free();
 			}
 
-			private ObjectEnumerator( Map map, Rectangle2D bounds )
+			private ObjectEnumerator(Map map, Rectangle2D bounds)
 			{
 				m_Map = map;
 				m_Bounds = bounds;
@@ -1555,51 +1555,51 @@ namespace Server
 
 			public bool MoveNext()
 			{
-				while ( true )
+				while (true)
 				{
-					if ( m_Enumerator.MoveNext() )
+					if (m_Enumerator.MoveNext())
 					{
 						object o = m_Enumerator.Current;
 
-						if ( o is Mobile )
+						if (o is Mobile)
 						{
 							Mobile m = (Mobile)o;
 
-							if ( m_Bounds.Contains( m.Location ) )
+							if (m_Bounds.Contains(m.Location))
 							{
 								m_Current = o;
 								return true;
 							}
 						}
-						else if ( o is Item )
+						else if (o is Item)
 						{
 							Item item = (Item)o;
 
-							if ( item.Parent == null && m_Bounds.Contains( item.Location ) )
+							if (item.Parent == null && m_Bounds.Contains(item.Location))
 							{
 								m_Current = o;
 								return true;
 							}
 						}
 					}
-					else if ( m_Stage == 0 )
+					else if (m_Stage == 0)
 					{
 						m_Enumerator.Free();
-						m_Enumerator = SectorEnumerator.Instantiate( m_Map, m_Bounds, SectorEnumeratorType.Mobiles );
+						m_Enumerator = SectorEnumerator.Instantiate(m_Map, m_Bounds, SectorEnumeratorType.Mobiles);
 
 						m_Current = null;
 						m_Stage = 1;
 					}
 					else
 					{
-                        m_Current = null;
+						m_Current = null;
 
-                        if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
-                            (m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_moveNext;
+						if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
+							(m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_moveNext;
 
 						m_Enumerator.Free();
 						m_Enumerator = null;
-				
+
 						m_Stage = -1;
 
 						return false;
@@ -1613,16 +1613,16 @@ namespace Server
 
 				m_Current = null;
 
-				if ( m_Enumerator != null )
+				if (m_Enumerator != null)
 					m_Enumerator.Free();
 
-				m_Enumerator = SectorEnumerator.Instantiate( m_Map, m_Bounds, SectorEnumeratorType.Items );
+				m_Enumerator = SectorEnumerator.Instantiate(m_Map, m_Bounds, SectorEnumeratorType.Items);
 			}
 
 			public void Dispose()
 			{
-                if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
-                    (m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_disposed;
+				if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
+					(m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_disposed;
 
 				Free();
 			}
@@ -1634,8 +1634,8 @@ namespace Server
 
 			public IPooledEnumerable Enumerable
 			{
-				get{ return m_Enumerable; }
-				set{ m_Enumerable = value; }
+				get { return m_Enumerable; }
+				set { m_Enumerable = value; }
 			}
 
 			private Map m_Map;
@@ -1645,17 +1645,17 @@ namespace Server
 			private int m_xSectorStart, m_ySectorStart;
 			private int m_xSectorEnd, m_ySectorEnd;
 			//private ArrayList m_CurrentList;
-            private ListManager m_ListManager;
+			private ListManager m_ListManager;
 			private int m_CurrentIndex;
 			private SectorEnumeratorType m_Type;
 
 			private static Queue m_InstancePool = new Queue();
 
-			public static SectorEnumerator Instantiate( Map map, Rectangle2D bounds, SectorEnumeratorType type )
+			public static SectorEnumerator Instantiate(Map map, Rectangle2D bounds, SectorEnumeratorType type)
 			{
 				SectorEnumerator e;
 
-				if ( m_InstancePool.Count > 0 )
+				if (m_InstancePool.Count > 0)
 				{
 					e = (SectorEnumerator)m_InstancePool.Dequeue();
 
@@ -1667,7 +1667,7 @@ namespace Server
 				}
 				else
 				{
-					e = new SectorEnumerator( map, bounds, type );
+					e = new SectorEnumerator(map, bounds, type);
 				}
 
 				return e;
@@ -1675,18 +1675,18 @@ namespace Server
 
 			public void Free()
 			{
-				if ( m_Map == null )
+				if (m_Map == null)
 					return;
 
-				m_InstancePool.Enqueue( this );
+				m_InstancePool.Enqueue(this);
 
 				m_Map = null;
 
-				if ( m_Enumerable != null )
+				if (m_Enumerable != null)
 					m_Enumerable.Free();
 			}
 
-			private SectorEnumerator( Map map, Rectangle2D bounds, SectorEnumeratorType type )
+			private SectorEnumerator(Map map, Rectangle2D bounds, SectorEnumeratorType type)
 			{
 				m_Map = map;
 				m_Bounds = bounds;
@@ -1697,12 +1697,12 @@ namespace Server
 
 			private Dictionary<Server.Serial, object>.ValueCollection GetListForSector(Sector sector)
 			{
-				switch ( m_Type )
+				switch (m_Type)
 				{
 					case SectorEnumeratorType.Clients: return sector.Clients.Values;
 					case SectorEnumeratorType.Mobiles: return sector.Mobiles.Values;
-					case SectorEnumeratorType.Items:   return sector.Items.Values;
-					default: throw new Exception( "Invalid SectorEnumeratorType" );
+					case SectorEnumeratorType.Items: return sector.Items.Values;
+					default: throw new Exception("Invalid SectorEnumeratorType");
 				}
 			}
 
@@ -1711,7 +1711,7 @@ namespace Server
 				get
 				{
 					//return m_CurrentList[m_CurrentIndex];
-                    return m_ListManager.Current;
+					return m_ListManager.Current;
 
 					/*try
 					{
@@ -1738,9 +1738,9 @@ namespace Server
 
 			public bool MoveNext()
 			{
-				while ( true )
+				while (true)
 				{
-                    bool sanity = m_ListManager.MoveNext();
+					bool sanity = m_ListManager.MoveNext();
 
 					++m_CurrentIndex;
 
@@ -1749,16 +1749,16 @@ namespace Server
 					{
 						++m_ySector;
 
-						if ( m_ySector > m_ySectorEnd )
+						if (m_ySector > m_ySectorEnd)
 						{
 							m_ySector = m_ySectorStart;
 							++m_xSector;
 
-							if ( m_xSector > m_xSectorEnd )
+							if (m_xSector > m_xSectorEnd)
 							{
 								m_CurrentIndex = -1;
 								//m_CurrentList = null;
-                                m_ListManager = null;
+								m_ListManager = null;
 
 								return false;
 							}
@@ -1766,7 +1766,7 @@ namespace Server
 
 						m_CurrentIndex = -1;
 						//m_CurrentList = GetListForSector( m_Map.InternalGetSector( m_xSector, m_ySector ) );//m_Map.m_Sectors[m_xSector][m_ySector] );
-                        m_ListManager = new ListManager(GetListForSector( m_Map.InternalGetSector( m_xSector, m_ySector ) ));
+						m_ListManager = new ListManager(GetListForSector(m_Map.InternalGetSector(m_xSector, m_ySector)));
 					}
 					else
 					{
@@ -1777,8 +1777,8 @@ namespace Server
 
 			public void Reset()
 			{
-				m_Map.Bound( m_Bounds.Start.m_X, m_Bounds.Start.m_Y, out m_xSectorStart, out m_ySectorStart );
-				m_Map.Bound( m_Bounds.End.m_X - 1, m_Bounds.End.m_Y - 1, out m_xSectorEnd, out m_ySectorEnd );
+				m_Map.Bound(m_Bounds.Start.m_X, m_Bounds.Start.m_Y, out m_xSectorStart, out m_ySectorStart);
+				m_Map.Bound(m_Bounds.End.m_X - 1, m_Bounds.End.m_Y - 1, out m_xSectorEnd, out m_ySectorEnd);
 
 				m_xSector = m_xSectorStart >>= Map.SectorShift;
 				m_ySector = m_ySectorStart >>= Map.SectorShift;
@@ -1788,97 +1788,97 @@ namespace Server
 
 				m_CurrentIndex = -1;
 				//m_CurrentList = GetListForSector( m_Map.InternalGetSector( m_xSector, m_ySector ) );
-                m_ListManager = new ListManager(GetListForSector(m_Map.InternalGetSector(m_xSector, m_ySector)));
+				m_ListManager = new ListManager(GetListForSector(m_Map.InternalGetSector(m_xSector, m_ySector)));
 			}
 
 			public void Dispose()
 			{
-                if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
-                    (m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_disposed;
+				if (m_Enumerable is PooledEnumerable && (m_Enumerable as PooledEnumerable).Status == PooledEnumerable.status.normal)
+					(m_Enumerable as PooledEnumerable).Status = PooledEnumerable.status.derived_disposed;
 
 				Free();
 			}
 		}
 
-		public bool LineOfSight( object from, object dest )
+		public bool LineOfSight(object from, object dest)
 		{
-			if ( from == dest || (from is Mobile && ((Mobile)from).AccessLevel > AccessLevel.Player) )
+			if (from == dest || (from is Mobile && ((Mobile)from).AccessLevel > AccessLevel.Player))
 				return true;
-			else if ( dest is Item && from is Mobile && ((Item)dest).RootParent == from )
+			else if (dest is Item && from is Mobile && ((Item)dest).RootParent == from)
 				return true;
 
-			return LineOfSight( GetPoint( from, true ), GetPoint( dest, false ) );
+			return LineOfSight(GetPoint(from, true), GetPoint(dest, false));
 		}
 
-		public Point3D GetPoint( object o, bool eye )
+		public Point3D GetPoint(object o, bool eye)
 		{
 			Point3D p;
 
-			if ( o is Mobile )
+			if (o is Mobile)
 			{
 				p = ((Mobile)o).Location;
 				p.Z += 14;//eye ? 15 : 10;
 			}
-			else if ( o is Item )
+			else if (o is Item)
 			{
 				p = ((Item)o).GetWorldLocation();
 				p.Z += (((Item)o).ItemData.Height / 2) + 1;
 			}
-			else if ( o is Point3D )
+			else if (o is Point3D)
 			{
 				p = (Point3D)o;
 			}
-			else if ( o is LandTarget )
+			else if (o is LandTarget)
 			{
 				p = ((LandTarget)o).Location;
 
 				int low = 0, avg = 0, top = 0;
-				GetAverageZ( p.X, p.Y, ref low, ref avg, ref top );
+				GetAverageZ(p.X, p.Y, ref low, ref avg, ref top);
 
 				p.Z = top + 1;
 			}
-			else if ( o is StaticTarget )
+			else if (o is StaticTarget)
 			{
 				StaticTarget st = (StaticTarget)o;
 				ItemData id = TileData.ItemTable[st.ItemID & 0x3FFF];
 
-				p = new Point3D( st.X, st.Y, st.Z - id.CalcHeight + (id.Height/2) + 1 );
+				p = new Point3D(st.X, st.Y, st.Z - id.CalcHeight + (id.Height / 2) + 1);
 			}
-			else if ( o is IPoint3D )
+			else if (o is IPoint3D)
 			{
-				p = new Point3D( (IPoint3D)o );
+				p = new Point3D((IPoint3D)o);
 			}
 			else
 			{
-				Console.WriteLine( "Warning: Invalid object ({0}) in line of sight", o );
+				Console.WriteLine("Warning: Invalid object ({0}) in line of sight", o);
 				p = Point3D.Zero;
 			}
 
 			return p;
 		}
 
-		public bool LineOfSight( Mobile from, Point3D target )
+		public bool LineOfSight(Mobile from, Point3D target)
 		{
-			if ( from.AccessLevel > AccessLevel.Player )
+			if (from.AccessLevel > AccessLevel.Player)
 				return true;
 
 			Point3D eye = from.Location;
 
 			eye.Z += 14;
 
-			return LineOfSight( eye, target );
+			return LineOfSight(eye, target);
 		}
 
 		// wea: additional bool option for audible check
 		// (ignores NoShoot TileFlag)
-		public bool LineOfSight( Mobile from, Mobile to )
+		public bool LineOfSight(Mobile from, Mobile to)
 		{
-			return LineOfSight( from, to, false );
+			return LineOfSight(from, to, false);
 		}
-		
-		public bool LineOfSight( Mobile from, Mobile to, bool audible )
+
+		public bool LineOfSight(Mobile from, Mobile to, bool audible)
 		{
-			if ( from == to || from.AccessLevel > AccessLevel.Player )
+			if (from == to || from.AccessLevel > AccessLevel.Player)
 				return true;
 
 			Point3D eye = from.Location;
@@ -1886,16 +1886,16 @@ namespace Server
 
 			eye.Z += 14;
 			target.Z += 14;//10;
-			
-			return LineOfSight( eye, target, audible );
+
+			return LineOfSight(eye, target, audible);
 		}
 
-		private static int[] m_InvalidLandTiles = new int[]{ 0x244 };
+		private static int[] m_InvalidLandTiles = new int[] { 0x244 };
 
 		public static int[] InvalidLandTiles
 		{
-			get{ return m_InvalidLandTiles; }
-			set{ m_InvalidLandTiles = value; }
+			get { return m_InvalidLandTiles; }
+			set { m_InvalidLandTiles = value; }
 		}
 
 		private static Point3DList m_PathList = new Point3DList();
@@ -1904,29 +1904,29 @@ namespace Server
 
 		public static int MaxLOSDistance
 		{
-			get{ return m_MaxLOSDistance; }
-			set{ m_MaxLOSDistance = value; }
+			get { return m_MaxLOSDistance; }
+			set { m_MaxLOSDistance = value; }
 		}
 
 		// wea: additional bool option for audible check
 		// (ignores NoShoot TileFlag)
-		public bool LineOfSight( Point3D org, Point3D dest )
+		public bool LineOfSight(Point3D org, Point3D dest)
 		{
-			return LineOfSight( org, dest, false );
+			return LineOfSight(org, dest, false);
 		}
 
-		public bool LineOfSight( Point3D org, Point3D dest, bool audible )
+		public bool LineOfSight(Point3D org, Point3D dest, bool audible)
 		{
-			if ( this == Map.Internal )
+			if (this == Map.Internal)
 				return false;
 
-			if ( !Utility.InRange( org, dest, m_MaxLOSDistance ) )
+			if (!Utility.InRange(org, dest, m_MaxLOSDistance))
 				return false;
 
 			Point3D start = org;
 			Point3D finsh = dest;
 
-			if ( org.X > dest.X || (org.X == dest.X && org.Y > dest.Y) || (org.X == dest.X && org.Y == dest.Y && org.Z > dest.Z) )
+			if (org.X > dest.X || (org.X == dest.X && org.Y > dest.Y) || (org.X == dest.X && org.Y == dest.Y && org.Z > dest.Z))
 			{
 				Point3D swap = org;
 				org = dest;
@@ -1944,18 +1944,18 @@ namespace Server
 			Point3DList path = m_PathList;
 			TileFlag flags;
 
-			if ( org == dest )
+			if (org == dest)
 				return true;
 
-			if ( path.Count > 0 )
+			if (path.Count > 0)
 				path.Clear();
 
 			xd = dest.m_X - org.m_X;
 			yd = dest.m_Y - org.m_Y;
 			zd = dest.m_Z - org.m_Z;
-			zslp = Math.Sqrt( xd*xd + yd*yd );
-			if ( zd != 0 )
-				sq3d = Math.Sqrt( zslp*zslp + zd*zd );
+			zslp = Math.Sqrt(xd * xd + yd * yd);
+			if (zd != 0)
+				sq3d = Math.Sqrt(zslp * zslp + zd * zd);
 			else
 				sq3d = zslp;
 
@@ -1966,49 +1966,49 @@ namespace Server
 			y = org.m_Y;
 			z = org.m_Z;
 			x = org.m_X;
-			while ( Utility.NumberBetween( x, dest.m_X, org.m_X, 0.5 ) && Utility.NumberBetween( y, dest.m_Y, org.m_Y, 0.5 ) && Utility.NumberBetween( z, dest.m_Z, org.m_Z, 0.5 ) )
+			while (Utility.NumberBetween(x, dest.m_X, org.m_X, 0.5) && Utility.NumberBetween(y, dest.m_Y, org.m_Y, 0.5) && Utility.NumberBetween(z, dest.m_Z, org.m_Z, 0.5))
 			{
-				ix = (int)Math.Round( x );
-				iy = (int)Math.Round( y );
-				iz = (int)Math.Round( z );
-				if ( path.Count > 0 )
+				ix = (int)Math.Round(x);
+				iy = (int)Math.Round(y);
+				iz = (int)Math.Round(z);
+				if (path.Count > 0)
 				{
 					p = path.Last;
 
-					if ( p.m_X != ix || p.m_Y != iy || p.m_Z != iz )
-						path.Add( ix, iy, iz );
-				} 
-				else 
+					if (p.m_X != ix || p.m_Y != iy || p.m_Z != iz)
+						path.Add(ix, iy, iz);
+				}
+				else
 				{
-					path.Add( ix, iy, iz );
+					path.Add(ix, iy, iz);
 				}
 				x += run;
 				y += rise;
 				z += zslp;
 			}
 
-			if ( path.Count == 0 )
+			if (path.Count == 0)
 				return true;//<--should never happen, but to be safe.
 
 			p = path.Last;
 
-			if ( p != dest )
-				path.Add( dest );
+			if (p != dest)
+				path.Add(dest);
 
 			Point3D pTop = org, pBottom = dest;
-			Utility.FixPoints( ref pTop, ref pBottom );
+			Utility.FixPoints(ref pTop, ref pBottom);
 
 			int pathCount = path.Count;
 
-			for ( int i = 0; i < pathCount; ++i )
+			for (int i = 0; i < pathCount; ++i)
 			{
 				Point3D point = path[i];
 
-				Tile landTile = Tiles.GetLandTile( point.X, point.Y );
+				Tile landTile = Tiles.GetLandTile(point.X, point.Y);
 				int landZ = 0, landAvg = 0, landTop = 0;
-				GetAverageZ( point.m_X, point.m_Y, ref landZ, ref landAvg, ref landTop );
+				GetAverageZ(point.m_X, point.m_Y, ref landZ, ref landAvg, ref landTop);
 
-				if ( landZ <= point.m_Z && landTop >= point.m_Z && (point.m_X != finsh.m_X || point.m_Y != finsh.m_Y || landZ > finsh.m_Z || landTop < finsh.m_Z) && !landTile.Ignored )
+				if (landZ <= point.m_Z && landTop >= point.m_Z && (point.m_X != finsh.m_X || point.m_Y != finsh.m_Y || landZ > finsh.m_Z || landTop < finsh.m_Z) && !landTile.Ignored)
 					return false;
 
 				/* --Do land tiles need to be checked?  There is never land between two people, always statics.--
@@ -2017,34 +2017,34 @@ namespace Server
 					return false;
 				*/
 
-				Tile[] statics = Tiles.GetStaticTiles( point.m_X, point.m_Y, true );
+				Tile[] statics = Tiles.GetStaticTiles(point.m_X, point.m_Y, true);
 
 				bool contains = false;
 				int ltID = landTile.ID;
 
-				for ( int j = 0; !contains && j < m_InvalidLandTiles.Length; ++j )
-					contains = ( ltID == m_InvalidLandTiles[j] );
+				for (int j = 0; !contains && j < m_InvalidLandTiles.Length; ++j)
+					contains = (ltID == m_InvalidLandTiles[j]);
 
-				if ( contains && statics.Length == 0 )
+				if (contains && statics.Length == 0)
 				{
-					IPooledEnumerable eable = GetItemsInRange( point, 0 );
+					IPooledEnumerable eable = GetItemsInRange(point, 0);
 
-					foreach ( Item item in eable )
+					foreach (Item item in eable)
 					{
-						if ( item.Visible )
+						if (item.Visible)
 							contains = false;
 
-						if ( !contains )
+						if (!contains)
 							break;
 					}
 
 					eable.Free();
 
-					if ( contains )
+					if (contains)
 						return false;
 				}
 
-				for ( int j = 0; j < statics.Length; ++j )
+				for (int j = 0; j < statics.Length; ++j)
 				{
 					Tile t = statics[j];
 
@@ -2053,13 +2053,13 @@ namespace Server
 					flags = id.Flags;
 					height = id.CalcHeight;
 
-					if ( t.Z <= point.Z && t.Z+height >= point.Z && (flags & (TileFlag.Window | TileFlag.NoShoot)) != 0 )
+					if (t.Z <= point.Z && t.Z + height >= point.Z && (flags & (TileFlag.Window | TileFlag.NoShoot)) != 0)
 					{
 						//Pix: special case for right flap of orc fort
-						if ( t.ID == 0x422D && ( start == ORCFLAPRIGHT || finsh == ORCFLAPRIGHT) )
+						if (t.ID == 0x422D && (start == ORCFLAPRIGHT || finsh == ORCFLAPRIGHT))
 							continue;
 
-						if ( point.m_X == finsh.m_X && point.m_Y == finsh.m_Y && t.Z <= finsh.m_Z && t.Z + height >= finsh.m_Z )
+						if (point.m_X == finsh.m_X && point.m_Y == finsh.m_Y && t.Z <= finsh.m_Z && t.Z + height >= finsh.m_Z)
 							continue;
 
 						return false;
@@ -2075,16 +2075,16 @@ namespace Server
 				}
 			}
 
-			Rectangle2D rect = new Rectangle2D( pTop.m_X, pTop.m_Y, (pBottom.m_X - pTop.m_X) + 1, (pBottom.m_Y - pTop.m_Y) + 1 );
+			Rectangle2D rect = new Rectangle2D(pTop.m_X, pTop.m_Y, (pBottom.m_X - pTop.m_X) + 1, (pBottom.m_Y - pTop.m_Y) + 1);
 
-			IPooledEnumerable area = GetItemsInBounds( rect );
+			IPooledEnumerable area = GetItemsInBounds(rect);
 
-			foreach ( Item i in area )
+			foreach (Item i in area)
 			{
-				if ( !i.Visible )
+				if (!i.Visible)
 					continue;
 
-				if ( i.ItemID >= 0x4000 )
+				if (i.ItemID >= 0x4000)
 					continue;
 
 				ItemData id = i.ItemData;
@@ -2092,25 +2092,25 @@ namespace Server
 
 				// wea: altered so that continues if NoShoot only and this is audible check
 				// if ( (flags & (TileFlag.Window | TileFlag.NoShoot)) == 0 )
-				if( ( audible || (flags & TileFlag.NoShoot) == 0 ) && (flags & (TileFlag.Window | TileFlag.Wall) ) == 0 )
+				if ((audible || (flags & TileFlag.NoShoot) == 0) && (flags & (TileFlag.Window | TileFlag.Wall)) == 0)
 					continue;
-				
+
 				height = id.CalcHeight;
 
 				found = false;
 
 				int count = path.Count;
 
-				for ( int j = 0; j < count; ++j )
+				for (int j = 0; j < count; ++j)
 				{
 					Point3D point = path[j];
 					Point3D loc = i.Location;
 
 					//if ( t.Z <= point.Z && t.Z+height >= point.Z && ( height != 0 || ( t.Z == dest.Z && zd != 0 ) ) )
-					if ( loc.m_X == point.m_X && loc.m_Y == point.m_Y &&
-						loc.m_Z <= point.m_Z && loc.m_Z+height >= point.m_Z )
+					if (loc.m_X == point.m_X && loc.m_Y == point.m_Y &&
+						loc.m_Z <= point.m_Z && loc.m_Z + height >= point.m_Z)
 					{
-						if ( loc.m_X == finsh.m_X && loc.m_Y == finsh.m_Y && loc.m_Z <= finsh.m_Z && loc.m_Z + height >= finsh.m_Z )
+						if (loc.m_X == finsh.m_X && loc.m_Y == finsh.m_Y && loc.m_Z <= finsh.m_Z && loc.m_Z + height >= finsh.m_Z)
 							continue;
 
 						found = true;
@@ -2118,11 +2118,11 @@ namespace Server
 					}
 				}
 
-				if ( !found )
+				if (!found)
 					continue;
 
 				area.Free();
-		
+
 				return false;
 
 				/*if ( (flags & (TileFlag.Impassable | TileFlag.Surface | TileFlag.Roof)) != 0 )

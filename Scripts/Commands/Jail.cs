@@ -81,7 +81,7 @@ namespace Server.Scripts.Commands
 				case 7: return new Point3D(5296, 1174, 0);
 				case 8: return new Point3D(5306, 1174, 0);
 				case 9: return new Point3D(5283, 1184, 0);
-				case 10:return new Point3D(5304, 1184, 0);
+				case 10: return new Point3D(5304, 1184, 0);
 			}
 
 			return Point3D.Zero;
@@ -89,104 +89,104 @@ namespace Server.Scripts.Commands
 
 		public static void Jail_OnCommand(CommandEventArgs e)
 		{
-			
-			switch(e.Arguments.Length)
+
+			switch (e.Arguments.Length)
 			{
 				case 0:
-				{
-					e.Mobile.SendMessage("Target the player to jail.");
-					e.Mobile.Target = new JailTarget(3, "", false);
-					break;
-				}
-				case 1:
-				{
-					if(e.Arguments[0] == "-troublemaker")
 					{
 						e.Mobile.SendMessage("Target the player to jail.");
-						e.Mobile.Target = new JailTarget(3, "were disrupting a staff event", true);
+						e.Mobile.Target = new JailTarget(3, "", false);
 						break;
 					}
-					else
+				case 1:
 					{
-						if (e.Arguments[0] == "-h" || e.Arguments[0] == "-cell")
+						if (e.Arguments[0] == "-troublemaker")
+						{
+							e.Mobile.SendMessage("Target the player to jail.");
+							e.Mobile.Target = new JailTarget(3, "were disrupting a staff event", true);
+							break;
+						}
+						else
+						{
+							if (e.Arguments[0] == "-h" || e.Arguments[0] == "-cell")
+							{
+								Usage(e.Mobile);
+								return;
+							}
+
+							e.Mobile.SendMessage("Target the player to jail.");
+							e.Mobile.Target = new JailTarget(3, e.Arguments[0], false);
+							break;
+						}
+
+
+					}
+
+				case 2:
+					{
+						if (e.Arguments[0] != "-cell")
+						{
+							Usage(e.Mobile);
+							return;
+						}
+
+						int cell;
+						try
+						{
+							cell = Int32.Parse(e.Arguments[1]);
+							if (cell < 1 || cell > 10)
+							{
+								e.Mobile.SendMessage("Cells range from 1 to 10.");
+								return;
+							}
+						}
+						catch
 						{
 							Usage(e.Mobile);
 							return;
 						}
 
 						e.Mobile.SendMessage("Target the player to jail.");
-						e.Mobile.Target = new JailTarget(3, e.Arguments[0], false);
+						e.Mobile.Target = new JailTarget(cell, "", false);
 						break;
 					}
-                    
-			
-				}
-
-				case 2:
-				{
-					if (e.Arguments[0] != "-cell")
-					{
-						Usage(e.Mobile);
-						return;
-					}
-
-					int cell;
-					try
-					{
-						cell = Int32.Parse(e.Arguments[1]);
-						if (cell < 1 || cell > 10)
-						{
-							e.Mobile.SendMessage("Cells range from 1 to 10.");
-							return;
-						}
-					}
-					catch
-					{
-						Usage(e.Mobile);
-						return;
-					}
-
-					e.Mobile.SendMessage("Target the player to jail.");
-					e.Mobile.Target = new JailTarget(cell, "", false);
-					break;
-				}
 				case 3:
-				{
-					if (e.Arguments[0] != "-cell")
 					{
-						Usage(e.Mobile);
-						return;
-					}
-
-					int cell;
-					try
-					{
-						cell = Int32.Parse(e.Arguments[1]);
-						if (cell < 1 || cell > 10)
+						if (e.Arguments[0] != "-cell")
 						{
-							e.Mobile.SendMessage("Cells range from 1 to 10.");
+							Usage(e.Mobile);
 							return;
 						}
+
+						int cell;
+						try
+						{
+							cell = Int32.Parse(e.Arguments[1]);
+							if (cell < 1 || cell > 10)
+							{
+								e.Mobile.SendMessage("Cells range from 1 to 10.");
+								return;
+							}
+						}
+						catch
+						{
+							Usage(e.Mobile);
+							return;
+						}
+
+						e.Mobile.SendMessage("Target the player to jail.");
+						e.Mobile.Target = new JailTarget(cell, e.Arguments[2], false);
+						break;
 					}
-					catch
+
+				default:
 					{
 						Usage(e.Mobile);
 						return;
 					}
-
-					e.Mobile.SendMessage("Target the player to jail.");
-					e.Mobile.Target = new JailTarget(cell, e.Arguments[2], false);
-					break;
-				}
-			
-				default:
-				{
-					Usage(e.Mobile);
-					return;
-				}
 			}
 		}
-		
+
 		public static void Usage(Mobile to)
 		{
 			to.SendMessage("Usage: [jail [-troublemaker] [-cell <num>] [\"Tag Message\"]");
@@ -220,7 +220,7 @@ namespace Server.Scripts.Commands
 
 				int sentence = 12; // 12 hour minimum sentence
 
-				if(Trouble == true)
+				if (Trouble == true)
 				{
 					sentence = 2;// two hour sentance for troublemakets
 				}
@@ -235,7 +235,7 @@ namespace Server.Scripts.Commands
 					}
 				}
 
-                // stable the players pets
+				// stable the players pets
 				StablePets(m_Player);
 
 				// move to jail
@@ -252,8 +252,8 @@ namespace Server.Scripts.Commands
 				JailExitGate.AddInmate(m_Player, sentence);
 				m_Player.SendMessage("You have been jailed for {0} hours.", sentence);
 
-				LogHelper Logger = new LogHelper("jail.log", false, true );
-				Logger.Log(LogType.Mobile, m_Player, string.Format("{0}:{1}:{2}:{3}","SYSTEM",m_Cell,m_Comment,sentence));
+				LogHelper Logger = new LogHelper("jail.log", false, true);
+				Logger.Log(LogType.Mobile, m_Player, string.Format("{0}:{1}:{2}:{3}", "SYSTEM", m_Cell, m_Comment, sentence));
 				Logger.Finish();
 
 				if (Trouble == true)
@@ -262,28 +262,28 @@ namespace Server.Scripts.Commands
 					acct.Comments.Add(new AccountComment("SYSTEM", DateTime.Now + "\nTag count: " + (acct.Comments.Count + 1) + "\nJailed for " + sentence + " hours. Reason: " + m_Comment));
 			}
 
-            private void StablePets(PlayerMobile master)
-            {
-                ArrayList pets = new ArrayList();
+			private void StablePets(PlayerMobile master)
+			{
+				ArrayList pets = new ArrayList();
 
-                foreach (Mobile m in World.Mobiles.Values)
-                {
-                    if (m is BaseCreature && (m as BaseCreature).IOBFollower == false)
-                    {
-                        BaseCreature bc = (BaseCreature)m;
+				foreach (Mobile m in World.Mobiles.Values)
+				{
+					if (m is BaseCreature && (m as BaseCreature).IOBFollower == false)
+					{
+						BaseCreature bc = (BaseCreature)m;
 
-                        if (bc.Controlled && bc.ControlMaster == master)
-                            pets.Add(bc);
-                    }
-                }
+						if (bc.Controlled && bc.ControlMaster == master)
+							pets.Add(bc);
+					}
+				}
 
-                if (pets.Count > 0)
-                {
-                    for (int i = 0; i < pets.Count; ++i)
-                    {
-                        BaseCreature pet = pets[i] as BaseCreature;
+				if (pets.Count > 0)
+				{
+					for (int i = 0; i < pets.Count; ++i)
+					{
+						BaseCreature pet = pets[i] as BaseCreature;
 
-						if ( (pet is PackLlama || pet is PackHorse || pet is Beetle) && (pet.Backpack != null && pet.Backpack.Items.Count > 0) )
+						if ((pet is PackLlama || pet is PackHorse || pet is Beetle) && (pet.Backpack != null && pet.Backpack.Items.Count > 0))
 						{
 							continue; // You need to unload your pet.
 						}
@@ -292,21 +292,21 @@ namespace Server.Scripts.Commands
 							continue; // You have too many pets in the stables!
 						}
 
-                        if (pet is IMount)
-                            ((IMount)pet).Rider = null; // make sure it's dismounted
+						if (pet is IMount)
+							((IMount)pet).Rider = null; // make sure it's dismounted
 
-                        pet.ControlTarget = null;
-                        pet.ControlOrder = OrderType.Stay;
-                        pet.Internalize();
+						pet.ControlTarget = null;
+						pet.ControlOrder = OrderType.Stay;
+						pet.Internalize();
 
-                        pet.SetControlMaster(null);
-                        pet.SummonMaster = null;
+						pet.SetControlMaster(null);
+						pet.SummonMaster = null;
 
-                        pet.IsStabled = true;
-                        master.Stabled.Add(pet);
-                    }
-                }
-            }
+						pet.IsStabled = true;
+						master.Stabled.Add(pet);
+					}
+				}
+			}
 		}
 
 		private class JailTarget : Target
@@ -315,7 +315,8 @@ namespace Server.Scripts.Commands
 			private string m_Comment;
 			private bool Trouble;
 
-			public JailTarget(int cell, string comment, bool troublemaker) : base( 15, false, TargetFlags.None )
+			public JailTarget(int cell, string comment, bool troublemaker)
+				: base(15, false, TargetFlags.None)
 			{
 				m_Cell = cell;
 				m_Comment = comment;
@@ -337,7 +338,7 @@ namespace Server.Scripts.Commands
 
 				int sentence = 12; // 12 hour minimum sentence
 
-				if(Trouble == true)
+				if (Trouble == true)
 				{
 					sentence = 2;// two hour sentance for troublemakets
 				}
@@ -352,13 +353,13 @@ namespace Server.Scripts.Commands
 					}
 				}
 
-                // stable the players pets
-                StablePets(from, pm);
+				// stable the players pets
+				StablePets(from, pm);
 
-                // handle jailing of logged out players
+				// handle jailing of logged out players
 				Point3D destPoint = Jail.GetCell(m_Cell);
 				pm.MoveToWorld(destPoint, Map.Felucca);
-				if( pm.NetState == null )
+				if (pm.NetState == null)
 				{
 					pm.LogoutLocation = destPoint;
 					pm.Map = Map.Internal;
@@ -368,7 +369,7 @@ namespace Server.Scripts.Commands
 				pm.SendMessage("You have been jailed for {0} hours.", sentence);
 				from.SendMessage("{0} has been jailed for {1} hours.", pm.Name, sentence);
 
-				LogHelper Logger = new LogHelper("jail.log", false, true );
+				LogHelper Logger = new LogHelper("jail.log", false, true);
 
 				Logger.Log(LogType.Mobile, pm, string.Format("{0}:{1}:{2}:{3}",
 												from.Name,
@@ -379,32 +380,32 @@ namespace Server.Scripts.Commands
 
 				Commands.CommandLogging.WriteLine(from, "{0} jailed {1}(Username: {2}) into cell {3} for {5} hours with reason: {4}.",
 					from.Name, pm.Name, acct.Username, m_Cell, m_Comment, sentence);
-				if(Trouble == true)
+				if (Trouble == true)
 					acct.Comments.Add(new AccountComment(from.Name, DateTime.Now + "\nTag count: " + (acct.Comments.Count + 1) + "\nJailedTroubleMaker for " + sentence + " hours. Reason: " + m_Comment));
 				else
-				acct.Comments.Add(new AccountComment(from.Name, DateTime.Now + "\nTag count: " + (acct.Comments.Count + 1) + "\nJailed for " + sentence + " hours. Reason: " + m_Comment));
+					acct.Comments.Add(new AccountComment(from.Name, DateTime.Now + "\nTag count: " + (acct.Comments.Count + 1) + "\nJailed for " + sentence + " hours. Reason: " + m_Comment));
 			}
 
-            private void StablePets(Mobile from, PlayerMobile master)
-            {
-                ArrayList pets = new ArrayList();
+			private void StablePets(Mobile from, PlayerMobile master)
+			{
+				ArrayList pets = new ArrayList();
 
-                foreach (Mobile m in World.Mobiles.Values)
-                {
-                    if (m is BaseCreature && (m as BaseCreature).IOBFollower == false)
-                    {
-                        BaseCreature bc = (BaseCreature)m;
+				foreach (Mobile m in World.Mobiles.Values)
+				{
+					if (m is BaseCreature && (m as BaseCreature).IOBFollower == false)
+					{
+						BaseCreature bc = (BaseCreature)m;
 
-                        if (bc.Controlled && bc.ControlMaster == master)
-                            pets.Add(bc);
-                    }
-                }
+						if (bc.Controlled && bc.ControlMaster == master)
+							pets.Add(bc);
+					}
+				}
 
-                if (pets.Count > 0)
-                {
-                    for (int i = 0; i < pets.Count; ++i)
-                    {
-                        BaseCreature pet = pets[i] as BaseCreature;
+				if (pets.Count > 0)
+				{
+					for (int i = 0; i < pets.Count; ++i)
+					{
+						BaseCreature pet = pets[i] as BaseCreature;
 
 						if ((pet is PackLlama || pet is PackHorse || pet is Beetle) && (pet.Backpack != null && pet.Backpack.Items.Count > 0))
 						{
@@ -415,23 +416,23 @@ namespace Server.Scripts.Commands
 							continue; // You have too many pets in the stables!
 						}
 
-                        if (pet is IMount)
-                            ((IMount)pet).Rider = null; // make sure it's dismounted
+						if (pet is IMount)
+							((IMount)pet).Rider = null; // make sure it's dismounted
 
-                        pet.ControlTarget = null;
-                        pet.ControlOrder = OrderType.Stay;
-                        pet.Internalize();
+						pet.ControlTarget = null;
+						pet.ControlOrder = OrderType.Stay;
+						pet.Internalize();
 
-                        pet.SetControlMaster(null);
-                        pet.SummonMaster = null;
+						pet.SetControlMaster(null);
+						pet.SummonMaster = null;
 
-                        pet.IsStabled = true;
-                        master.Stabled.Add(pet);
-                    }
+						pet.IsStabled = true;
+						master.Stabled.Add(pet);
+					}
 
-                    from.SendMessage("{0} pets have been stabled", pets.Count);
-                }
-            }
+					from.SendMessage("{0} pets have been stabled", pets.Count);
+				}
+			}
 		}
 	}
 }

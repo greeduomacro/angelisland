@@ -58,7 +58,8 @@ namespace Server.Items
 			}
 		}
 
-		public BankBox( Serial serial ) : base( serial )
+		public BankBox(Serial serial)
+			: base(serial)
 		{
 		}
 
@@ -82,83 +83,84 @@ namespace Server.Items
 		{
 			m_Open = true;
 
-			if ( m_Owner != null )
+			if (m_Owner != null)
 			{
-				m_Owner.PrivateOverheadMessage( MessageType.Regular, 0x3B2, true, String.Format( "Bank container has {0} items, {1} stones", TotalItems, TotalWeight ), m_Owner.NetState );
-				m_Owner.Send( new EquipUpdate( this ) );
-				DisplayTo( m_Owner );
+				m_Owner.PrivateOverheadMessage(MessageType.Regular, 0x3B2, true, String.Format("Bank container has {0} items, {1} stones", TotalItems, TotalWeight), m_Owner.NetState);
+				m_Owner.Send(new EquipUpdate(this));
+				DisplayTo(m_Owner);
 			}
 		}
 
-		public override void Serialize( GenericWriter writer )
+		public override void Serialize(GenericWriter writer)
 		{
-			base.Serialize( writer );
+			base.Serialize(writer);
 
-			writer.Write( (int) 0 ); // version
+			writer.Write((int)0); // version
 
-			writer.Write( (Mobile) m_Owner );
-			writer.Write( (bool) m_Open );
+			writer.Write((Mobile)m_Owner);
+			writer.Write((bool)m_Open);
 		}
 
-		public override void Deserialize( GenericReader reader )
+		public override void Deserialize(GenericReader reader)
 		{
-			base.Deserialize( reader );
+			base.Deserialize(reader);
 
 			int version = reader.ReadInt();
 
-			switch ( version )
+			switch (version)
 			{
 				case 0:
-				{
-					m_Owner = reader.ReadMobile();
-					m_Open = reader.ReadBool();
-					break;
-				}
+					{
+						m_Owner = reader.ReadMobile();
+						m_Open = reader.ReadBool();
+						break;
+					}
 			}
 
-            if (m_Owner == null)
-                Delete();
+			if (m_Owner == null)
+				Delete();
 
-            // Adam: don't think m_Open should ever have been saved, but we force a close so that the Freeze Dry system can FD the box
-            if (m_Open == true)
-                Close();
+			// Adam: don't think m_Open should ever have been saved, but we force a close so that the Freeze Dry system can FD the box
+			if (m_Open == true)
+				Close();
 		}
 
 		// Adam: true was causing players to crash on recall
 		private static bool m_SendRemovePacket = false;
 
-		public static bool SendDeleteOnClose{ get{ return m_SendRemovePacket; } set{ m_SendRemovePacket = value; } }
+		public static bool SendDeleteOnClose { get { return m_SendRemovePacket; } set { m_SendRemovePacket = value; } }
 
 		public void Close()
 		{
 			m_Open = false;
 
-			if ( m_Owner != null && m_SendRemovePacket )
-				m_Owner.Send( this.RemovePacket );
+			if (m_Owner != null && m_SendRemovePacket)
+				m_Owner.Send(this.RemovePacket);
 		}
 
-		public override void OnSingleClick( Mobile from )
+		public override void OnSingleClick(Mobile from)
 		{
 		}
 
-		public override void OnDoubleClick( Mobile from )
+		public override void OnDoubleClick(Mobile from)
 		{
 		}
 
-		public override DeathMoveResult OnParentDeath( Mobile parent )
+		public override DeathMoveResult OnParentDeath(Mobile parent)
 		{
 			return DeathMoveResult.RemainEquiped;
 		}
 
-		public override int DefaultGumpID{ get{ return 0x4A; } }
-		public override int DefaultDropSound{ get{ return 0x42; } }
+		public override int DefaultGumpID { get { return 0x4A; } }
+		public override int DefaultDropSound { get { return 0x42; } }
 
 		public override Rectangle2D Bounds
 		{
-			get{ return new Rectangle2D( 18, 105, 144, 73 ); }
+			get { return new Rectangle2D(18, 105, 144, 73); }
 		}
 
-		public BankBox( Mobile owner ) : base( 0xE41 )
+		public BankBox(Mobile owner)
+			: base(0xE41)
 		{
 			Layer = Layer.Bank;
 			Movable = false;
@@ -170,26 +172,26 @@ namespace Server.Items
 
 		public override bool IsAccessibleTo(Mobile check)
 		{
-		 	if ( ( check == m_Owner && m_Open ) || check.AccessLevel >= AccessLevel.GameMaster )
-		 		return base.IsAccessibleTo (check);
-		 	else
-		 		return false;
+			if ((check == m_Owner && m_Open) || check.AccessLevel >= AccessLevel.GameMaster)
+				return base.IsAccessibleTo(check);
+			else
+				return false;
 		}
 
-		public override bool OnDragDrop( Mobile from, Item dropped )
+		public override bool OnDragDrop(Mobile from, Item dropped)
 		{
-		 	if ( ( from == m_Owner && m_Open ) || from.AccessLevel >= AccessLevel.GameMaster )
-		 		return base.OnDragDrop( from, dropped );
+			if ((from == m_Owner && m_Open) || from.AccessLevel >= AccessLevel.GameMaster)
+				return base.OnDragDrop(from, dropped);
 			else
-		 		return false;
+				return false;
 		}
 
 		public override bool OnDragDropInto(Mobile from, Item item, Point3D p)
 		{
-		 	if ( ( from == m_Owner && m_Open ) || from.AccessLevel >= AccessLevel.GameMaster )
-		 		return base.OnDragDropInto (from, item, p);
-		 	else
-		 		return false;
+			if ((from == m_Owner && m_Open) || from.AccessLevel >= AccessLevel.GameMaster)
+				return base.OnDragDropInto(from, item, p);
+			else
+				return false;
 		}
 
 		public override bool CanFreezeDry

@@ -1051,7 +1051,7 @@ namespace Server
 				{
 					if (region.m_LoadCoords == null)
 						region.m_LoadCoords = new ArrayList();
-							
+
 					region.m_Coords = region.m_LoadCoords;
 
 					//if ( !m_SupressXmlWarnings )
@@ -1067,192 +1067,192 @@ namespace Server
 		public static void Load()
 		{
 			return; //Plasma : We no longer load from XML as all the regions are DRDT
-							 /*
-			if (!System.IO.File.Exists("Data/Regions.xml"))
-			{
-				Console.WriteLine("Error: Data/Regions.xml does not exist");
-				return;
-			}
+			/*
+if (!System.IO.File.Exists("Data/Regions.xml"))
+{
+Console.WriteLine("Error: Data/Regions.xml does not exist");
+return;
+}
 
-			Console.Write("Regions: Loading...");
+Console.Write("Regions: Loading...");
 
-			XmlDocument doc = new XmlDocument();
-			doc.Load("Data/Regions.xml");
+XmlDocument doc = new XmlDocument();
+doc.Load("Data/Regions.xml");
 
-			XmlElement root = doc["ServerRegions"];
-			foreach (XmlElement facet in root.GetElementsByTagName("Facet"))
-			{
-				string facetName = facet.GetAttribute("name");
-				Map map = Map.Parse(facetName);
+XmlElement root = doc["ServerRegions"];
+foreach (XmlElement facet in root.GetElementsByTagName("Facet"))
+{
+string facetName = facet.GetAttribute("name");
+Map map = Map.Parse(facetName);
 
-				if (map == null || map == Map.Internal)
-				{
-					if (!m_SupressXmlWarnings)
-						Console.WriteLine("Regions.xml: Invalid facet name '{0}'", facetName);
-					continue;
-				}
+if (map == null || map == Map.Internal)
+{
+   if (!m_SupressXmlWarnings)
+	   Console.WriteLine("Regions.xml: Invalid facet name '{0}'", facetName);
+   continue;
+}
 
-				foreach (XmlElement reg in facet.GetElementsByTagName("region"))
-				{
-					string name = reg.GetAttribute("name");
-					if (name == null || name.Length <= 0)
-						continue;
+foreach (XmlElement reg in facet.GetElementsByTagName("region"))
+{
+   string name = reg.GetAttribute("name");
+   if (name == null || name.Length <= 0)
+	   continue;
 
-					Region r = GetByName(name, map);
-					if (r == null)
-					{
-						//if ( !m_SupressXmlWarnings )
-						//	Console.WriteLine( "Regions.xml: Region '{0}' not defined.", name );
-						continue;
-					}
-					else if (!r.LoadFromXml)
-					{
-						if (!m_SupressXmlWarnings)
-							Console.WriteLine("Regions.xml: Region '{0}' has an XML entry, but is set not to LoadFromXml.", name);
-						continue;
-					}
+   Region r = GetByName(name, map);
+   if (r == null)
+   {
+	   //if ( !m_SupressXmlWarnings )
+	   //	Console.WriteLine( "Regions.xml: Region '{0}' not defined.", name );
+	   continue;
+   }
+   else if (!r.LoadFromXml)
+   {
+	   if (!m_SupressXmlWarnings)
+		   Console.WriteLine("Regions.xml: Region '{0}' has an XML entry, but is set not to LoadFromXml.", name);
+	   continue;
+   }
 
-					try
-					{
-						r.Priority = int.Parse(reg.GetAttribute("priority"));
-					}
-					catch
-					{
-						if (!m_SupressXmlWarnings)
-							Console.WriteLine("Regions.xml: Could not parse priority for region '{0}' (assuming TownPriority)", r.Name);
-						r.Priority = TownPriority;
-					}
+   try
+   {
+	   r.Priority = int.Parse(reg.GetAttribute("priority"));
+   }
+   catch
+   {
+	   if (!m_SupressXmlWarnings)
+		   Console.WriteLine("Regions.xml: Could not parse priority for region '{0}' (assuming TownPriority)", r.Name);
+	   r.Priority = TownPriority;
+   }
 
-					XmlElement el;
+   XmlElement el;
 
-					el = reg["go"];
-					if (el != null)
-					{
-						try
-						{
-							r.GoLocation = Point3D.Parse(el.GetAttribute("location"));
-						}
-						catch
-						{
-							if (!m_SupressXmlWarnings)
-								Console.WriteLine("Regions.xml: Could not parse go location for region '{0}'", r.Name);
-						}
-					}
+   el = reg["go"];
+   if (el != null)
+   {
+	   try
+	   {
+		   r.GoLocation = Point3D.Parse(el.GetAttribute("location"));
+	   }
+	   catch
+	   {
+		   if (!m_SupressXmlWarnings)
+			   Console.WriteLine("Regions.xml: Could not parse go location for region '{0}'", r.Name);
+	   }
+   }
 
-					el = reg["music"];
-					if (el != null)
-					{
-						try
-						{
-							r.Music = (MusicName)Enum.Parse(typeof(MusicName), el.GetAttribute("name"), true);
-						}
-						catch
-						{
-							if (!m_SupressXmlWarnings)
-								Console.WriteLine("Regions.xml: Could not parse music for region '{0}'", r.Name);
-						}
-					}
+   el = reg["music"];
+   if (el != null)
+   {
+	   try
+	   {
+		   r.Music = (MusicName)Enum.Parse(typeof(MusicName), el.GetAttribute("name"), true);
+	   }
+	   catch
+	   {
+		   if (!m_SupressXmlWarnings)
+			   Console.WriteLine("Regions.xml: Could not parse music for region '{0}'", r.Name);
+	   }
+   }
 
-					el = reg["zrange"];
-					if (el != null)
-					{
-						string s = el.GetAttribute("min");
-						if (s != null && s != "")
-						{
-							try
-							{
-								r.MinZ = int.Parse(s);
-							}
-							catch
-							{
-								if (!m_SupressXmlWarnings)
-									Console.WriteLine("Regions.xml: Could not parse zrange:min for region '{0}'", r.Name);
-							}
-						}
+   el = reg["zrange"];
+   if (el != null)
+   {
+	   string s = el.GetAttribute("min");
+	   if (s != null && s != "")
+	   {
+		   try
+		   {
+			   r.MinZ = int.Parse(s);
+		   }
+		   catch
+		   {
+			   if (!m_SupressXmlWarnings)
+				   Console.WriteLine("Regions.xml: Could not parse zrange:min for region '{0}'", r.Name);
+		   }
+	   }
 
-						s = el.GetAttribute("max");
-						if (s != null && s != "")
-						{
-							try
-							{
-								r.MaxZ = int.Parse(s);
-							}
-							catch
-							{
-								if (!m_SupressXmlWarnings)
-									Console.WriteLine("Regions.xml: Could not parse zrange:max for region '{0}'", r.Name);
-							}
-						}
-					}
+	   s = el.GetAttribute("max");
+	   if (s != null && s != "")
+	   {
+		   try
+		   {
+			   r.MaxZ = int.Parse(s);
+		   }
+		   catch
+		   {
+			   if (!m_SupressXmlWarnings)
+				   Console.WriteLine("Regions.xml: Could not parse zrange:max for region '{0}'", r.Name);
+		   }
+	   }
+   }
 
-					foreach (XmlElement rect in reg.GetElementsByTagName("rect"))
-					{
-						try
-						{
-							if (r.m_LoadCoords == null)
-								r.m_LoadCoords = new ArrayList(1);
+   foreach (XmlElement rect in reg.GetElementsByTagName("rect"))
+   {
+	   try
+	   {
+		   if (r.m_LoadCoords == null)
+			   r.m_LoadCoords = new ArrayList(1);
 
-							r.m_LoadCoords.Add(ParseRectangle(rect, true));
-						}
-						catch
-						{
-							if (!m_SupressXmlWarnings)
-								Console.WriteLine("Regions.xml: Error parsing rect for region '{0}'", r.Name);
-							continue;
-						}
-					}
+		   r.m_LoadCoords.Add(ParseRectangle(rect, true));
+	   }
+	   catch
+	   {
+		   if (!m_SupressXmlWarnings)
+			   Console.WriteLine("Regions.xml: Error parsing rect for region '{0}'", r.Name);
+		   continue;
+	   }
+   }
 
-					foreach (XmlElement rect in reg.GetElementsByTagName("inn"))
-					{
-						try
-						{
-							if (r.InnBounds == null)
-								r.InnBounds = new ArrayList(1);
+   foreach (XmlElement rect in reg.GetElementsByTagName("inn"))
+   {
+	   try
+	   {
+		   if (r.InnBounds == null)
+			   r.InnBounds = new ArrayList(1);
 
-							r.InnBounds.Add(ParseRectangle(rect, false));
-						}
-						catch
-						{
-							if (!m_SupressXmlWarnings)
-								Console.WriteLine("Regions.xml: Error parsing inn for region '{0}'", r.Name);
-							continue;
-						}
-					}
-				}
-			}
+		   r.InnBounds.Add(ParseRectangle(rect, false));
+	   }
+	   catch
+	   {
+		   if (!m_SupressXmlWarnings)
+			   Console.WriteLine("Regions.xml: Error parsing inn for region '{0}'", r.Name);
+		   continue;
+	   }
+   }
+}
+}
 
-			ArrayList copy = new ArrayList(m_Regions);
+ArrayList copy = new ArrayList(m_Regions);
 
-			int i;
-			for (i = 0; i < copy.Count; ++i)
-			{
-				Region region = (Region)copy[i];
-				if (!region.LoadFromXml && region.m_Coords == null)
-				{
-					region.Coords = new ArrayList();
-				}
-				else if (region.LoadFromXml)
-				{
-					if (region.m_LoadCoords == null)
-						region.m_LoadCoords = new ArrayList();
+int i;
+for (i = 0; i < copy.Count; ++i)
+{
+Region region = (Region)copy[i];
+if (!region.LoadFromXml && region.m_Coords == null)
+{
+   region.Coords = new ArrayList();
+}
+else if (region.LoadFromXml)
+{
+   if (region.m_LoadCoords == null)
+	   region.m_LoadCoords = new ArrayList();
 
-					region.Coords = region.m_LoadCoords;
+   region.Coords = region.m_LoadCoords;
 
-					//if ( !m_SupressXmlWarnings )
-					//	Console.WriteLine( "Warning: Region '{0}' did not contain any coords in Regions.xml (map={0})", region, region.Map.Name );
-				}
-			}
+   //if ( !m_SupressXmlWarnings )
+   //	Console.WriteLine( "Warning: Region '{0}' did not contain any coords in Regions.xml (map={0})", region, region.Map.Name );
+}
+}
 
-			for (i = 0; i < Map.AllMaps.Count; ++i)
-				((Map)Map.AllMaps[i]).Regions.Sort();
+for (i = 0; i < Map.AllMaps.Count; ++i)
+((Map)Map.AllMaps[i]).Regions.Sort();
 
-			ArrayList list = new ArrayList(World.Mobiles.Values);
+ArrayList list = new ArrayList(World.Mobiles.Values);
 
-			foreach (Mobile m in list)
-				m.ForceRegionReEnter(true);
+foreach (Mobile m in list)
+m.ForceRegionReEnter(true);
 
-			Console.WriteLine("done");
-							  * */
+Console.WriteLine("done");
+			 * */
 		}
 
 		/*public static void Load()

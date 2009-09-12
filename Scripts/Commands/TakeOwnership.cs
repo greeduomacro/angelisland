@@ -50,41 +50,42 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "TakeOwnership", AccessLevel.GameMaster, new CommandEventHandler( TakeOwnership_OnCommand ) );
+			Server.Commands.Register("TakeOwnership", AccessLevel.GameMaster, new CommandEventHandler(TakeOwnership_OnCommand));
 		}
 
-		[Usage( "TakeOwnership" )]
-		[Description( "take ownership of a house." )]
-		private static void TakeOwnership_OnCommand( CommandEventArgs e )
+		[Usage("TakeOwnership")]
+		[Description("take ownership of a house.")]
+		private static void TakeOwnership_OnCommand(CommandEventArgs e)
 		{
-            e.Mobile.Target = new TakeOwnershipTarget();
-			e.Mobile.SendMessage( "What do you wish to take ownership of?" );
+			e.Mobile.Target = new TakeOwnershipTarget();
+			e.Mobile.SendMessage("What do you wish to take ownership of?");
 		}
 
 		private class TakeOwnershipTarget : Target
 		{
-			public TakeOwnershipTarget( ) : base( 15, false, TargetFlags.None )
+			public TakeOwnershipTarget()
+				: base(15, false, TargetFlags.None)
 			{
 			}
 
-            protected override void OnTarget(Mobile from, object target)
+			protected override void OnTarget(Mobile from, object target)
 			{
-                if (target is HouseSign && (target as HouseSign).Owner != null)
-                {
-                    try
-                    {
-                        BaseHouse bh = (target as HouseSign).Owner as BaseHouse;
-                        bh.AdminTransfer(from);
-                    }
-                    catch (Exception tse)
-                    {
-                        LogHelper.LogException(tse);
-                    }
-                }
-                else
-                {
-                    from.SendMessage("That is not a house sign.");
-                }
+				if (target is HouseSign && (target as HouseSign).Owner != null)
+				{
+					try
+					{
+						BaseHouse bh = (target as HouseSign).Owner as BaseHouse;
+						bh.AdminTransfer(from);
+					}
+					catch (Exception tse)
+					{
+						LogHelper.LogException(tse);
+					}
+				}
+				else
+				{
+					from.SendMessage("That is not a house sign.");
+				}
 			}
 		}
 

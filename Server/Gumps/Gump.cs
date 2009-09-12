@@ -47,22 +47,22 @@ namespace Server.Gumps
 		private bool m_Resizable = true;
 		private bool m_Disposable = true;
 
-		public static int GetTypeID( Type type )
+		public static int GetTypeID(Type type)
 		{
 			return type.GetHashCode() ^ type.FullName.GetHashCode() ^ type.TypeHandle.Value.ToInt32();
 		}
 
-		public Gump( int x, int y )
+		public Gump(int x, int y)
 		{
 			do
 			{
 				m_Serial = m_NextSerial++;
-			} while ( m_Serial == 0 ); // standard client apparently doesn't send a gump response packet if serial == 0
+			} while (m_Serial == 0); // standard client apparently doesn't send a gump response packet if serial == 0
 
 			m_X = x;
 			m_Y = y;
 
-			m_TypeID = GetTypeID( this.GetType() );
+			m_TypeID = GetTypeID(this.GetType());
 
 			m_Entries = new ArrayList();
 			m_Strings = new ArrayList();
@@ -70,11 +70,11 @@ namespace Server.Gumps
 
 		public void Invalidate()
 		{
-			if ( m_Packet != null )
+			if (m_Packet != null)
 			{
 				m_Packet = null;
 
-				if ( m_Strings.Count > 0 )
+				if (m_Strings.Count > 0)
 					m_Strings.Clear();
 			}
 		}
@@ -89,7 +89,7 @@ namespace Server.Gumps
 
 		public ArrayList Entries
 		{
-			get{ return m_Entries; }
+			get { return m_Entries; }
 		}
 
 		public int Serial
@@ -100,7 +100,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				if ( m_Serial != value )
+				if (m_Serial != value)
 				{
 					m_Serial = value;
 					Invalidate();
@@ -116,7 +116,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				if ( m_X != value )
+				if (m_X != value)
 				{
 					m_X = value;
 					Invalidate();
@@ -132,7 +132,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				if ( m_Y != value )
+				if (m_Y != value)
 				{
 					m_Y = value;
 					Invalidate();
@@ -148,7 +148,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				if ( m_Disposable != value )
+				if (m_Disposable != value)
 				{
 					m_Disposable = value;
 					Invalidate();
@@ -164,7 +164,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				if ( m_Resizable != value )
+				if (m_Resizable != value)
 				{
 					m_Resizable = value;
 					Invalidate();
@@ -180,7 +180,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				if ( m_Dragable != value )
+				if (m_Dragable != value)
 				{
 					m_Dragable = value;
 					Invalidate();
@@ -196,7 +196,7 @@ namespace Server.Gumps
 			}
 			set
 			{
-				if ( m_Closable != value )
+				if (m_Closable != value)
 				{
 					m_Closable = value;
 					Invalidate();
@@ -204,189 +204,189 @@ namespace Server.Gumps
 			}
 		}
 
-		public void AddPage( int page )
+		public void AddPage(int page)
 		{
-			Add( new GumpPage( page ) );
+			Add(new GumpPage(page));
 		}
 
-		public void AddAlphaRegion( int x, int y, int width, int height )
+		public void AddAlphaRegion(int x, int y, int width, int height)
 		{
-			Add( new GumpAlphaRegion( x, y, width, height ) );
+			Add(new GumpAlphaRegion(x, y, width, height));
 		}
 
-		public void AddBackground( int x, int y, int width, int height, int gumpID )
+		public void AddBackground(int x, int y, int width, int height, int gumpID)
 		{
-			Add( new GumpBackground( x, y, width, height, gumpID ) );
+			Add(new GumpBackground(x, y, width, height, gumpID));
 		}
 
-		public void AddButton( int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param )
+		public void AddButton(int x, int y, int normalID, int pressedID, int buttonID, GumpButtonType type, int param)
 		{
-			Add( new GumpButton( x, y, normalID, pressedID, buttonID, type, param ) );
+			Add(new GumpButton(x, y, normalID, pressedID, buttonID, type, param));
 		}
 
-		public void AddCheck( int x, int y, int inactiveID, int activeID, bool initialState, int switchID )
+		public void AddCheck(int x, int y, int inactiveID, int activeID, bool initialState, int switchID)
 		{
-			Add( new GumpCheck( x, y, inactiveID, activeID, initialState, switchID ) );
+			Add(new GumpCheck(x, y, inactiveID, activeID, initialState, switchID));
 		}
 
-		public void AddGroup( int group )
+		public void AddGroup(int group)
 		{
-			Add( new GumpGroup( group ) );
+			Add(new GumpGroup(group));
 		}
 
-		public void AddHtml( int x, int y, int width, int height, string text, bool background, bool scrollbar )
+		public void AddHtml(int x, int y, int width, int height, string text, bool background, bool scrollbar)
 		{
-			Add( new GumpHtml( x, y, width, height, text, background, scrollbar ) );
+			Add(new GumpHtml(x, y, width, height, text, background, scrollbar));
 		}
 
-		public void AddHtmlLocalized( int x, int y, int width, int height, int number, bool background, bool scrollbar )
+		public void AddHtmlLocalized(int x, int y, int width, int height, int number, bool background, bool scrollbar)
 		{
-			Add( new GumpHtmlLocalized( x, y, width, height, number, background, scrollbar ) );
+			Add(new GumpHtmlLocalized(x, y, width, height, number, background, scrollbar));
 		}
 
-		public void AddHtmlLocalized( int x, int y, int width, int height, int number, int color, bool background, bool scrollbar )
+		public void AddHtmlLocalized(int x, int y, int width, int height, int number, int color, bool background, bool scrollbar)
 		{
-			Add( new GumpHtmlLocalized( x, y, width, height, number, color, background, scrollbar ) );
+			Add(new GumpHtmlLocalized(x, y, width, height, number, color, background, scrollbar));
 		}
 
-		public void AddImage( int x, int y, int gumpID )
+		public void AddImage(int x, int y, int gumpID)
 		{
-			Add( new GumpImage( x, y, gumpID ) );
+			Add(new GumpImage(x, y, gumpID));
 		}
 
-		public void AddImage( int x, int y, int gumpID, int hue )
+		public void AddImage(int x, int y, int gumpID, int hue)
 		{
-			Add( new GumpImage( x, y, gumpID, hue ) );
+			Add(new GumpImage(x, y, gumpID, hue));
 		}
 
-		public void AddImageTiled( int x, int y, int width, int height, int gumpID )
+		public void AddImageTiled(int x, int y, int width, int height, int gumpID)
 		{
-			Add( new GumpImageTiled( x, y, width, height, gumpID ) );
+			Add(new GumpImageTiled(x, y, width, height, gumpID));
 		}
 
-		public void AddItem( int x, int y, int itemID )
+		public void AddItem(int x, int y, int itemID)
 		{
-			Add( new GumpItem( x, y, itemID ) );
+			Add(new GumpItem(x, y, itemID));
 		}
 
-		public void AddItem( int x, int y, int itemID, int hue )
+		public void AddItem(int x, int y, int itemID, int hue)
 		{
-			Add( new GumpItem( x, y, itemID, hue ) );
+			Add(new GumpItem(x, y, itemID, hue));
 		}
 
-		public void AddLabel( int x, int y, int hue, string text )
+		public void AddLabel(int x, int y, int hue, string text)
 		{
-			Add( new GumpLabel( x, y, hue, text ) );
+			Add(new GumpLabel(x, y, hue, text));
 		}
 
-		public void AddLabelCropped( int x, int y, int width, int height, int hue, string text )
+		public void AddLabelCropped(int x, int y, int width, int height, int hue, string text)
 		{
-			Add( new GumpLabelCropped( x, y, width, height, hue, text ) );
+			Add(new GumpLabelCropped(x, y, width, height, hue, text));
 		}
 
-		public void AddRadio( int x, int y, int inactiveID, int activeID, bool initialState, int switchID )
+		public void AddRadio(int x, int y, int inactiveID, int activeID, bool initialState, int switchID)
 		{
-			Add( new GumpRadio( x, y, inactiveID, activeID, initialState, switchID ) );
+			Add(new GumpRadio(x, y, inactiveID, activeID, initialState, switchID));
 		}
 
-		public void AddTextEntry( int x, int y, int width, int height, int hue, int entryID, string initialText )
+		public void AddTextEntry(int x, int y, int width, int height, int hue, int entryID, string initialText)
 		{
-			Add( new GumpTextEntry( x, y, width, height, hue, entryID, initialText ) );
+			Add(new GumpTextEntry(x, y, width, height, hue, entryID, initialText));
 		}
 
-		public void Add( GumpEntry g )
+		public void Add(GumpEntry g)
 		{
-			if ( g.Parent != this )
+			if (g.Parent != this)
 			{
 				g.Parent = this;
 			}
-			else if ( !m_Entries.Contains( g ) )
+			else if (!m_Entries.Contains(g))
 			{
 				Invalidate();
-				m_Entries.Add( g );
+				m_Entries.Add(g);
 			}
 		}
 
-		public void Remove( GumpEntry g )
+		public void Remove(GumpEntry g)
 		{
 			Invalidate();
-			m_Entries.Remove( g );
+			m_Entries.Remove(g);
 			g.Parent = null;
 		}
 
-		public int Intern( string value )
+		public int Intern(string value)
 		{
-			int indexOf = m_Strings.IndexOf( value );
+			int indexOf = m_Strings.IndexOf(value);
 
-			if ( indexOf >= 0 )
+			if (indexOf >= 0)
 			{
 				return indexOf;
 			}
 			else
 			{
 				Invalidate();
-				return m_Strings.Add( value );
+				return m_Strings.Add(value);
 			}
 		}
 
-		public void SendTo( NetState state )
+		public void SendTo(NetState state)
 		{
-			state.AddGump( this );
-			state.Send( Compile() );
+			state.AddGump(this);
+			state.Send(Compile());
 		}
 
 		private DisplayGumpFast m_Packet;
 
-		public static byte[] StringToBuffer( string str )
+		public static byte[] StringToBuffer(string str)
 		{
-			return Encoding.ASCII.GetBytes( str );
+			return Encoding.ASCII.GetBytes(str);
 		}
 
-		private static byte[] m_BeginLayout = StringToBuffer( "{ " );
-		private static byte[] m_EndLayout = StringToBuffer( " }" );
+		private static byte[] m_BeginLayout = StringToBuffer("{ ");
+		private static byte[] m_EndLayout = StringToBuffer(" }");
 
-		private static byte[] m_NoMove = StringToBuffer( "{ nomove }" );
-		private static byte[] m_NoClose = StringToBuffer( "{ noclose }" );
-		private static byte[] m_NoDispose = StringToBuffer( "{ nodispose }" );
-		private static byte[] m_NoResize = StringToBuffer( "{ noresize }" );
+		private static byte[] m_NoMove = StringToBuffer("{ nomove }");
+		private static byte[] m_NoClose = StringToBuffer("{ noclose }");
+		private static byte[] m_NoDispose = StringToBuffer("{ nodispose }");
+		private static byte[] m_NoResize = StringToBuffer("{ noresize }");
 
 		private Packet Compile()
 		{
-			if ( m_Packet == null )
+			if (m_Packet == null)
 			{
-				DisplayGumpFast disp = new DisplayGumpFast( this );
+				DisplayGumpFast disp = new DisplayGumpFast(this);
 
-				if ( !m_Dragable )
-					disp.AppendLayout( m_NoMove );
+				if (!m_Dragable)
+					disp.AppendLayout(m_NoMove);
 
-				if ( !m_Closable )
-					disp.AppendLayout( m_NoClose );
+				if (!m_Closable)
+					disp.AppendLayout(m_NoClose);
 
-				if ( !m_Disposable )
-					disp.AppendLayout( m_NoDispose );
+				if (!m_Disposable)
+					disp.AppendLayout(m_NoDispose);
 
-				if ( !m_Resizable )
-					disp.AppendLayout( m_NoResize );
+				if (!m_Resizable)
+					disp.AppendLayout(m_NoResize);
 
 				int count = m_Entries.Count;
 				GumpEntry e;
 
-				for ( int i = 0; i < count; ++i )
+				for (int i = 0; i < count; ++i)
 				{
 					e = (GumpEntry)m_Entries[i];
 
-					disp.AppendLayout( m_BeginLayout );
-					e.AppendTo( disp );
-					disp.AppendLayout( m_EndLayout );
+					disp.AppendLayout(m_BeginLayout);
+					e.AppendTo(disp);
+					disp.AppendLayout(m_EndLayout);
 				}
 
 				//disp.WriteText( m_Strings );
-                List<string> strings = new List<string>();
-                for (int i = 0; i < m_Strings.Count; i++)
-                {
-                    strings.Add(m_Strings[i] as string);
-                }
-                disp.WriteStrings(strings);
+				List<string> strings = new List<string>();
+				for (int i = 0; i < m_Strings.Count; i++)
+				{
+					strings.Add(m_Strings[i] as string);
+				}
+				disp.WriteStrings(strings);
 
 				m_TextEntries = disp.TextEntries;
 				m_Switches = disp.Switches;
@@ -397,7 +397,7 @@ namespace Server.Gumps
 			return m_Packet;
 		}
 
-		public virtual void OnResponse( NetState sender, RelayInfo info )
+		public virtual void OnResponse(NetState sender, RelayInfo info)
 		{
 		}
 	}

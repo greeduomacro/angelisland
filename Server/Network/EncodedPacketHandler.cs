@@ -22,7 +22,7 @@ using System;
 
 namespace Server.Network
 {
-	public delegate void OnEncodedPacketReceive( NetState state, IEntity ent, EncodedReader pvSrc );
+	public delegate void OnEncodedPacketReceive(NetState state, IEntity ent, EncodedReader pvSrc);
 
 	public class EncodedPacketHandler
 	{
@@ -30,7 +30,7 @@ namespace Server.Network
 		private bool m_Ingame;
 		private OnEncodedPacketReceive m_OnReceive;
 
-		public EncodedPacketHandler( int packetID, bool ingame, OnEncodedPacketReceive onReceive )
+		public EncodedPacketHandler(int packetID, bool ingame, OnEncodedPacketReceive onReceive)
 		{
 			m_PacketID = packetID;
 			m_Ingame = ingame;

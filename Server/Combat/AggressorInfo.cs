@@ -51,11 +51,11 @@ namespace Server
 
 		private static Queue m_Pool = new Queue();
 
-		public static AggressorInfo Create( Mobile attacker, Mobile defender, bool criminal )
+		public static AggressorInfo Create(Mobile attacker, Mobile defender, bool criminal)
 		{
 			AggressorInfo info;
 
-			if ( m_Pool.Count > 0 )
+			if (m_Pool.Count > 0)
 			{
 				info = (AggressorInfo)m_Pool.Dequeue();
 
@@ -73,7 +73,7 @@ namespace Server
 			}
 			else
 			{
-				info = new AggressorInfo( attacker, defender, criminal );
+				info = new AggressorInfo(attacker, defender, criminal);
 
 				info.m_bInitialAggressionNotCountable = Region.IsInitialAggressionNotCountable(attacker, defender);
 			}
@@ -83,14 +83,14 @@ namespace Server
 
 		public void Free()
 		{
-			if ( m_Queued )
+			if (m_Queued)
 				return;
 
 			m_Queued = true;
-			m_Pool.Enqueue( this );
+			m_Pool.Enqueue(this);
 		}
 
-		private AggressorInfo( Mobile attacker, Mobile defender, bool criminal )
+		private AggressorInfo(Mobile attacker, Mobile defender, bool criminal)
 		{
 			m_Attacker = attacker;
 			m_Defender = defender;
@@ -101,20 +101,20 @@ namespace Server
 			Refresh();
 		}
 
-		private static TimeSpan m_ExpireDelay = TimeSpan.FromMinutes( 2.0 );
+		private static TimeSpan m_ExpireDelay = TimeSpan.FromMinutes(2.0);
 
 		public static TimeSpan ExpireDelay
 		{
-			get{ return m_ExpireDelay; }
-			set{ m_ExpireDelay = value; }
+			get { return m_ExpireDelay; }
+			set { m_ExpireDelay = value; }
 		}
 
 		public static void DumpAccess()
 		{
-			using ( StreamWriter op = new StreamWriter( "warnings.log", true ) )
+			using (StreamWriter op = new StreamWriter("warnings.log", true))
 			{
-				op.WriteLine( "Warning: Access to queued AggressorInfo:" );
-				op.WriteLine( new System.Diagnostics.StackTrace() );
+				op.WriteLine("Warning: Access to queued AggressorInfo:");
+				op.WriteLine(new System.Diagnostics.StackTrace());
 				op.WriteLine();
 				op.WriteLine();
 			}
@@ -124,10 +124,10 @@ namespace Server
 		{
 			get
 			{
-				if ( m_Queued )
+				if (m_Queued)
 					DumpAccess();
 
-				return ( m_Attacker.Deleted || m_Defender.Deleted || DateTime.Now >= (m_LastCombatTime + m_ExpireDelay) );
+				return (m_Attacker.Deleted || m_Defender.Deleted || DateTime.Now >= (m_LastCombatTime + m_ExpireDelay));
 			}
 		}
 
@@ -135,14 +135,14 @@ namespace Server
 		{
 			get
 			{
-				if ( m_Queued )
+				if (m_Queued)
 					DumpAccess();
 
 				return m_CriminalAggression;
 			}
 			set
 			{
-				if ( m_Queued )
+				if (m_Queued)
 					DumpAccess();
 
 				m_CriminalAggression = value;
@@ -153,7 +153,7 @@ namespace Server
 		{
 			get
 			{
-				if ( m_Queued )
+				if (m_Queued)
 					DumpAccess();
 
 				return m_Attacker;
@@ -164,7 +164,7 @@ namespace Server
 		{
 			get
 			{
-				if ( m_Queued )
+				if (m_Queued)
 					DumpAccess();
 
 				return m_Defender;
@@ -175,7 +175,7 @@ namespace Server
 		{
 			get
 			{
-				if ( m_Queued )
+				if (m_Queued)
 					DumpAccess();
 
 				return m_LastCombatTime;
@@ -186,14 +186,14 @@ namespace Server
 		{
 			get
 			{
-				if ( m_Queued )
+				if (m_Queued)
 					DumpAccess();
 
 				return m_Reported;
 			}
 			set
 			{
-				if ( m_Queued )
+				if (m_Queued)
 					DumpAccess();
 
 				m_Reported = value;
@@ -204,14 +204,14 @@ namespace Server
 		{
 			get
 			{
-				if ( m_Queued )
+				if (m_Queued)
 					DumpAccess();
 
 				return m_CanReportMurder;
 			}
 			set
 			{
-				if ( m_Queued )
+				if (m_Queued)
 					DumpAccess();
 
 				m_CanReportMurder = value;
@@ -220,7 +220,7 @@ namespace Server
 
 		public void Refresh()
 		{
-			if ( m_Queued )
+			if (m_Queued)
 				DumpAccess();
 
 			m_LastCombatTime = DateTime.Now;

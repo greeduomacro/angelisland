@@ -43,38 +43,38 @@ namespace Server.Scripts.Commands
 
 		public static void Initialize()
 		{
-			Server.Commands.Register( "MakeDeco", AccessLevel.Administrator, new CommandEventHandler( MakeDeco_OnCommand ) );
+			Server.Commands.Register("MakeDeco", AccessLevel.Administrator, new CommandEventHandler(MakeDeco_OnCommand));
 		}
 
-		[Usage( "MakeDeco" )]
-		[Description( "Turns all appropriate external containers to deco only." )]
-		private static void MakeDeco_OnCommand( CommandEventArgs arg )
+		[Usage("MakeDeco")]
+		[Description("Turns all appropriate external containers to deco only.")]
+		private static void MakeDeco_OnCommand(CommandEventArgs arg)
 		{
 			Mobile from = arg.Mobile;
-   			LogHelper Logger = new LogHelper("makedeco.log", from, true);
+			LogHelper Logger = new LogHelper("makedeco.log", from, true);
 
 			// Loop through town regions and search out items
 			// within
 
 			foreach (Region reg in from.Map.Regions)
 			{
-				if(reg is FeluccaTown || reg is CustomRegion)
+				if (reg is FeluccaTown || reg is CustomRegion)
 				{
-         				for(int pos = 0; pos < reg.Coords.Count; pos++)
+					for (int pos = 0; pos < reg.Coords.Count; pos++)
 					{
-     					if(reg.Coords[pos] is Rectangle2D)
+						if (reg.Coords[pos] is Rectangle2D)
 						{
 
-							Rectangle2D area = (Rectangle2D) reg.Coords[pos];
-							IPooledEnumerable eable = from.Map.GetItemsInBounds( area );
+							Rectangle2D area = (Rectangle2D)reg.Coords[pos];
+							IPooledEnumerable eable = from.Map.GetItemsInBounds(area);
 
-							foreach ( object obj in eable )
+							foreach (object obj in eable)
 							{
-								if(obj is Container)
+								if (obj is Container)
 								{
-								     Container cont = (Container) obj;
-								     
-									if(	cont.Movable == false &&
+									Container cont = (Container)obj;
+
+									if (cont.Movable == false &&
 										cont.PlayerCrafted == false &&
 										cont.Name != "Goodwill" &&
 										!(cont.RootParent is Mobile) &&
@@ -85,23 +85,23 @@ namespace Server.Scripts.Commands
 									{
 
 										// Exclude ransom chests
-										if(cont.Name != null && cont.Name.ToLower().IndexOf( "ransom" ) >= 0)
-									        	continue;
-									          
-         									// Found one
+										if (cont.Name != null && cont.Name.ToLower().IndexOf("ransom") >= 0)
+											continue;
+
+										// Found one
 										cont.Deco = true;
 										Logger.Log(LogType.Item, cont);
 									}
 								}
 							}
-							
- 							eable.Free();
+
+							eable.Free();
 						}
 					}
 				}
 			}
 
-   			Logger.Finish();
- 		}
-     }
+			Logger.Finish();
+		}
+	}
 }

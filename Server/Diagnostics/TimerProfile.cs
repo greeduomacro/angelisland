@@ -23,25 +23,32 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace Server.Diagnostics {
-	public class TimerProfile : BaseProfile {
+namespace Server.Diagnostics
+{
+	public class TimerProfile : BaseProfile
+	{
 		private static Dictionary<string, TimerProfile> _profiles = new Dictionary<string, TimerProfile>();
 
-		public static IEnumerable<TimerProfile> Profiles {
-			get {
+		public static IEnumerable<TimerProfile> Profiles
+		{
+			get
+			{
 				return _profiles.Values;
 			}
 		}
 
-		public static TimerProfile Acquire( string name ) {
-			if ( !Core.Profiling ) {
+		public static TimerProfile Acquire(string name)
+		{
+			if (!Core.Profiling)
+			{
 				return null;
 			}
 
 			TimerProfile prof;
 
-			if ( !_profiles.TryGetValue( name, out prof ) ) {
-				_profiles.Add( name, prof = new TimerProfile( name ) );
+			if (!_profiles.TryGetValue(name, out prof))
+			{
+				_profiles.Add(name, prof = new TimerProfile(name));
 			}
 
 			return prof;
@@ -49,41 +56,52 @@ namespace Server.Diagnostics {
 
 		private long _created, _started, _stopped;
 
-		public long Created {
-			get {
+		public long Created
+		{
+			get
+			{
 				return _created;
 			}
-			set {
+			set
+			{
 				_created = value;
 			}
 		}
 
-		public long Started {
-			get {
+		public long Started
+		{
+			get
+			{
 				return _started;
 			}
-			set {
+			set
+			{
 				_started = value;
 			}
 		}
 
-		public long Stopped {
-			get {
+		public long Stopped
+		{
+			get
+			{
 				return _stopped;
 			}
-			set {
+			set
+			{
 				_stopped = value;
 			}
 		}
 
-		public TimerProfile( string name )
-			: base( name ) {
+		public TimerProfile(string name)
+			: base(name)
+		{
 		}
 
-		public override void WriteTo( TextWriter op ) {
-			base.WriteTo( op );
+		public override void WriteTo(TextWriter op)
+		{
+			base.WriteTo(op);
 
-			op.Write( "\t{0,12:N0} {1,12:N0} {2,-12:N0}", _created, _started, _stopped );
+			op.Write("\t{0,12:N0} {1,12:N0} {2,-12:N0}", _created, _started, _stopped);
 		}
 	}
 }

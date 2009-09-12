@@ -45,8 +45,8 @@ namespace Server.ContextMenus
 		/// </summary>
 		public CMEFlags Flags
 		{
-			get{ return m_Flags; }
-			set{ m_Flags = value; }
+			get { return m_Flags; }
+			set { m_Flags = value; }
 		}
 
 		/// <summary>
@@ -54,8 +54,8 @@ namespace Server.ContextMenus
 		/// </summary>
 		public ContextMenu Owner
 		{
-			get{ return m_Owner; }
-			set{ m_Owner = value; }
+			get { return m_Owner; }
+			set { m_Owner = value; }
 		}
 
 		/// <summary>
@@ -63,8 +63,8 @@ namespace Server.ContextMenus
 		/// </summary>
 		public int Number
 		{
-			get{ return m_Number; }
-			set{ m_Number = value; }
+			get { return m_Number; }
+			set { m_Number = value; }
 		}
 
 		/// <summary>
@@ -72,8 +72,8 @@ namespace Server.ContextMenus
 		/// </summary>
 		public int Range
 		{
-			get{ return m_Range; }
-			set{ m_Range = value; }
+			get { return m_Range; }
+			set { m_Range = value; }
 		}
 
 		/// <summary>
@@ -81,8 +81,8 @@ namespace Server.ContextMenus
 		/// </summary>
 		public int Color
 		{
-			get{ return m_Color; }
-			set{ m_Color = value; }
+			get { return m_Color; }
+			set { m_Color = value; }
 		}
 
 		/// <summary>
@@ -90,8 +90,8 @@ namespace Server.ContextMenus
 		/// </summary>
 		public bool Enabled
 		{
-			get{ return m_Enabled; }
-			set{ m_Enabled = value; }
+			get { return m_Enabled; }
+			set { m_Enabled = value; }
 		}
 
 		/// <summary>
@@ -99,7 +99,7 @@ namespace Server.ContextMenus
 		/// </summary>
 		public virtual bool NonLocalUse
 		{
-			get{ return false; }
+			get { return false; }
 		}
 
 		/// <summary>
@@ -109,7 +109,8 @@ namespace Server.ContextMenus
 		/// The localization number containing the name of this entry.
 		/// <seealso cref="Number" />
 		/// </param>
-		public ContextMenuEntry( int number ) : this( number, -1 )
+		public ContextMenuEntry(int number)
+			: this(number, -1)
 		{
 		}
 
@@ -124,7 +125,7 @@ namespace Server.ContextMenus
 		/// The maximum range at which this entry can be used.
 		/// <seealso cref="Range" />
 		/// </param>
-		public ContextMenuEntry( int number, int range )
+		public ContextMenuEntry(int number, int range)
 		{
 			m_Number = number;
 			m_Range = range;

@@ -55,11 +55,11 @@ namespace Server.Misc
 	public class Maintenance
 	{
 		private static bool m_Shutdown;						// shutdown or restart?
-        private static bool m_Rebuild;                      // rebuild cvs directory?
+		private static bool m_Rebuild;                      // rebuild cvs directory?
 		private static bool m_Scheduled = false;			// is maintenance scheduled?
 		private static int m_Countdown = 5;					// our countdown
 		private static MaintenanceTimer m_Maintenance;		// our timer
-        private static int m_RebuildID;                     // process id of rebuild.exe
+		private static int m_RebuildID;                     // process id of rebuild.exe
 
 		public static bool Shutdown
 		{
@@ -79,83 +79,83 @@ namespace Server.Misc
 			set { m_Countdown = value; }
 		}
 
-        public static bool Rebuild
-        {
-            get { return m_Rebuild; }
-            set { m_Rebuild = value; }
-        }
+		public static bool Rebuild
+		{
+			get { return m_Rebuild; }
+			set { m_Rebuild = value; }
+		}
 
-        public static int RebuildProcess
-        {
-            get { return m_RebuildID; }
-            set { m_RebuildID = value; }
-        }
+		public static int RebuildProcess
+		{
+			get { return m_RebuildID; }
+			set { m_RebuildID = value; }
+		}
 
 		public static void Initialize()
 		{
-			Commands.Register( "Maintenance", AccessLevel.Administrator, new CommandEventHandler( Maintenance_OnCommand ) );
+			Commands.Register("Maintenance", AccessLevel.Administrator, new CommandEventHandler(Maintenance_OnCommand));
 			m_Maintenance = new MaintenanceTimer();
 		}
 
-		public static void Maintenance_OnCommand( CommandEventArgs e )
+		public static void Maintenance_OnCommand(CommandEventArgs e)
 		{
 			try
 			{
-				if( e.Length == 0 )
+				if (e.Length == 0)
 				{
 					Usage(e);
 				}
 				else
 				{
-					string strParam = e.GetString( 0 );
+					string strParam = e.GetString(0);
 
-					if( strParam.ToLower().Equals("cancel") )
+					if (strParam.ToLower().Equals("cancel"))
 					{
 						m_Scheduled = false;
-                        if (m_Rebuild)
-                        {
-                            if (KillRebuild())
-                            {
-                                e.Mobile.SendMessage("Rebuild.exe canceled succesfully.");
-                                Rebuild = false;
-                            }
-                            else
-                                e.Mobile.SendMessage("Error closeing rebuild.exe!!!");
-                        }
+						if (m_Rebuild)
+						{
+							if (KillRebuild())
+							{
+								e.Mobile.SendMessage("Rebuild.exe canceled succesfully.");
+								Rebuild = false;
+							}
+							else
+								e.Mobile.SendMessage("Error closeing rebuild.exe!!!");
+						}
 						m_Countdown = 5;
 						AutoSave.SavesEnabled = true;
-                      	e.Mobile.SendMessage("Maintenance has been canceled.");
-						World.Broadcast( 0x482, true, "Server maintenance has been canceled." );
+						e.Mobile.SendMessage("Maintenance has been canceled.");
+						World.Broadcast(0x482, true, "Server maintenance has been canceled.");
 						m_Maintenance.Stop();
 					}
-                    else if(strParam.ToLower().Equals("rebuild"))
-                    {
-                        if(Rebuild)
-                        {
-                            e.Mobile.SendMessage( "The server is already prepareing for a rebuild." );
-                        }
-                        else
-                        {
-                            Rebuild = true;
-                            Shutdown = true;
-                            Scheduled = true;
-                            AutoSave.SavesEnabled = false;
-							e.Mobile.SendMessage( "You have initiated a server rebuild.");
+					else if (strParam.ToLower().Equals("rebuild"))
+					{
+						if (Rebuild)
+						{
+							e.Mobile.SendMessage("The server is already prepareing for a rebuild.");
+						}
+						else
+						{
+							Rebuild = true;
+							Shutdown = true;
+							Scheduled = true;
+							AutoSave.SavesEnabled = false;
+							e.Mobile.SendMessage("You have initiated a server rebuild.");
 							m_Maintenance.Start();
 
-                            if (!StartRebuild(Misc.TestCenter.Enabled))
-                            {
-                                e.Mobile.SendMessage("Rebuild.exe failed to start, canceling rebuild.");
-                                Rebuild = false;
-                                Scheduled = false;
-                            }
-                        }
-                    }
-					else if( strParam.ToLower().Equals("restart") || strParam.ToLower().Equals("shutdown") )
+							if (!StartRebuild(Misc.TestCenter.Enabled))
+							{
+								e.Mobile.SendMessage("Rebuild.exe failed to start, canceling rebuild.");
+								Rebuild = false;
+								Scheduled = false;
+							}
+						}
+					}
+					else if (strParam.ToLower().Equals("restart") || strParam.ToLower().Equals("shutdown"))
 					{
-						if ( m_Scheduled )
+						if (m_Scheduled)
 						{
-							e.Mobile.SendMessage( "The server is already restarting." );
+							e.Mobile.SendMessage("The server is already restarting.");
 						}
 						else
 						{
@@ -163,7 +163,7 @@ namespace Server.Misc
 							m_Scheduled = true;
 							m_Countdown = 5;
 							AutoSave.SavesEnabled = false;
-							e.Mobile.SendMessage( "You have initiated server {0}.", m_Shutdown ? "shutdown" : "restart" );
+							e.Mobile.SendMessage("You have initiated server {0}.", m_Shutdown ? "shutdown" : "restart");
 							m_Maintenance.Start();
 						}
 					}
@@ -171,77 +171,78 @@ namespace Server.Misc
 						Usage(e);
 				}
 			}
-			catch(Exception exc)
+			catch (Exception exc)
 			{
 				LogHelper.LogException(exc);
 				e.Mobile.SendMessage("There was a problem with the [Maintenance command!!  See console log");
-				System.Console.WriteLine( "Error with [Maintenance!" );
-				System.Console.WriteLine( exc.Message );
-				System.Console.WriteLine( exc.StackTrace );
+				System.Console.WriteLine("Error with [Maintenance!");
+				System.Console.WriteLine(exc.Message);
+				System.Console.WriteLine(exc.StackTrace);
 			}
 		}
 
-        public static bool StartRebuild(bool testcenter)
-        {
-            int ServerID = Core.Process.Id;
+		public static bool StartRebuild(bool testcenter)
+		{
+			int ServerID = Core.Process.Id;
 
-            try
-            {
-                Process p = new Process();
-                p.StartInfo.WorkingDirectory = Core.Process.StartInfo.WorkingDirectory;
-                p.StartInfo.FileName = "rebuild.exe";
-                if (testcenter)
-                    p.StartInfo.Arguments = ServerID.ToString() + " " + "true";
-                else
-                    p.StartInfo.Arguments = ServerID.ToString() + " " + "false";
+			try
+			{
+				Process p = new Process();
+				p.StartInfo.WorkingDirectory = Core.Process.StartInfo.WorkingDirectory;
+				p.StartInfo.FileName = "rebuild.exe";
+				if (testcenter)
+					p.StartInfo.Arguments = ServerID.ToString() + " " + "true";
+				else
+					p.StartInfo.Arguments = ServerID.ToString() + " " + "false";
 
 
-                if (p.Start())
-                {
-                    RebuildProcess = p.Id;
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
-            }
+				if (p.Start())
+				{
+					RebuildProcess = p.Id;
+					return true;
+				}
+			}
+			catch
+			{
+				return false;
+			}
 
-            return false;
-        }
-        public static bool KillRebuild()
-        {
-            try
-            {
-                Process p = Process.GetProcessById(RebuildProcess);
-                if (p != null && p.ProcessName == "rebuild")
-                {
-                    p.CloseMainWindow();
-                    p.Close();
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-            return false;
-        }
+			return false;
+		}
+		public static bool KillRebuild()
+		{
+			try
+			{
+				Process p = Process.GetProcessById(RebuildProcess);
+				if (p != null && p.ProcessName == "rebuild")
+				{
+					p.CloseMainWindow();
+					p.Close();
+					return true;
+				}
+			}
+			catch
+			{
+				return false;
+			}
+			return false;
+		}
 		public Maintenance()
 		{
-			
+
 		}
 
 		public class MaintenanceTimer : Timer
 		{
-			public MaintenanceTimer() : base( TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(1.0) )
+			public MaintenanceTimer()
+				: base(TimeSpan.FromMinutes(0), TimeSpan.FromMinutes(1.0))
 			{
 				Priority = TimerPriority.FiveSeconds;
 			}
 
 			protected override void OnTick()
 			{
-				if ( Maintenance.Scheduled == false )
+				if (Maintenance.Scheduled == false)
 					return;
 
 				string text;
@@ -251,8 +252,8 @@ namespace Server.Misc
 					text = String.Format("Server restarting in {0} minute for maintenance...", Maintenance.Countdown);
 				else
 					text = String.Format("Server restarting now...");
-			
-				World.Broadcast( 0x22, true, text );
+
+				World.Broadcast(0x22, true, text);
 				Console.WriteLine(text);
 
 				if (Maintenance.Countdown == 0)
@@ -268,13 +269,13 @@ namespace Server.Misc
 		private static void Usage(CommandEventArgs e)
 		{
 			e.Mobile.SendMessage("Format: Maintenance <cancel|restart|shutdown|rebuild>");
-            if (m_Rebuild)
-            {
-                e.Mobile.SendMessage("The server is set to rebuild soon.");
-            }
-			else if( m_Scheduled )
+			if (m_Rebuild)
 			{
-				e.Mobile.SendMessage("The server is set to restart soon." );
+				e.Mobile.SendMessage("The server is set to rebuild soon.");
+			}
+			else if (m_Scheduled)
+			{
+				e.Mobile.SendMessage("The server is set to restart soon.");
 			}
 			else
 			{

@@ -48,22 +48,22 @@ namespace Server.Scripts.Commands
 	{
 		public static void Initialize()
 		{
-			Server.Commands.Register( "FindMobileByType", AccessLevel.Administrator, new CommandEventHandler( FindMobileByType_OnCommand ) );
+			Server.Commands.Register("FindMobileByType", AccessLevel.Administrator, new CommandEventHandler(FindMobileByType_OnCommand));
 		}
 
-		[Usage( "FindMobileByType <type>" )]
-		[Description( "Finds a mobile by type." )]
-		public static void FindMobileByType_OnCommand( CommandEventArgs e )
+		[Usage("FindMobileByType <type>")]
+		[Description("Finds a mobile by type.")]
+		public static void FindMobileByType_OnCommand(CommandEventArgs e)
 		{
 			try
 			{
-				if ( e.Length == 1 )
+				if (e.Length == 1)
 				{
 					LogHelper Logger = new LogHelper("FindMobileByType.log", e.Mobile, false);
-				
-					string name = e.GetString( 0 );
 
-                    foreach (Mobile mob  in World.Mobiles.Values)
+					string name = e.GetString(0);
+
+					foreach (Mobile mob in World.Mobiles.Values)
 					{
 						if (mob != null && mob.GetType().ToString().ToLower().IndexOf(name.ToLower()) >= 0)
 						{
@@ -74,7 +74,7 @@ namespace Server.Scripts.Commands
 				}
 				else
 				{
-					e.Mobile.SendMessage( "Format: FindMobileByType <type>" );
+					e.Mobile.SendMessage("Format: FindMobileByType <type>");
 				}
 			}
 			catch (Exception ex) { EventSink.InvokeLogException(new LogExceptionEventArgs(ex)); }

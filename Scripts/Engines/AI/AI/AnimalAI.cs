@@ -53,13 +53,14 @@ using Server.Network;
 /*
  * AnimalHunterAI, AnimalHidingAI, AnimalDomesticAI...
  * 
- */ 
+ */
 
 namespace Server.Mobiles
 {
 	public class AnimalAI : BaseAI
 	{
-		public AnimalAI(BaseCreature m) : base (m)
+		public AnimalAI(BaseCreature m)
+			: base(m)
 		{
 		}
 
@@ -89,15 +90,15 @@ namespace Server.Mobiles
 
 			double hitPercent = (double)m_Mobile.Hits / m_Mobile.HitsMax;
 
-			if ( !m_Mobile.Summoned && !m_Mobile.Controlled && hitPercent < 0.1 ) // Less than 10% health
+			if (!m_Mobile.Summoned && !m_Mobile.Controlled && hitPercent < 0.1) // Less than 10% health
 			{
-				m_Mobile.DebugSay( "I am low on health!" );
+				m_Mobile.DebugSay("I am low on health!");
 				Action = ActionType.Flee;
 			}
-			else if ( AcquireFocusMob( m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true ) )
+			else if (AcquireFocusMob(m_Mobile.RangePerception, m_Mobile.FightMode, false, false, true))
 			{
-				if ( m_Mobile.Debug )
-					m_Mobile.DebugSay( "I have detected {0}, attacking", m_Mobile.FocusMob.Name );
+				if (m_Mobile.Debug)
+					m_Mobile.DebugSay("I have detected {0}, attacking", m_Mobile.FocusMob.Name);
 
 				m_Mobile.Combatant = m_Mobile.FocusMob;
 				Action = ActionType.Combat;
@@ -114,25 +115,25 @@ namespace Server.Mobiles
 		{
 			Mobile combatant = m_Mobile.Combatant;
 
-			if ( combatant == null || combatant.Deleted || combatant.Map != m_Mobile.Map )
+			if (combatant == null || combatant.Deleted || combatant.Map != m_Mobile.Map)
 			{
-				m_Mobile.DebugSay( "My combatant is gone.." );
+				m_Mobile.DebugSay("My combatant is gone..");
 
 				Action = ActionType.Wander;
 
 				return true;
 			}
 
-			if ( WalkMobileRange( combatant, 1, true, m_Mobile.RangeFight, m_Mobile.RangeFight ) )
+			if (WalkMobileRange(combatant, 1, true, m_Mobile.RangeFight, m_Mobile.RangeFight))
 			{
-				m_Mobile.Direction = m_Mobile.GetDirectionTo( combatant );
+				m_Mobile.Direction = m_Mobile.GetDirectionTo(combatant);
 			}
 			else
 			{
-				if ( m_Mobile.GetDistanceToSqrt( combatant ) > m_Mobile.RangePerception + 1 )
+				if (m_Mobile.GetDistanceToSqrt(combatant) > m_Mobile.RangePerception + 1)
 				{
-					if ( m_Mobile.Debug )
-						m_Mobile.DebugSay( "I cannot find {0}", combatant.Name );
+					if (m_Mobile.Debug)
+						m_Mobile.DebugSay("I cannot find {0}", combatant.Name);
 
 					Action = ActionType.Wander;
 
@@ -140,18 +141,18 @@ namespace Server.Mobiles
 				}
 				else
 				{
-					if ( m_Mobile.Debug )
-						m_Mobile.DebugSay( "I should be closer to {0}", combatant.Name );
+					if (m_Mobile.Debug)
+						m_Mobile.DebugSay("I should be closer to {0}", combatant.Name);
 				}
 			}
 
-			if ( !m_Mobile.Controlled && !m_Mobile.Summoned )
+			if (!m_Mobile.Controlled && !m_Mobile.Summoned)
 			{
 				double hitPercent = (double)m_Mobile.Hits / m_Mobile.HitsMax;
 
-				if ( hitPercent < 0.1 )
+				if (hitPercent < 0.1)
 				{
-					m_Mobile.DebugSay( "I am low on health!" );
+					m_Mobile.DebugSay("I am low on health!");
 					Action = ActionType.Flee;
 				}
 			}
@@ -163,23 +164,23 @@ namespace Server.Mobiles
 		{
 			double hitPercent = (double)m_Mobile.Hits / m_Mobile.HitsMax;
 
-			if ( !m_Mobile.Summoned && !m_Mobile.Controlled && hitPercent < 0.1 ) // Less than 10% health
+			if (!m_Mobile.Summoned && !m_Mobile.Controlled && hitPercent < 0.1) // Less than 10% health
 			{
 				Action = ActionType.Flee;
 			}
 			else
 			{
-				if (AcquireFocusMob(m_Mobile.RangePerception * 2, FightMode.All | FightMode.Closest, true, false , true))
+				if (AcquireFocusMob(m_Mobile.RangePerception * 2, FightMode.All | FightMode.Closest, true, false, true))
 				{
-					if ( WalkMobileRange(m_Mobile.FocusMob, 1, false, m_Mobile.RangePerception, m_Mobile.RangePerception * 2) )
+					if (WalkMobileRange(m_Mobile.FocusMob, 1, false, m_Mobile.RangePerception, m_Mobile.RangePerception * 2))
 					{
-						m_Mobile.DebugSay( "Well, here I am safe" );
+						m_Mobile.DebugSay("Well, here I am safe");
 						Action = ActionType.Wander;
-					}					
+					}
 				}
 				else
 				{
-					m_Mobile.DebugSay( "I have lost my focus, lets relax" );
+					m_Mobile.DebugSay("I have lost my focus, lets relax");
 					Action = ActionType.Wander;
 				}
 			}
@@ -191,7 +192,7 @@ namespace Server.Mobiles
 		{
 			AcquireFocusMob(m_Mobile.RangePerception * 2, m_Mobile.FightMode, true, false, true);
 
-			if ( m_Mobile.FocusMob == null )
+			if (m_Mobile.FocusMob == null)
 				m_Mobile.FocusMob = m_Mobile.Combatant;
 
 			return base.DoActionFlee();

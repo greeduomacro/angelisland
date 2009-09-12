@@ -44,8 +44,8 @@ namespace Server.Accounting
 		/// </summary>
 		public string Name
 		{
-			get{ return m_Name; }
-			set{ m_Name = value; }
+			get { return m_Name; }
+			set { m_Name = value; }
 		}
 
 		/// <summary>
@@ -53,8 +53,8 @@ namespace Server.Accounting
 		/// </summary>
 		public string Value
 		{
-			get{ return m_Value; }
-			set{ m_Value = value; }
+			get { return m_Value; }
+			set { m_Value = value; }
 		}
 
 		/// <summary>
@@ -62,7 +62,7 @@ namespace Server.Accounting
 		/// </summary>
 		/// <param name="name">Initial name.</param>
 		/// <param name="value">Initial value.</param>
-		public AccountTag( string name, string value )
+		public AccountTag(string name, string value)
 		{
 			m_Name = name;
 			m_Value = value;
@@ -72,22 +72,22 @@ namespace Server.Accounting
 		/// Deserializes an AccountTag instance from an xml element.
 		/// </summary>
 		/// <param name="node">The XmlElement instance from which to deserialize.</param>
-		public AccountTag( XmlElement node )
+		public AccountTag(XmlElement node)
 		{
-			m_Name = Accounts.GetAttribute( node, "name", "empty" );
-			m_Value = Accounts.GetText( node, "" );
+			m_Name = Accounts.GetAttribute(node, "name", "empty");
+			m_Value = Accounts.GetText(node, "");
 		}
 
 		/// <summary>
 		/// Serializes this AccountTag instance to an XmlTextWriter.
 		/// </summary>
 		/// <param name="xml">The XmlTextWriter instance from which to serialize.</param>
-		public void Save( XmlTextWriter xml )
+		public void Save(XmlTextWriter xml)
 		{
-			xml.WriteStartElement( "tag" );
-			xml.WriteAttributeString( "name", m_Name );
-			xml.WriteString( m_Value );
+			xml.WriteStartElement("tag");
+			xml.WriteAttributeString("name", m_Name);
+			xml.WriteString(m_Value);
 			xml.WriteEndElement();
 		}
 	}
-} 
+}

@@ -34,39 +34,39 @@ namespace Server.Gumps
 		{
 		}
 
-		protected void Delta( ref int var, int val )
+		protected void Delta(ref int var, int val)
 		{
-			if ( var != val )
+			if (var != val)
 			{
 				var = val;
 
-				if ( m_Parent != null )
+				if (m_Parent != null)
 				{
 					m_Parent.Invalidate();
 				}
 			}
 		}
 
-		protected void Delta( ref bool var, bool val )
+		protected void Delta(ref bool var, bool val)
 		{
-			if ( var != val )
+			if (var != val)
 			{
 				var = val;
 
-				if ( m_Parent != null )
+				if (m_Parent != null)
 				{
 					m_Parent.Invalidate();
 				}
 			}
 		}
 
-		protected void Delta( ref string var, string val )
+		protected void Delta(ref string var, string val)
 		{
-			if ( var != val )
+			if (var != val)
 			{
 				var = val;
 
-				if ( m_Parent != null )
+				if (m_Parent != null)
 				{
 					m_Parent.Invalidate();
 				}
@@ -81,21 +81,21 @@ namespace Server.Gumps
 			}
 			set
 			{
-				if ( m_Parent != value )
+				if (m_Parent != value)
 				{
-					if ( m_Parent != null )
+					if (m_Parent != null)
 					{
-						m_Parent.Remove( this );
+						m_Parent.Remove(this);
 					}
 
 					m_Parent = value;
 
-					m_Parent.Add( this );
+					m_Parent.Add(this);
 				}
 			}
 		}
 
 		public abstract string Compile();
-		public abstract void AppendTo( DisplayGumpFast disp );
+		public abstract void AppendTo(DisplayGumpFast disp);
 	}
 }

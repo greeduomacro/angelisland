@@ -27,7 +27,7 @@ using System.Collections;
 
 namespace Server
 {
-	[AttributeUsage( AttributeTargets.Property )]
+	[AttributeUsage(AttributeTargets.Property)]
 	public class HueAttribute : Attribute
 	{
 		public HueAttribute()
@@ -35,7 +35,7 @@ namespace Server
 		}
 	}
 
-	[AttributeUsage( AttributeTargets.Property )]
+	[AttributeUsage(AttributeTargets.Property)]
 	public class BodyAttribute : Attribute
 	{
 		public BodyAttribute()
@@ -43,7 +43,7 @@ namespace Server
 		}
 	}
 
-	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Struct )]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 	public class PropertyObjectAttribute : Attribute
 	{
 		public PropertyObjectAttribute()
@@ -51,7 +51,7 @@ namespace Server
 		}
 	}
 
-	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Struct )]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 	public class NoSortAttribute : Attribute
 	{
 		public NoSortAttribute()
@@ -59,18 +59,18 @@ namespace Server
 		}
 	}
 
-	[AttributeUsage( AttributeTargets.Method )]
+	[AttributeUsage(AttributeTargets.Method)]
 	public class CallPriorityAttribute : Attribute
 	{
 		private int m_Priority;
 
 		public int Priority
 		{
-			get{ return m_Priority; }
-			set{ m_Priority = value; }
+			get { return m_Priority; }
+			set { m_Priority = value; }
 		}
 
-		public CallPriorityAttribute( int priority )
+		public CallPriorityAttribute(int priority)
 		{
 			m_Priority = priority;
 		}
@@ -78,43 +78,43 @@ namespace Server
 
 	public class CallPriorityComparer : IComparer
 	{
-		public int Compare( object x, object y )
+		public int Compare(object x, object y)
 		{
 			MethodInfo a = x as MethodInfo;
 			MethodInfo b = y as MethodInfo;
 
-			if ( a == null && b == null )
+			if (a == null && b == null)
 				return 0;
 
-			if ( a == null )
+			if (a == null)
 				return 1;
 
-			if ( b == null )
+			if (b == null)
 				return -1;
 
-			return GetPriority( a ) - GetPriority( b );
+			return GetPriority(a) - GetPriority(b);
 		}
 
-		private int GetPriority( MethodInfo mi )
+		private int GetPriority(MethodInfo mi)
 		{
-			object[] objs = mi.GetCustomAttributes( typeof( CallPriorityAttribute ), true );
+			object[] objs = mi.GetCustomAttributes(typeof(CallPriorityAttribute), true);
 
-			if ( objs == null )
+			if (objs == null)
 				return 0;
 
-			if ( objs.Length == 0 )
+			if (objs.Length == 0)
 				return 0;
 
 			CallPriorityAttribute attr = objs[0] as CallPriorityAttribute;
 
-			if ( attr == null )
+			if (attr == null)
 				return 0;
 
 			return attr.Priority;
 		}
 	}
 
-	[AttributeUsage( AttributeTargets.Class )]
+	[AttributeUsage(AttributeTargets.Class)]
 	public class TypeAliasAttribute : Attribute
 	{
 		private string[] m_Aliases;
@@ -127,13 +127,13 @@ namespace Server
 			}
 		}
 
-		public TypeAliasAttribute( params string[] aliases )
+		public TypeAliasAttribute(params string[] aliases)
 		{
 			m_Aliases = aliases;
 		}
 	}
 
-	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Struct )]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
 	public class ParsableAttribute : Attribute
 	{
 		public ParsableAttribute()
@@ -141,7 +141,7 @@ namespace Server
 		}
 	}
 
-	[AttributeUsage( AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum )]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Enum)]
 	public class CustomEnumAttribute : Attribute
 	{
 		private string[] m_Names;
@@ -154,13 +154,13 @@ namespace Server
 			}
 		}
 
-		public CustomEnumAttribute( string[] names )
+		public CustomEnumAttribute(string[] names)
 		{
 			m_Names = names;
 		}
 	}
 
-	[AttributeUsage( AttributeTargets.Constructor )]
+	[AttributeUsage(AttributeTargets.Constructor)]
 	public class ConstructableAttribute : Attribute
 	{
 		public ConstructableAttribute()
@@ -168,7 +168,7 @@ namespace Server
 		}
 	}
 
-	[AttributeUsage( AttributeTargets.Property )]
+	[AttributeUsage(AttributeTargets.Property)]
 	public class CommandPropertyAttribute : Attribute
 	{
 		private AccessLevel m_ReadLevel, m_WriteLevel;
@@ -189,11 +189,12 @@ namespace Server
 			}
 		}
 
-		public CommandPropertyAttribute( AccessLevel level ) : this( level, level )
+		public CommandPropertyAttribute(AccessLevel level)
+			: this(level, level)
 		{
 		}
 
-		public CommandPropertyAttribute( AccessLevel readLevel, AccessLevel writeLevel )
+		public CommandPropertyAttribute(AccessLevel readLevel, AccessLevel writeLevel)
 		{
 			m_ReadLevel = readLevel;
 			m_WriteLevel = writeLevel;

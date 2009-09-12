@@ -57,63 +57,64 @@ namespace Server.Gumps
 		private const int LabelHue = 0x480;
 		private const int LabelColor32 = 0xFFFFFF;
 
-		public PasswordGump( Mobile from ) : base( 50, 40 )
+		public PasswordGump(Mobile from)
+			: base(50, 40)
 		{
 			m_From = from;
 
-			from.CloseGump( typeof( PasswordGump ) );
+			from.CloseGump(typeof(PasswordGump));
 
-			AddPage( 0 );
-			AddBackground( 0, 0, 480, 220, 5054 );
-			AddImageTiled( 10, 10, 460, 200, 2624 );
-			AddAlphaRegion( 10, 10, 460, 200 );
+			AddPage(0);
+			AddBackground(0, 0, 480, 220, 5054);
+			AddImageTiled(10, 10, 460, 200, 2624);
+			AddAlphaRegion(10, 10, 460, 200);
 
 			//x,y,width,height
 			StringBuilder sb = new StringBuilder();
 			sb.Append("Enter the account name for which you want to send a reset password.");
 			sb.Append("  If this account has been activated (with a verified email address),");
 			sb.Append(" a new password will be sent to the email address.");
-			
-			AddHtml( 20, 20, 440, 100, sb.ToString(), true, true );
 
-			AddLabelCropped(20, 140, 150, 20, LabelHue, "Account Name" );
+			AddHtml(20, 20, 440, 100, sb.ToString(), true, true);
+
+			AddLabelCropped(20, 140, 150, 20, LabelHue, "Account Name");
 			AddTextField(160, 140, 100, 20, 0, "");
 
-			AddButtonLabeled( 160, 170, 1, "OK" );
+			AddButtonLabeled(160, 170, 1, "OK");
 
 		}
 
-		public override void OnResponse( Server.Network.NetState sender, RelayInfo info )
+		public override void OnResponse(Server.Network.NetState sender, RelayInfo info)
 		{
 			int val = info.ButtonID;
 
-			if ( val <= 0 )
+			if (val <= 0)
 				return;
 
 			Mobile from = m_From;
 
-			switch( val )
+			switch (val)
 			{
 				case 1:
 					string accountname = info.GetTextEntry(0).Text;
-					m_From.SendMessage( "You entered [{0}]", accountname );
-				
-					foreach( Accounting.Account a in Accounting.Accounts.Table.Values )
+					m_From.SendMessage("You entered [{0}]", accountname);
+
+					foreach (Accounting.Account a in Accounting.Accounts.Table.Values)
 					{
-						if( a != null )
+						if (a != null)
 						{
-							if( a.Username.ToLower() == accountname.ToLower() )
+							if (a.Username.ToLower() == accountname.ToLower())
 							{
-								if( a.AccountActivated )
+								if (a.AccountActivated)
 								{
-									if( (DateTime.Now - a.ResetPasswordRequestedTime) < TimeSpan.FromDays(1.0) )
+									if ((DateTime.Now - a.ResetPasswordRequestedTime) < TimeSpan.FromDays(1.0))
 									{
-										m_From.SendMessage( "Reset password already requested.");
+										m_From.SendMessage("Reset password already requested.");
 									}
 									else
 									{
 										string newResetPassword = Server.Gumps.ProfileGump.CreateActivationKey(8);
-                                        if (SmtpDirect.CheckEmailAddy(a.EmailAddress,false) == true)
+										if (SmtpDirect.CheckEmailAddy(a.EmailAddress, false) == true)
 										{
 											string subject = "Angel Island Account password reset request";
 											string body = "\nSomeone has requested a password reset for your account.\n";
@@ -126,7 +127,7 @@ namespace Server.Gumps
 											body += "Regards,\n  The Angel Island Team\n\n";
 
 											Emailer mail = new Emailer();
-											if( mail.SendEmail( a.EmailAddress, subject, body, false ) )
+											if (mail.SendEmail(a.EmailAddress, subject, body, false))
 											{
 												string regSubject = "Password reset request";
 												string regBody = "Password reset reqest made.\n";
@@ -141,26 +142,26 @@ namespace Server.Gumps
 												regBody += "Email: " + a.EmailAddress + "\n";
 												regBody += "Reset password: " + newResetPassword + "\n";
 												regBody += "\n";
-												mail.SendEmail( "aiaccounting@game-master.net", regSubject, regBody, false );
+												mail.SendEmail("aiaccounting@game-master.net", regSubject, regBody, false);
 
 												a.ResetPassword = newResetPassword;
-												m_From.SendMessage( "Password reset request generated.");
-												m_From.SendMessage( "Email sent to account's email address.");
+												m_From.SendMessage("Password reset request generated.");
+												m_From.SendMessage("Email sent to account's email address.");
 											}
 											else
 											{
-												m_From.SendMessage( "Error sending email to account's email.");
+												m_From.SendMessage("Error sending email to account's email.");
 											}
 										}
 										else
 										{
-											m_From.SendMessage( "Account email invalid, unable to reset password.");
+											m_From.SendMessage("Account email invalid, unable to reset password.");
 										}
 									}
 								}
 								else
 								{
-									m_From.SendMessage( "Account not activated, unable to reset password.");
+									m_From.SendMessage("Account not activated, unable to reset password.");
 								}
 								break;
 							}
@@ -175,24 +176,24 @@ namespace Server.Gumps
 
 
 		//helper functions
-		public void AddTextField( int x, int y, int width, int height, int index )
+		public void AddTextField(int x, int y, int width, int height, int index)
 		{
-			AddBackground( x - 2, y - 2, width + 4, height + 4, 0x2486 );
-			AddTextEntry( x + 2, y + 2, width - 4, height - 4, 0, index, "" );
+			AddBackground(x - 2, y - 2, width + 4, height + 4, 0x2486);
+			AddTextEntry(x + 2, y + 2, width - 4, height - 4, 0, index, "");
 		}
-		public void AddTextField( int x, int y, int width, int height, int index, string initialvalue )
+		public void AddTextField(int x, int y, int width, int height, int index, string initialvalue)
 		{
-			AddBackground( x - 2, y - 2, width + 4, height + 4, 0x2486 );
-			AddTextEntry( x + 2, y + 2, width - 4, height - 4, 0, index, initialvalue );
+			AddBackground(x - 2, y - 2, width + 4, height + 4, 0x2486);
+			AddTextEntry(x + 2, y + 2, width - 4, height - 4, 0, index, initialvalue);
 		}
-		public void AddButtonLabeled( int x, int y, int buttonID, string text )
+		public void AddButtonLabeled(int x, int y, int buttonID, string text)
 		{
-			AddButton( x, y - 1, 4005, 4007, buttonID, GumpButtonType.Reply, 0 );
-			AddHtml( x + 35, y, 240, 20, Color( text, LabelColor32 ), false, false );
+			AddButton(x, y - 1, 4005, 4007, buttonID, GumpButtonType.Reply, 0);
+			AddHtml(x + 35, y, 240, 20, Color(text, LabelColor32), false, false);
 		}
-		public string Color( string text, int color )
+		public string Color(string text, int color)
 		{
-			return String.Format( "<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, text );
+			return String.Format("<BASEFONT COLOR=#{0:X6}>{1}</BASEFONT>", color, text);
 		}
 	}
 }
