@@ -437,12 +437,12 @@ namespace Server
 
 		public override void WriteInt32(System.Int32 value)
 		{
-			Write(Pack32.iPack32(value, true));
+			Write(Pack32._iPack32(value, true));
 		}
 
 		public override void WriteUInt32(System.UInt32 value)
 		{
-			Write(Pack32.uPack32(value, true));
+			Write(Pack32._uPack32(value, true));
 		}
 
 		public override void Write(short value)
@@ -823,12 +823,12 @@ namespace Server
 
 		public override System.Int32 ReadInt32()
 		{
-			return Pack32.iPack32(m_File.ReadInt32(), false);
+			return Pack32._iPack32(m_File.ReadInt32(), false);
 		}
 
 		public override System.UInt32 ReadUInt32()
 		{
-			return Pack32.uPack32(m_File.ReadUInt32(), false);
+			return Pack32._uPack32(m_File.ReadUInt32(), false);
 		}
 
 		public override short ReadShort()
@@ -1242,13 +1242,13 @@ namespace Server
 
 		public override void WriteInt32(int value)
 		{
-			m_Bin.Write(Pack32.iPack32(value, true));
+			m_Bin.Write(Pack32._iPack32(value, true));
 			OnWrite();
 		}
 
 		public override void WriteUInt32(uint value)
 		{
-			m_Bin.Write(Pack32.uPack32(value, true));
+			m_Bin.Write(Pack32._uPack32(value, true));
 			OnWrite();
 		}
 
@@ -1506,19 +1506,22 @@ namespace Server
 
 	public class Pack32
 	{
-		/* software dongle no longer needed for open sorrce
-        [DllImport("./server/bin/iPack32Lib.dll")]
-        public static extern int iPack32(int value, bool pack);
-        [DllImport("./server/bin/iPack32Lib.dll")]
-        public static extern uint uPack32(uint value, bool pack);
-		 */
+		/* software dongle not needed for open source */
+		/* turn on for game-master.net Angel Island */
+		[DllImport("./server/bin/iPack32Lib.dll")]
+		private static extern int iPack32(int value, bool pack);
 
-		public static int iPack32(int value, bool pack)
+		[DllImport("./server/bin/iPack32Lib.dll")]
+		private static extern uint uPack32(uint value, bool pack);
+
+		public static int _iPack32(int value, bool pack)
 		{
+			//value = iPack32(value, pack);
 			return value;
 		}
-		public static uint uPack32(uint value, bool pack)
+		public static uint _uPack32(uint value, bool pack)
 		{
+			//value = uPack32(value, pack);
 			return value;
 		}
 	}

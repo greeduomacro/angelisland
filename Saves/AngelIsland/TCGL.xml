@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<TCGL Count="2">
+	<TCEntry>
+		<LineCount>2</LineCount>
+		<Line0>The vile bandit Rowan was last seen near 101  9'S, 54  59'E.. He is not to be trusted.</Line0>
+		<Line1>Do what you will with him, but just see that he does not enter our fair city.</Line1>
+		<ExpireTime>2010-03-10T10:17:11.2118708</ExpireTime>
+		<PosterSerial>0xFFFFFFFF</PosterSerial>
+	</TCEntry>
+	<TCEntry>
+		<LineCount>2</LineCount>
+		<Line0>The merchant Madelaine was last seen somewhere outside of Britain and is said to be bringing us some of her finest wares.</Line0>
+		<Line1>Madelaine was last seen near 87  53'N, 25  27'W. Please see that Madelaine arrives safely.</Line1>
+		<ExpireTime>2010-03-10T10:19:16.3048202</ExpireTime>
+		<PosterSerial>0xFFFFFFFF</PosterSerial>
+	</TCEntry>
+</TCGL>
