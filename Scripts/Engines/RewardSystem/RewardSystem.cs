@@ -30,10 +30,10 @@
  *
  ***************************************************************************/
 
-/* /Scripts/Engines/Reward System/RewardSystem.cs
- * Created 5/23/04 by mith
- * ChangeLog
- * 
+/* Scripts/Engines/Reward System/RewardSystem.cs
+ * 	CHANGELOG:
+ * 3/10/10, Adam
+ *		Turn off rewards system
  * 6/19/04, adam
  *		1. fixed typo "enterred." to "entered."
  *	5/26/04, mith
@@ -46,6 +46,7 @@
  *	5/24/04, mith
  *		Added more robust exception-handling to prevent server load/save crashes.
  *		Fixed a potential crash bug in WriteXml if the Rewards.xml file doesn't exist.
+ *	Created 5/23/04 by mith
  */
 
 using System;
@@ -70,7 +71,7 @@ namespace Server.Engines.RewardSystem
 		private static ArrayList m_Codes;
 		private static string m_RewardCode, m_RewardType, m_RewardUsed;
 
-		public static bool Enabled = true; // change to true to enable vet rewards
+		public static bool Enabled = false; // change to true to enable vet rewards
 
 		public static void Configure()
 		{

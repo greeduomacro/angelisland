@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<accounts count="1">
+	<account>
+		<username>foo</username>
+		<cryptPassword>AC-BD-18-DB-4C-C2-F8-5C-ED-EF-65-4F-CC-C4-A4-D8</cryptPassword>
+		<email />
+		<accountactivated>false</accountactivated>
+		<activationkey />
+		<resetpassword />
+		<resetpwdtime>0001-01-01T00:00:00.0000000-08:00</resetpwdtime>
+		<created>2010-03-09T13:52:19.7018816-08:00</created>
+		<lastLogin>2010-03-09T14:00:46.9955099-08:00</lastLogin>
+		<chars length="5">
+			<char index="0">5</char>
+		</chars>
+		<addressList count="1">
+			<ip>127.0.0.1</ip>
+		</addressList>
+	</account>
+</accounts>
